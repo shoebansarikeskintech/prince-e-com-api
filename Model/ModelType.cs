@@ -95,9 +95,15 @@ namespace Model
         public record GiftCard(Int64 id, Guid giftCardId, Guid appUserId, string cardNumber, Decimal balance, string status, DateTime issueDate,
             DateTime expireDate, DateTime createdDate, string Status);
         public record Notification(Int64 id, Guid notificationId, string title, string description, string status, DateTime createdDate);
-        public record Order(Int64 id, Guid orderId, Guid userId, string username, string firstName, string middleName, string lastName, string phoneNumber, string email,  Guid addressId, Guid paymentId, string shippedDate, decimal price,
-               decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
-               string trackingNo, string note, string status, DateTime createdDate);
+        //public record Order(Int64 id, Guid orderId, Guid userId, string username, string firstName, string middleName, string lastName, string phoneNumber, string email,  Guid addressId, Guid paymentId, string shippedDate, decimal price,
+        //       decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
+        //       string trackingNo, string note, string status, DateTime createdDate);
+        public record Order(
+    long Id,Guid OrderId, Guid UserId,string Username, string FirstName,string MiddleName,
+    string LastName, string PhoneNumber,string Email, Guid AddressId,Guid PaymentId, string ShippedDate,
+    decimal Price,decimal DiscountPrice,decimal DeliveryCharge,decimal GstCharge,decimal ExtraCharge, decimal TotalAmount,
+    string PaymentMethod,string TransactionId,string TrackingNo,string Note,string Status,DateTime CreatedDate
+);
 
         public record OrderDetailsById(
        long Id,DateTime ShippedDate, string TransactionId, string Status,int Quantity,decimal Price,
@@ -111,9 +117,36 @@ namespace Model
        decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
        string trackingNo, string note, string status, DateTime createdDate);
 
-        public record CancelOrder(Int64 id, Guid orderId, Guid userId, string username, string firstName, string middleName, string lastName, string phoneNumber, string email, Guid productId, Guid addressId, Guid paymentId, string cancelOrderDate, decimal price,
-              decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
-              string trackingNo, string note, string status, DateTime createdDate);
+        public record CancelOrder(
+    Int64 id,
+    Guid orderId,
+    Guid userId,
+    string username,
+    string firstName,
+    string middleName,
+    string lastName,
+    string phoneNumber,
+    string email,
+    Guid addressId,
+    Guid paymentId,
+    string cancelOrderDate,
+    decimal price,
+    decimal discountPrice,
+    decimal deliveryCharge,
+    decimal gstCharge,
+    decimal extraCharge,
+    decimal totalAmount,
+    string paymentMethod,
+    string transactionId,
+    string trackingNo,
+    string note,
+    string status,
+    DateTime createdDate
+);
+
+        //public record CancelOrder(Int64 id, Guid orderId, Guid userId, string username, string firstName, string middleName, string lastName, string phoneNumber, string email, Guid productId, Guid addressId, Guid paymentId, string cancelOrderDate, decimal price,
+        //      decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
+        //      string trackingNo, string note, string status, DateTime createdDate);
 
 
         public record AllRefundOrder(Int64 id, Guid returnId, Guid orderId, Guid userId, int quantity, string reason, string returnStatus,
