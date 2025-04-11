@@ -23,7 +23,7 @@ namespace PrinceEcom.Controllers
             _logger = logger;
         }
 
-        //Faisal
+        
         [HttpGet("getAllOrder")]
         public async Task<IActionResult> getAllOrder(Guid adminUserId)
         {
@@ -35,7 +35,7 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllOrder);
         }
-       //comments
+      
         [HttpGet("getAllPendingOrder")]
         public async Task<IActionResult> getAllPendingOrder(Guid adminUserId)
         {
