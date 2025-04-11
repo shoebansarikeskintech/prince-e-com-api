@@ -1,0 +1,132 @@
+﻿using Common;
+using Dapper;
+using RepositoryContract;
+using System.Data;
+using System.Net;
+using ViewModel;
+using static Model.ModelType;
+
+namespace Repository
+{
+    public class SubMenuRepository : ISubMenuRepository
+    {
+        private readonly DapperContext _dapperContext;
+        public SubMenuRepository(DapperContext dapperContext) =>
+            _dapperContext = dapperContext;
+        public async Task<ResponseViewModel> getByIdSubMenu(Guid id)
+        {
+            var procedureName = Constant.spGetByIdSubMenu;
+            var parameters = new DynamicParameters();
+            parameters.Add("@subMenuId", id, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<SubMenu>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var getbyIdSubMenu = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return getbyIdSubMenu;
+            }
+        }
+        public async Task<ResponseViewModel> getAllSubMenu()
+        {
+            var procedureName = Constant.spGetAllSubMenu;
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<SubMenu>(procedureName, null, commandType: CommandType.StoredProcedure);
+                var getAllSubMenu = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return getAllSubMenu;
+            }
+        }
+        public async Task<ResponseViewModel> addSubMenu(AddSubMenuViewModel addSubMenuViewModel)
+        {
+            var procedureName = Constant.spAddSubMenu;
+            var parameters = new DynamicParameters();
+            parameters.Add("@menuId", addSubMenuViewModel.menuId, DbType.Guid);
+            parameters.Add("@subMenuName", addSubMenuViewModel.subMenuName, DbType.String);
+            parameters.Add("@subMenuPageName", addSubMenuViewModel.subMenuPageName, DbType.String);
+            parameters.Add("@displayOrder", addSubMenuViewModel.displayOrder, DbType.Int32);
+            parameters.Add("@createdBy", addSubMenuViewModel.createdBy, DbType.Guid);
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                    var createdSubMenu = new
+                    {
+                        id = (Guid)result.data,
+                        subMenuName = addSubMenuViewModel.subMenuName
+                    };
+                    result.data = createdSubMenu;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
+        public async Task<ResponseViewModel> updateSubMenu(UpdateSubMenuViewModel updateSubMenuViewModel)
+        {
+            var procedureName = Constant.spUpdateSubMenu;
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@subMenuId", updateSubMenuViewModel.subMenuId, DbType.Guid);
+            parameters.Add("@menuId", updateSubMenuViewModel.menuId, DbType.Guid);
+            parameters.Add("@subMenuName", updateSubMenuViewModel.subMenuName, DbType.String);
+            parameters.Add("@subMenuPageName", updateSubMenuViewModel.subMenuPageName, DbType.String);
+            parameters.Add("@displayOrder", updateSubMenuViewModel.displayOrder, DbType.Int32);
+            parameters.Add("@updatedBy", updateSubMenuViewModel.updatedBy, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                }
+                return result;
+            }
+        }
+        public async Task<ResponseViewModel> deleteSubMenu(DeleteSubMenuViewModel deleteSubMenuViewModel)
+        {
+            var procedureName = Constant.spDeleteSubMenu;
+            var parameters = new DynamicParameters();
+            parameters.Add("@subMenuId", deleteSubMenuViewModel.subMenuId, DbType.Guid);
+            parameters.Add("@updatedBy", deleteSubMenuViewModel.updatedBy, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                }
+                return result;
+            }
+        }
+    }
+}

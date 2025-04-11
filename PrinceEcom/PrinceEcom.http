@@ -1,0 +1,6 @@
+@PrinceEcom_HostAddress = http://localhost:5121
+
+GET {{PrinceEcom_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
