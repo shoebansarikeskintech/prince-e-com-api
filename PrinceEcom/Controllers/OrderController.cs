@@ -33,7 +33,7 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllOrder);
         }
-
+       //comments
         [HttpGet("getAllPendingOrder")]
         public async Task<IActionResult> getAllPendingOrder(Guid adminUserId)
         {
@@ -92,6 +92,5 @@ namespace PrinceEcom.Controllers
             var add = await _serviceManager.orderContract.addOrderWithDetails(addOrderWithDetails);
             return Ok(add);
         }
-
     }
 }
