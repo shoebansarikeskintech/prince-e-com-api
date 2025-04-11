@@ -10,8 +10,7 @@ namespace ViewModel
     public class AddIngredientViewModel
     {
         [Required]
-        public string? name { get; set; }
-        [Required]
+        public string? name { get; set; }     
         public string? description { get; set; }
         [Required]
         public Guid createdBy { get; set; }
@@ -28,8 +27,7 @@ namespace ViewModel
         [Required]
         public Guid ingredientId { get; set; }
         [Required]
-        public string? name { get; set; }
-        [Required]
+        public string? name { get; set; }      
         public string? description { get; set; }
         [Required]
         public bool active { get; set; }

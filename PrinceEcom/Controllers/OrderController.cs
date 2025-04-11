@@ -22,7 +22,7 @@ namespace PrinceEcom.Controllers
             _serviceManager = serviceManager;
             _logger = logger;
         }
-
+        
         
         [HttpGet("getAllOrder")]
         public async Task<IActionResult> getAllOrder(Guid adminUserId)
@@ -93,6 +93,30 @@ namespace PrinceEcom.Controllers
             _logger.logInfo($" {LoggingEvents.addItem} addShippingMethod");
             var add = await _serviceManager.orderContract.addOrderWithDetails(addOrderWithDetails);
             return Ok(add);
+        }
+
+        [HttpGet("getAllOrderByOrderId")]
+        public async Task<IActionResult> getAllOrderByOrderId(Guid orderId)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} SpGetAllOrderByOrderId");
+            var getAllOrder = await _serviceManager.orderContract.getAllOrderByOrderId(orderId);
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Details Found");
+            }
+            return Ok(getAllOrder);
+        }
+
+        [HttpGet("getAllOrderByName")]
+        public async Task<IActionResult> getAllOrderByName(String userName)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} GetAllOrderByName");
+            var getAllOrder = await _serviceManager.orderContract.getAllOrderByName(userName);
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Details Found");
+            }
+            return Ok(getAllOrder);
         }
     }
 }

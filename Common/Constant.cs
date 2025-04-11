@@ -134,6 +134,9 @@ namespace Common
         public static string spGetAllCompletedOrder = "SpGetAllCompletedOrder";
         public static string spGetAllCancelOrder = "SpGetAllCancelOrder";
 
+        public static string spGetAllOrderByOrderId = "SpGetAllOrderByOrderId";
+        public static string spGetAllOrderByUserName = "SpGetAllOrderByUserName";
+
 
         public static string spGetAllOrderDetails = "SpGetAllOrderListDetails";
         public static string spAddOrderWithDetails = "SpAddOrderWithDetails";

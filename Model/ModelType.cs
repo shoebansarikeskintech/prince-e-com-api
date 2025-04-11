@@ -12,7 +12,7 @@ namespace Model
 
         public record AppRole(Guid appRoleId, string roleName);
 
-        public record Menu(Guid menuId, string menuName);
+        public record Menu(Guid menuId, string menuName,string menuIcon);
 
         public record MenuByUserRole(int id, string menuName, string actionName, string controllerName, string pageName,
             int displayOrder, string roleName);
@@ -99,8 +99,15 @@ namespace Model
                decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
                string trackingNo, string note, string status, DateTime createdDate);
 
+        public record OrderDetailsById(
+       long Id,DateTime ShippedDate, string TransactionId, string Status,int Quantity,decimal Price,
+       decimal DiscountPrice,decimal TotalAmount,string Username, string Name,string Image, string ProductName);
 
-        public record OrderDetails(Int64 id, Guid orderId, Guid userId, string username, string firstName, string middleName, string lastName, string phoneNumber, string email,  Guid addressId, Guid paymentId, string shippedDate, decimal price,
+        public record OrderDetailsByName(
+    long Id, DateTime ShippedDate, string TransactionId, string Status, int Quantity, decimal Price,
+    decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName);
+
+       public record OrderDetails(Int64 id, Guid orderId, Guid userId, string username, string firstName, string middleName, string lastName, string phoneNumber, string email,  Guid addressId, Guid paymentId, string shippedDate, decimal price,
        decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
        string trackingNo, string note, string status, DateTime createdDate);
 

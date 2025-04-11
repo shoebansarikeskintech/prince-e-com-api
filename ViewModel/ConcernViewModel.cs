@@ -13,7 +13,6 @@ namespace ViewModel
         {
             [Required]
             public string? name { get; set; }
-            [Required]
             public string? description { get; set; }
             [Required]
             public Guid createdBy { get; set; }
@@ -30,8 +29,7 @@ namespace ViewModel
             [Required]
             public Guid ConcernId { get; set; }
             [Required]
-            public string? name { get; set; }
-            [Required]
+            public string? name { get; set; }           
             public string? description { get; set; }
             [Required]
             public bool active { get; set; }

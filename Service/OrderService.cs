@@ -43,5 +43,16 @@ namespace Service
             var add = await _repositoryManager.orderRepository.addOrderWithDetails(addOrderWithDetails);
             return add;
         }
+
+        public async Task<ResponseViewModel> getAllOrderByOrderId(Guid orderId)
+        {
+            var GetAllOrderByOrderId = await _repositoryManager.orderRepository.getAllOrderByOrderId(orderId);
+            return GetAllOrderByOrderId;
+        }
+        public async Task<ResponseViewModel> getAllOrderByName(String userName)
+        {
+            var GetAllOrderByName = await _repositoryManager.orderRepository.getAllOrderByName(userName);
+            return GetAllOrderByName;
+        }
     }
 }

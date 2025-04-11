@@ -117,66 +117,6 @@ namespace Repository
             }
         }
 
-        //public async Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderDetails)
-        //{
-        //    var procedureName = Constant.spAddOrderWithDetails;
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("@userId", addOrderDetails.userId, DbType.Guid);
-        //    parameters.Add("@addressId", addOrderDetails.addressId, DbType.Guid);
-        //    parameters.Add("@paymentId", addOrderDetails.paymentId, DbType.Guid);
-
-        //    // Ensure shippedDate is valid and handle nullable DateTime
-        //    if (addOrderDetails.shippedDate != null)
-        //        parameters.Add("@shippedDate", addOrderDetails.shippedDate, DbType.DateTime);
-        //    else
-        //        parameters.Add("@shippedDate", DBNull.Value);
-
-        //    parameters.Add("@price", addOrderDetails.price, DbType.Decimal);
-        //    parameters.Add("@discountPrice", addOrderDetails.discountPrice, DbType.Decimal);
-        //    parameters.Add("@deliveryCharge", addOrderDetails.deliveryCharge, DbType.Decimal);
-        //    parameters.Add("@gstCharge", addOrderDetails.gstCharge, DbType.Decimal);
-        //    parameters.Add("@extraCharge", addOrderDetails.extraCharge, DbType.Decimal);
-        //    parameters.Add("@totalAmount", addOrderDetails.totalAmount, DbType.Decimal);
-        //    parameters.Add("@paymentMethod", addOrderDetails.paymentMethod, DbType.String);
-        //    parameters.Add("@transactionId", addOrderDetails.transactionId, DbType.String);
-        //    parameters.Add("@trackingNo", addOrderDetails.trackingNo, DbType.String);
-        //    parameters.Add("@note", addOrderDetails.note, DbType.String);
-        //    parameters.Add("@status", addOrderDetails.status, DbType.String);
-        //    parameters.Add("@createdBy", addOrderDetails.createdBy, DbType.Guid);
-
-        //    // Handle nullable cancelOrderDate
-        //    if (addOrderDetails.cancelOrderDate != null)
-        //        parameters.Add("@cancelOrderDate", addOrderDetails.cancelOrderDate, DbType.DateTime);
-        //    else
-        //        parameters.Add("@cancelOrderDate", DBNull.Value);
-
-        //    parameters.Add("@orderNo", addOrderDetails.orderNo, DbType.String); // Assuming this is a string, not DateTime
-        //    parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String); // Assuming this is a string, not Guid
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-
-        //        if (result.statusCode == 1)
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.OK;
-        //            result.message = result.message;
-        //        }
-        //        else if (result.statusCode == 0)
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //            result.message = result.message;
-        //        }
-        //        else
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //            result.message = result.message;
-        //        }
-
-        //        return result;
-        //    }
-        //}
-
 
         public async Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderDetails)
         {
@@ -187,7 +127,6 @@ namespace Repository
             parameters.Add("@userId", addOrderDetails.userId, DbType.Guid);
             parameters.Add("@addressId", addOrderDetails.addressId, DbType.Guid);
             parameters.Add("@paymentId", addOrderDetails.paymentId, DbType.Guid);
-            //parameters.Add("@shippedDate", addOrderDetails.shippedDate, DbType.DateTime);
             parameters.Add("@price", addOrderDetails.price, DbType.Decimal);
             parameters.Add("@discountPrice", addOrderDetails.discountPrice, DbType.Decimal);
             parameters.Add("@deliveryCharge", addOrderDetails.deliveryCharge, DbType.Decimal);
@@ -200,15 +139,9 @@ namespace Repository
             parameters.Add("@note", addOrderDetails.note, DbType.String);
             parameters.Add("@status", addOrderDetails.status, DbType.String);
             parameters.Add("@createdBy", addOrderDetails.createdBy, DbType.Guid);
-            //parameters.Add("@cancelOrderDate", addOrderDetails.cancelOrderDate, DbType.DateTime);
-            //parameters.Add("@orderNo", addOrderDetails.orderNo, DbType.String); // Assuming it's a string, not DateTime
-            // Example format: ORD202504112359009ABC
-            string orderNo = "ORD" + DateTime.Now.ToString("yyyyMMddHHmmss") + Guid.NewGuid().ToString("N").Substring(0, 4);
-
-            // Set the generated orderNo in your model
+            
+            string orderNo = "ORD" + Guid.NewGuid().ToString("N").Substring(0, 8); // Example: ORD9fcac100
             addOrderDetails.orderNo = orderNo;
-
-            // Now add it to parameters
             parameters.Add("@orderNo", addOrderDetails.orderNo, DbType.String);
 
 
@@ -226,25 +159,29 @@ namespace Repository
                         if (result.statusCode == 1)
                         {
                             result.statusCode = (int)HttpStatusCode.OK;
-                            result.message = result.message;
-                            result.message = "Add Order details Successfully";
+                            result.message = "Order Place Successfully";
+                            result.data = new OrderResponseData
+                            {
+                                orderNo = addOrderDetails.orderNo
+                            };
                         }
+
                         else if (result.statusCode == 0)
                         {
                             result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                            result.message = "Add Order details Successfully";
+                            result.message = "Order Place Successfully";
                         }
                         else
                         {
                             result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                            result.message = "Add Order details Successfully";
+                            result.message = "Order Place Successfully";
                         }
 
                         return result;
                     }
                     else
                     {
-                        throw new Exception("Add Order details Successfully.");
+                        throw new Exception("Order Place Successfully.");
                     }
                 }
             }
@@ -262,50 +199,43 @@ namespace Repository
             }
         }
 
-        //public async Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderDetails)
-        //{
-        //    var procedureName = Constant.spAddOrderWithDetails;
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("@userId", addOrderDetails.userId, DbType.Guid);
-        //    parameters.Add("@addressId", addOrderDetails.addressId, DbType.Guid);
-        //    parameters.Add("@paymentId", addOrderDetails.paymentId, DbType.Guid);
-        //   // parameters.Add("@shippedDate", addOrderDetails.shippedDate, DbType.DateTime);
-        //    parameters.Add("@price", addOrderDetails.price, DbType.Decimal);
-        //    parameters.Add("@discountPrice", addOrderDetails.discountPrice, DbType.Decimal);
-        //    parameters.Add("@deliveryCharge", addOrderDetails.deliveryCharge, DbType.Decimal);
-        //    parameters.Add("@gstCharge", addOrderDetails.gstCharge, DbType.Decimal);
-        //    parameters.Add("@extraCharge", addOrderDetails.extraCharge, DbType.Decimal);
-        //    parameters.Add("@totalAmount", addOrderDetails.totalAmount, DbType.Decimal);
-        //    parameters.Add("@paymentMethod", addOrderDetails.paymentMethod, DbType.String);
-        //    parameters.Add("@transactionId", addOrderDetails.transactionId, DbType.String);
-        //    parameters.Add("@trackingNo", addOrderDetails.trackingNo, DbType.String);
-        //    parameters.Add("@note", addOrderDetails.note, DbType.String);
-        //    parameters.Add("@status", addOrderDetails.status, DbType.String);
-        //    parameters.Add("@createdBy", addOrderDetails.createdBy, DbType.Guid);
-        //    //parameters.Add("@cancelOrderDate", addOrderDetails.cancelOrderDate, DbType.DateTime);
-        //    parameters.Add("@orderNo", addOrderDetails.orderNo, DbType.DateTime);
-        //    parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.Guid);
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-        //        if (result.statusCode == 1)
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.OK;
-        //            result.message = result.message;
-        //        }
-        //        else if (result.statusCode == 0)
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //            result.message = result.message;
-        //        }
-        //        else
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //            result.message = result.message;
-        //        }
-        //        return result;
-        //    }
-        //}
+        public class OrderResponseData
+        {
+            public string? orderNo { get; set; }
+        }
+        public async Task<ResponseViewModel> getAllOrderByOrderId(Guid orderId)
+        {
+            var procedureName = Constant.spGetAllOrderByOrderId;
+            var parameters = new DynamicParameters();
+            parameters.Add("@orderId", orderId, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<OrderDetailsById>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var GetAllOrderByOrderId = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return GetAllOrderByOrderId;
+            }
+        }
+        public async Task<ResponseViewModel> getAllOrderByName(String userName)
+        {
+            var procedureName = Constant.spGetAllOrderByUserName;
+            var parameters = new DynamicParameters();
+            parameters.Add("@userName", userName, DbType.String);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<OrderDetailsByName>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var GetAllOrderByName = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return GetAllOrderByName;
+            }
+        }
     }
 }

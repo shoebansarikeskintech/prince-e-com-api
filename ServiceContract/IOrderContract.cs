@@ -13,5 +13,9 @@ namespace ServiceContract
 
         public Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderWithDetails);
 
+        public Task<ResponseViewModel> getAllOrderByOrderId(Guid orderId);
+
+        public Task<ResponseViewModel> getAllOrderByName(String userName);
+
     }
 }
