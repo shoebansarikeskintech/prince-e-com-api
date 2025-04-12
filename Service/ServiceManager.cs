@@ -36,6 +36,7 @@ namespace Service
         private readonly Lazy<IIngredientContract> _ingredientContract;
         private readonly Lazy<IGeographyContract> _geographyContract;
         private readonly Lazy<IConcernContract> _concernContract;
+        private readonly Lazy<IRatingReviewContract> _ratingReviewContract;
         
         public ServiceManager(IRepositoryManager repositoryManager)
         {
@@ -70,7 +71,8 @@ namespace Service
             _cartContract = new Lazy<ICartContract>(() => new CartService(repositoryManager));
             _ingredientContract = new Lazy<IIngredientContract>(() => new IngredientServices(repositoryManager));
             _geographyContract = new Lazy<IGeographyContract>(() => new GeographyService(repositoryManager));
-            _concernContract = new Lazy<IConcernContract>(() => new ConcernService(repositoryManager));        
+            _concernContract = new Lazy<IConcernContract>(() => new ConcernService(repositoryManager));
+            _ratingReviewContract = new Lazy<IRatingReviewContract>(() => new RatingReviewService(repositoryManager));        
         }
 
         public IAuthenticationContract authenticationContract => _authenticationContract.Value;
@@ -105,5 +107,7 @@ namespace Service
         public IGeographyContract geographyContract => _geographyContract.Value;
 
         public IConcernContract concernContract => _concernContract.Value;
+
+        public IRatingReviewContract ratingReviewContract => _ratingReviewContract.Value;
     }
 }

@@ -59,6 +59,43 @@ namespace Model
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
             DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl);
 
+        public class Productdetaisl
+        {
+            public Int64 Id { get; set; }
+            public Guid ProductId { get; set; }
+            public Guid CategoryId { get; set; }
+            public string? CategoryName { get; set; }
+            public Guid? SubCategoryId { get; set; }
+            public string? SubCategoryName { get; set; }
+            public Guid? SubCategoryTypeId { get; set; }
+            public string? SubCategoryTypeName { get; set; }
+            public Guid SellerId { get; set; }
+            public string? SellerName { get; set; }
+            public Guid BrandId { get; set; }
+            public string? BrandName { get; set; }
+            public Guid ColorId { get; set; }
+            public string? ColorName { get; set; }
+            public string? ColorCode { get; set; }
+            public Guid? SizeId { get; set; }
+            public string? SizeName { get; set; }
+            public string? SizeCode { get; set; }
+            public string? ProductName { get; set; }
+            public string? SubName { get; set; }
+            public string? Description { get; set; }
+            public Int32 Rating { get; set; }
+            public Int32 NoOfRating { get; set; }
+            public Int32 Stock { get; set; }
+            public Decimal Price { get; set; }
+            public Decimal DiscountPrice { get; set; }
+            public DateTime CreatedDate { get; set; }
+            public DateTime UpdatedDate { get; set; }
+            public string? Status { get; set; }
+            public bool Active { get; set; }
+            public string? ImageUrl { get; set; }
+            public List<string> ImageUrls { get; set; }
+        }
+
+
         public record ProductDetails(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
             Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid brandId, string brandName,
             Guid colorId, string colorName, string colorCode, Guid sizeId, string sizeName, string sizeCode, string productName,
@@ -173,5 +210,15 @@ namespace Model
             int Fk_StateId, string CityName, int Pk_CityId);
         public record ConcernMethod(Int64 Id, Guid ConcernId, string name, string description, DateTime createdDate, string Status, bool active);
 
+        public record RatingRiview(
+            long id,
+            string username,
+            string description,
+            int like,
+            int dislike,
+            DateTime createdDate,
+            DateTime updatedDate,
+            bool active
+        );
     }
 }

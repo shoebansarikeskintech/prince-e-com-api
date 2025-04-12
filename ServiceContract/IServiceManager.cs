@@ -34,5 +34,6 @@ namespace ServiceContract
         IIngredientContract ingredientContract { get; }
         IGeographyContract geographyContract { get; }
         IConcernContract concernContract { get; }
+        IRatingReviewContract ratingReviewContract { get; }
     }
 }

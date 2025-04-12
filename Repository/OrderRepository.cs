@@ -169,19 +169,19 @@ namespace Repository
                         else if (result.statusCode == 0)
                         {
                             result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                            result.message = "Order Place Successfully";
+                            result.message = "Failed to place the order.";
                         }
                         else
                         {
                             result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                            result.message = "Order Place Successfully";
+                            result.message = "An unexpected error occurred while placing the order.";
                         }
 
                         return result;
                     }
                     else
                     {
-                        throw new Exception("Order Place Successfully.");
+                        throw new Exception("No response from the server while placing the order.");
                     }
                 }
             }
@@ -194,7 +194,7 @@ namespace Repository
                 return new ResponseViewModel
                 {
                     statusCode = (int)HttpStatusCode.InternalServerError,
-                    message = "Add Order details Successfully."
+                    message = "No response from the server while placing the order."
                 };
             }
         }

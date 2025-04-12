@@ -36,6 +36,7 @@ namespace Repository
         private readonly Lazy<IIngredientRepository> _ingredientRepository;
         private readonly Lazy<IGeographyRepository> _geographyRepository;
         private readonly Lazy<IConcernReposotory> _concernReposotory;
+        private readonly Lazy<IRatingReviewRepository> _ratingReviewRepository;
 
 
         public RepositoryManager(DapperContext dapperContext)
@@ -72,6 +73,7 @@ namespace Repository
             _ingredientRepository = new Lazy<IIngredientRepository>(() => new IngredientRepository(_dapperContext));
             _geographyRepository = new Lazy<IGeographyRepository>(() => new GeographyRepository(_dapperContext));
             _concernReposotory = new Lazy<IConcernReposotory>(() => new ConcernRepository(_dapperContext));
+            _ratingReviewRepository = new Lazy<IRatingReviewRepository>(() => new RatingReviewRepository(_dapperContext));
         }
         public IAuthenticationRepository authenticationRepository => _authenticationRepository.Value;
         public IAppRoleRepository appRoleRepository => _appRoleRepository.Value;
@@ -104,5 +106,6 @@ namespace Repository
         public IIngredientRepository ingredientRepository => _ingredientRepository.Value;
         public IGeographyRepository geographyRepository => _geographyRepository.Value;
         public IConcernReposotory concernReposotory => _concernReposotory.Value;
+        public IRatingReviewRepository ratingReviewRepository => _ratingReviewRepository.Value;
     }
 }

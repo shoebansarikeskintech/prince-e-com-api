@@ -35,5 +35,6 @@ namespace RepositoryContract
 
         IGeographyRepository geographyRepository { get; }
         IConcernReposotory concernReposotory { get; }
+        IRatingReviewRepository ratingReviewRepository { get; }
     }
 }

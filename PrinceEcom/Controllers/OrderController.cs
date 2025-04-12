@@ -83,9 +83,7 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllCancelOrder);
         }
-
         
-
         [HttpPost("addOrderWithDetails")]
         [Authorize]
         public async Task<IActionResult> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderWithDetails)

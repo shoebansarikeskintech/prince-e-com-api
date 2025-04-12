@@ -203,5 +203,7 @@ namespace Common
         public static string spUpdateConcern = "SpUpdateConcernId";
         public static string spDeleteConcern = "SpDeleteConcern";
 
+        public static string spAddRatingReview = "SpAddRatingReview";
+        public static string spGetRatingReview = "SpGetRatingReview";
     }
 }
