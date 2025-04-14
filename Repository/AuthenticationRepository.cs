@@ -200,6 +200,10 @@ namespace Repository
             parameters.Add("@email", addAppUser.email, DbType.String);
             parameters.Add("@phoneNumber", addAppUser.phoneNumber, DbType.String);
             parameters.Add("@password", addAppUser.password, DbType.String);
+            parameters.Add("@Age", addAppUser.Age, DbType.String);
+            parameters.Add("@Gender", addAppUser.Gender, DbType.String);
+            parameters.Add("@Skintype", addAppUser.Skintype, DbType.String);
+            parameters.Add("@IsSkinSensitve", addAppUser.IsSkinSensitve, DbType.String);
 
             using (var connection = _dapperContext.createConnection())
             {

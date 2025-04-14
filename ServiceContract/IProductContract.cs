@@ -20,5 +20,7 @@ namespace ServiceContract
         public Task<ResponseViewModel> addProductImage(AddProductImageViewModel addProductImage);
         public Task<ResponseViewModel> updateProductImage(UpdateProductImageViewModel updateProductImage);
         public Task<ResponseViewModel> deleteProductImage(DeleteProductImageViewModel deleteProductImage);
+
+        public Task<ResponseViewModel> getByIdImage(Guid productId);
     }
 }

@@ -65,6 +65,10 @@ namespace Repository
                             updatedDate = product.UpdatedDate != DateTime.MinValue ? product.UpdatedDate.ToString("yyyy-MM-ddTHH:mm:ss") : null,
                             status = product.Status,
                             active = product.Active,
+                            concernName = product.concernName,
+                            ingredientName = product.ingredientName,
+                            ConcernId = product.ConcernId,
+                            IngredientId = product.IngredientId,
                             imageUrls = imageUrls
                         },
                        
@@ -75,34 +79,7 @@ namespace Repository
             }
         }
 
-        //public async Task<ResponseViewModel> getByIdProduct(Guid productId)
-        //{
-        //    var procedureName = Constant.spGetByIdProduct;
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("@productId", productId, DbType.Guid);
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = (await connection.QueryAsync<Product>(procedureName, parameters, commandType: CommandType.StoredProcedure)).ToList();
-
-        //        var product = result.FirstOrDefault(); // Sirf ek record
-        //        var imageUrls = result.Select(x => x.imageUrl).ToList(); // Multiple images
-
-        //        var getbyIdProduct = new ResponseViewModel
-        //        {
-        //            statusCode = product != null ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
-        //            message = product != null ? "Data Found" : "Data Not Found",
-        //            data = product != null ? new
-        //            {
-        //                productDetails = product,
-        //                imageUrls = imageUrls
-        //            } : null
-        //        };
-
-        //        return getbyIdProduct;
-        //    }
-        //}
-
+     
         public async Task<ResponseViewModel> getAllProduct()
         {
             var procedureName = Constant.spGetAllProduct;
@@ -170,6 +147,8 @@ namespace Repository
             parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);
             parameters.Add("@description", addProduct.description, DbType.String);
             parameters.Add("@createdBy", addProduct.createdBy, DbType.Guid);
+            parameters.Add("@ConcernId", addProduct.ConcernId, DbType.Guid);
+            parameters.Add("@IngredientId", addProduct.IngredientId, DbType.Guid);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -215,6 +194,8 @@ namespace Repository
             parameters.Add("@description", updateProduct.description, DbType.String);
             parameters.Add("@active", updateProduct.active ? 1 : 0, DbType.Boolean);
             parameters.Add("@updatedBy", updateProduct.updatedBy, DbType.Guid);
+            parameters.Add("@ConcernId", updateProduct.ConcernId, DbType.Guid);
+            parameters.Add("@IngredientId", updateProduct.IngredientId, DbType.Guid);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -464,6 +445,24 @@ namespace Repository
                     result.statusCode = (int)HttpStatusCode.ExpectationFailed;
                 }
                 return result;
+            }
+        }
+
+        public async Task<ResponseViewModel> getByIdImage(Guid productId)
+        {
+            var procedureName = Constant.spGetAllImageById;
+            using (var connection = _dapperContext.createConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@productId", productId, DbType.Guid);
+                var result = await connection.QueryAsync<ProductbyIdImage>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var getAllProductForUser = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return getAllProductForUser;
             }
         }
     }

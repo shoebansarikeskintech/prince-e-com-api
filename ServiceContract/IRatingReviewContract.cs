@@ -11,5 +11,6 @@ namespace ServiceContract
     {
         public Task<ResponseViewModel> getAllRatingReview(Guid productId);
         public Task<ResponseViewModel> addRatingReview(RatingReviewViewModel addRatingReview);
+        public Task<ResponseViewModel> updateRatinReview(UpdateReviewRatingViewModel updateRatingReview);
     }
 }

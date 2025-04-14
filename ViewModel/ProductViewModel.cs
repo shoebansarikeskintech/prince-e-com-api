@@ -38,6 +38,11 @@ namespace ViewModel
         public string? description { get; set; }
         [Required]
         public Guid createdBy { get; set; }
+
+        [Required]
+        public Guid ConcernId { get; set; }
+        [Required]
+        public Guid IngredientId { get; set; }
     }
     public class UpdateProductViewModel
     {
@@ -72,6 +77,10 @@ namespace ViewModel
         public bool active { get; set; }
         [Required]
         public Guid updatedBy { get; set; }
+        [Required]
+        public Guid ConcernId { get; set; }
+        [Required]
+        public Guid IngredientId { get; set; }
     }
     public class DeleteProductViewModel
     {

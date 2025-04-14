@@ -265,6 +265,42 @@ namespace Repository
                 return getAllAppRole;
             }
         }
+        //    public async Task<ResponseViewModel> getAdminDashboardDetails(string username)
+        //    {
+        //        var procedureDashboard = Constant.spGetAdminDashboardDetails;
+        //        var procedureTodayOrder = Constant.spGetTodayOrderList;
+
+        //        var parameters = new DynamicParameters();
+        //        parameters.Add("@username", username, DbType.String);
+
+        //        using (var connection = _dapperContext.createConnection())
+        //        {
+        //            var resultDashboard = await connection.QueryAsync<AdminDashboard>(procedureDashboard, parameters, commandType: CommandType.StoredProcedure);
+        //            var resultTodayOrder = await connection.QueryAsync<TodayOrderList>(procedureTodayOrder, parameters, commandType: CommandType.StoredProcedure);
+
+        //            var responseDashboard = resultDashboard.FirstOrDefault();
+        //            var responseTodayOrder = resultTodayOrder.ToList();
+
+        //            var responseData = new
+        //            {
+        //                pendingOrder = responseDashboard.pendingOrder,
+        //                todayOrder = responseDashboard.todayOrder,
+        //                totalOrder = responseDashboard.totalOrder,
+        //                returnOrder = responseDashboard.returnOrder,
+        //                todayOrderList = resultTodayOrder
+        //            };
+
+        //            var response = new ResponseViewModel
+        //            {
+        //                statusCode = resultDashboard.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+        //                message = resultDashboard.Count() == 0 ? "Data Not Found" : "Get Admin Dashboard Details.",
+        //                data = responseData
+        //            };
+
+        //            return response;
+        //        }
+        //    }
+        //}
         public async Task<ResponseViewModel> getAdminDashboardDetails(string username)
         {
             var procedureDashboard = Constant.spGetAdminDashboardDetails;
@@ -273,33 +309,66 @@ namespace Repository
             var parameters = new DynamicParameters();
             parameters.Add("@username", username, DbType.String);
 
-            using (var connection = _dapperContext.createConnection())
+            try
             {
-                var resultDashboard = await connection.QueryAsync<AdminDashboard>(procedureDashboard, parameters, commandType: CommandType.StoredProcedure);
-                var resultTodayOrder = await connection.QueryAsync<TodayOrderList>(procedureTodayOrder, parameters, commandType: CommandType.StoredProcedure);
-
-                var responseDashboard = resultDashboard.FirstOrDefault();
-                var responseTodayOrder = resultTodayOrder.ToList();
-
-                var responseData = new
+                using (var connection = _dapperContext.createConnection())
                 {
-                    pendingOrder = responseDashboard.pendingOrder,
-                    todayOrder = responseDashboard.todayOrder,
-                    totalOrder = responseDashboard.totalOrder,
-                    returnOrder = responseDashboard.returnOrder,
-                    todayOrderList = resultTodayOrder
-                };
+                    var resultDashboard = await connection.QueryAsync<AdminDashboardToday>(procedureDashboard, parameters, commandType: CommandType.StoredProcedure);
+                    var resultTodayOrder = await connection.QueryAsync<TodayOrderList>(procedureTodayOrder, parameters, commandType: CommandType.StoredProcedure);
 
-                var response = new ResponseViewModel
+                    var responseDashboard = resultDashboard.FirstOrDefault();
+
+                    // Check if dashboard is null or contains error status
+                    if (responseDashboard == null)
+                    {
+                        return new ResponseViewModel
+                        {
+                            statusCode = (int)HttpStatusCode.NotFound,
+                            message = "Data Not Found",
+                            data = null
+                        };
+                    }
+
+                    if (responseDashboard.StatusCode == -1 || responseDashboard.StatusCode == -2)
+                    {
+                        return new ResponseViewModel
+                        {
+                            statusCode = (int)HttpStatusCode.Unauthorized,
+                            message = responseDashboard.Message ?? "Unauthorized access or error occurred.",
+                            data = null
+                        };
+                    }
+
+                    var responseTodayOrder = resultTodayOrder.ToList();
+
+                    var responseData = new
+                    {
+                        pendingOrder = responseDashboard.PendingOrder,
+                        todayOrder = responseDashboard.TodayOrder,
+                        totalOrder = responseDashboard.TotalOrder,
+                        returnOrder = responseDashboard.ReturnOrder,
+                        todayOrderList = responseTodayOrder
+                    };
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = (int)HttpStatusCode.OK,
+                        message = "Get Admin Dashboard Details.",
+                        data = responseData
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
                 {
-                    statusCode = resultDashboard.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-                    message = resultDashboard.Count() == 0 ? "Data Not Found" : "Get Admin Dashboard Details.",
-                    data = responseData
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "An error occurred while fetching admin dashboard details.",
+                    data = ex.Message  // optionally return error for debugging
                 };
-
-                return response;
             }
         }
+
     }
 }
 

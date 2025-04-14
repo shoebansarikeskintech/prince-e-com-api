@@ -25,7 +25,7 @@ namespace Model
         public record AdminUserDetails(Guid adminUserId, Guid appRoleId, string username, string firstName, string middleName,
             string lastName, string email, string phoneNumber);
         public record AdminDashboard(int pendingOrder, int todayOrder, int totalOrder, int returnOrder);
-        public record TodayOrderList(Guid orderId, Guid userId, Guid productId, Guid addressId, Guid paymentId, DateTime shippedDate, decimal price,
+        public record TodayOrderList(Guid orderId, Guid userId, Guid addressId, Guid paymentId, DateTime shippedDate, decimal price,
             decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount,
             string paymentMethod, string transactionId, string trackingNo, string note, string status, DateTime createdDate);
 
@@ -35,7 +35,19 @@ namespace Model
             Int64 id, Guid categoryId, string categoryName, Guid subCategoryId, string name, DateTime createdDate, string status, bool active);
         public record SubCategoryType(
             Int64 id, Guid categoryId, string categorName, Guid subCategoryId, string subCategoryName, Guid subCategoryTypeId, string name, DateTime createdDate, string status, bool active);
+      
+        public class AdminDashboardToday
+        {
+            public int PendingOrder { get; set; }
+            public int TodayOrder { get; set; }
+            public int TotalOrder { get; set; }
+            public int ReturnOrder { get; set; }
 
+            public int StatusCode { get; set; }  // For error/unauthorized case
+            public string Message { get; set; }
+
+            public AdminDashboardToday() { }
+        }
 
         public record SubCategoryTypeForUser(
             Int64 id, Guid categoryId, string categorName, Guid subCategoryId, string subCategoryName,
@@ -57,7 +69,7 @@ namespace Model
             Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid brandId, string brandName,
             Guid colorId, string colorName, string colorCode, Guid sizeId, string sizeName, string sizeCode, string productName,
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-            DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl);
+            DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl,string concernName,string ingredientName,Guid ConcernId,Guid IngredientId);
 
         public class Productdetaisl
         {
@@ -91,16 +103,29 @@ namespace Model
             public DateTime UpdatedDate { get; set; }
             public string? Status { get; set; }
             public bool Active { get; set; }
+            public string? concernName { get; set; }
+            public string? ingredientName { get; set; }
+            public Guid ConcernId { get; set; }
+            public Guid IngredientId { get; set; }
             public string? ImageUrl { get; set; }
             public List<string> ImageUrls { get; set; }
+
+           
         }
 
+        public class ProductbyIdImage
+        {
+            public string name { get; set; }
+            public string imageUrl { get; set; }
+
+            public ProductbyIdImage() { } // 👈 parameterless constructor required for Dapper
+        }
 
         public record ProductDetails(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
             Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid brandId, string brandName,
             Guid colorId, string colorName, string colorCode, Guid sizeId, string sizeName, string sizeCode, string productName,
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-            DateTime createdDate, DateTime updatedDate, String status, bool active, string image);
+            DateTime createdDate, DateTime updatedDate, String status, bool active, string image,string concernName, string ingredientName);
         public record ProductImage(Int64 id, Guid productImageId, Guid productId, string title, string imageUrl, DateTime createdDate);
         public record Discount(Int64 id, Guid discountId, Guid productId, string code, string discountType, Decimal discount,
             Decimal productAmount, DateTime validDate, DateTime expireDate, DateTime createdDate, string Status);

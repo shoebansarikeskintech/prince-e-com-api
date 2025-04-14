@@ -30,6 +30,7 @@ namespace PrinceEcom.Controllers
             return Ok(add);
         }
 
+
         [HttpGet("getAllRatingReview")]
         public async Task<IActionResult> getAllRatingReview(Guid productId)
         {
@@ -42,6 +43,14 @@ namespace PrinceEcom.Controllers
             return Ok(getAllOrder);
         }
 
+        [HttpPost("updateRatinReview")]
+        [Authorize]
+        public async Task<IActionResult> updateRatinReview(UpdateReviewRatingViewModel uodateRatingReview)
+        {
+            _logger.logInfo($"{LoggingEvents.addItem} UpdateRatingReview");
+            var add = await _serviceManager.ratingReviewContract.updateRatinReview(uodateRatingReview);
+            return Ok(add);
 
+        }
     }
 }

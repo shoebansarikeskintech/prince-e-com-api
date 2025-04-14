@@ -90,5 +90,11 @@ namespace Service
             var delete = await _repositoryManager.productRepository.deleteProductImage(deleteProductImage);
             return delete;
         }
+
+        public async Task<ResponseViewModel> getByIdImage(Guid productId)
+        {
+            var getByIdImage = await _repositoryManager.productRepository.getByIdImage(productId);
+            return getByIdImage;
+        }
     }
 }

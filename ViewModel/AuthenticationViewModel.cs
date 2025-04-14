@@ -56,5 +56,9 @@ namespace ViewModel
         public string? password { get; set; }
         [Required]
         public string? phoneNumber { get; set; }
+        public string? Age { get; set; }
+        public string? Gender { get; set; }
+        public string? Skintype { get; set; }
+        public string? IsSkinSensitve { get; set; }
     }
 }

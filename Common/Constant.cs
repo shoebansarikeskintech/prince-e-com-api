@@ -101,6 +101,7 @@ namespace Common
         public static string spAddProduct = "SpAddProduct";
         public static string spUpdateProduct = "SpUpdateProduct";
         public static string spDeleteProduct = "SpDeleteProduct";
+        public static string spGetAllImageById = "SpGetAllImageById";
 
         public static string spGetByIdProductImage = "SpGetByIdProductImage";
         public static string spGetAllProductImage = "SpGetAllProductImage";
@@ -205,5 +206,6 @@ namespace Common
 
         public static string spAddRatingReview = "SpAddRatingReview";
         public static string spGetRatingReview = "SpGetRatingReview";
+        public static string spUpdateRatingReview = "SpUpdateRatingReview";
     }
 }

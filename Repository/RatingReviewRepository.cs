@@ -40,8 +40,6 @@ namespace Repository
             }
         }
 
-        [HttpPost("addRatingReview")]
-        [Authorize]
         public async Task<ResponseViewModel> addRatingReview(RatingReviewViewModel RatingReviewModelViewModel)
         {
             var procedureName = Constant.spAddRatingReview;
@@ -64,7 +62,7 @@ namespace Repository
                 {
                     result.statusCode = (int)HttpStatusCode.OK;
                     result.message = result.message;
-                    result.data= result;
+                    result.data = result;
                 }
                 else if (result.statusCode == 0)
                 {
@@ -79,5 +77,41 @@ namespace Repository
                 return result;
             }
         }
+
+        public async Task<ResponseViewModel> updateRatinReview(UpdateReviewRatingViewModel updateRatingReview)
+        {
+            var procedureName = Constant.spUpdateRatingReview;
+            var parameters = new DynamicParameters();
+            parameters.Add("@ratingReviewId", updateRatingReview.ratingReviewId, DbType.Guid);
+            parameters.Add("productId", updateRatingReview.productId, DbType.Guid);
+            parameters.Add("@userId", updateRatingReview.userId, DbType.Guid);
+            parameters.Add("@rating", updateRatingReview.rating, DbType.Int64);
+            parameters.Add("@title", updateRatingReview.title, DbType.String);
+            parameters.Add("@description", updateRatingReview.description, DbType.String);
+            parameters.Add("@like", updateRatingReview.like, DbType.Int64);
+            parameters.Add("@dislike", updateRatingReview.like, DbType.Int64);
+            parameters.Add("@updatedBy", updateRatingReview.updatedBy, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
+
     }
 }

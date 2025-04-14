@@ -163,5 +163,19 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.productContract.deleteProductImage(deleteProductImage);
             return Ok(delete);
         }
+
+        [HttpGet("getByIdImage")]
+        [Authorize]
+        public async Task<IActionResult> getByIdImage(Guid productId)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getByIdImage");
+            var getByIdImage = await _serviceManager.productContract.getByIdImage(productId);
+            if (getByIdImage.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Image Found");
+            }
+            return Ok(getByIdImage);
+        }
+
     }
 }

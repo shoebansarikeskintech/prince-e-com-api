@@ -26,5 +26,11 @@ namespace Service
             var add = await _repositoryManager.ratingReviewRepository.addRatingReview(addRatingReviewViewMethod);
             return add;
         }
+
+        public async Task<ResponseViewModel> updateRatinReview(UpdateReviewRatingViewModel updateRatingReviewMethod)
+        {
+            var update = await _repositoryManager.ratingReviewRepository.updateRatinReview(updateRatingReviewMethod);
+             return update;
+        }
     }
 }

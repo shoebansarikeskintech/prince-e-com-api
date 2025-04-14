@@ -10,7 +10,7 @@ namespace PrinceEcom.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   
     public class BrandController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -21,6 +21,7 @@ namespace PrinceEcom.Controllers
             _logger = logger;
         }
         [HttpGet("getByIdBrand/{brandId}")]
+        [Authorize]
         public async Task<IActionResult> getByIdBrand(Guid brandId)
         {
             _logger.logInfo($" {LoggingEvents.getByIdItem} getByIdBrand brandId ${brandId}");
@@ -44,7 +45,7 @@ namespace PrinceEcom.Controllers
             return Ok(getAllBrand);
         }
 
-        [HttpGet("getAllBrandForUser")]
+        [HttpGet("getAllBrandForUser")]       
         public async Task<IActionResult> getAllBrandForUser()
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllBrandForUser");
@@ -57,6 +58,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("addBrand")]
+        [Authorize]
         public async Task<IActionResult> addBrand(AddBrandViewModel addBrand)
         {
             _logger.logInfo($" {LoggingEvents.addItem} addBrand");
@@ -65,6 +67,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("updateBrand")]
+        [Authorize]
         public async Task<IActionResult> updateBrand(UpdateBrandViewModel updateBrand)
         {
             _logger.logInfo($" {LoggingEvents.updateItem} updateBrand");
@@ -73,6 +76,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("deleteBrand")]
+        [Authorize]
         public async Task<IActionResult> deleteBrand(DeleteBrandViewModel deleteBrand)
         {
             _logger.logInfo($" {LoggingEvents.deleteItem} deleteBrand");

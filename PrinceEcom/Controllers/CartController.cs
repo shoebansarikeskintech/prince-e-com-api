@@ -10,7 +10,6 @@ namespace PrinceEcom.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class CartController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -21,6 +20,7 @@ namespace PrinceEcom.Controllers
             _logger = logger;
         }
         [HttpGet("getCartItemCount/{userId}")]
+      
         public async Task<IActionResult> getCartItemCount(Guid userId)
         {
             _logger.logInfo($" {LoggingEvents.getByIdItem} getCartItemCount userId ${userId}");
@@ -44,36 +44,6 @@ namespace PrinceEcom.Controllers
             return Ok(getCartList);
         }
 
-
-        //[HttpPost("addProductInCart")]
-        //public async Task<IActionResult> addProductInCart(AddProductInCartViewModel addProductInCartView)
-        //{
-        //    _logger.logInfo($" {LoggingEvents.addItem} addProductInCart");
-        //    var addedProduct = await _serviceManager.cartContract.addProductInCart(addProductInCartView);
-        //    if (addedProduct != null)
-        //    {
-        //        var userId = addProductInCartView.userId; 
-        //        var updatedCartList = await _serviceManager.cartContract.getCartList(userId);              
-        //        var response = new ResponseViewModel
-        //        {
-        //            statusCode = (int)HttpStatusCode.OK,
-        //            message = "Product added to cart.",
-        //            data = updatedCartList.data 
-        //        };
-
-        //        return Ok(response);
-        //    }
-        //    else
-        //    {              
-        //        var response = new ResponseViewModel
-        //        {
-        //            statusCode = (int)HttpStatusCode.InternalServerError,
-        //            message = "Failed to add product to cart.",
-        //            data = null
-        //        };
-        //        return Ok(addedProduct);
-        //    }
-        //}
 
         [HttpPost("addProductInCart")]
         public async Task<IActionResult> addProductInCart(AddProductInCartViewModel addProductInCartView)
@@ -121,15 +91,6 @@ namespace PrinceEcom.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, response);
             }
         }
-
-
-        //[HttpPost("addProductInCart")]
-        //public async Task<IActionResult> addProductInCart(AddProductInCartViewModel addProductInCartView)
-        //{
-        //    _logger.logInfo($" {LoggingEvents.addItem} addProductInCart");
-        //    var add = await _serviceManager.cartContract.addProductInCart(addProductInCartView);
-        //    return Ok(add);
-        //}
 
         [HttpPost("updateQuantityInCart")]
         public async Task<IActionResult> updateQuantityInCart(UpdateQuantityInCartViewModel updateQuantityInCart)

@@ -10,7 +10,7 @@ namespace PrinceEcom.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   
     public class SizeController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -21,6 +21,7 @@ namespace PrinceEcom.Controllers
             _logger = logger;
         }
         [HttpGet("getByIdSize/{sizeId}")]
+        [Authorize]
         public async Task<IActionResult> getByIdSize(Guid sizeId)
         {
             _logger.logInfo($" {LoggingEvents.getByIdItem} getByIdSize sizeId ${sizeId}");
@@ -33,6 +34,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpGet("getAllSize")]
+        [Authorize]
         public async Task<IActionResult> getAllSize()
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllSize");
@@ -57,6 +59,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("addSize")]
+        [Authorize]
         public async Task<IActionResult> addSize(AddSizeViewModel addSize)
         {
             _logger.logInfo($" {LoggingEvents.addItem} addSize");
@@ -65,6 +68,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("updateSize")]
+        [Authorize]
         public async Task<IActionResult> updateSize(UpdateSizeViewModel updateSize)
         {
             _logger.logInfo($" {LoggingEvents.updateItem} updateSize");
@@ -73,6 +77,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("deleteSize")]
+        [Authorize]
         public async Task<IActionResult> deleteSize(DeleteSizeViewModel deleteSize)
         {
             _logger.logInfo($" {LoggingEvents.deleteItem} deleteSize");
