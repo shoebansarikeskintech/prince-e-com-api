@@ -146,7 +146,6 @@ namespace Repository
 
 
             parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String); // Assuming it's a string, not Guid
-
             try
             {
                 using (var connection = _dapperContext.createConnection())
@@ -159,13 +158,17 @@ namespace Repository
                         if (result.statusCode == 1)
                         {
                             result.statusCode = (int)HttpStatusCode.OK;
-                            result.message = "Order Place Successfully";
+                            result.message = "Order placed successfully.";
                             result.data = new OrderResponseData
                             {
                                 orderNo = addOrderDetails.orderNo
                             };
                         }
-
+                        else if (result.statusCode == -1)
+                        {
+                            result.statusCode = (int)HttpStatusCode.BadRequest;
+                            result.message = "This product is not available in sufficient stock.";
+                        }
                         else if (result.statusCode == 0)
                         {
                             result.statusCode = (int)HttpStatusCode.ExpectationFailed;
@@ -187,7 +190,7 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                // Log the exception details (use a logging framework or console)
+                // Log the exception details
                 Console.Error.WriteLine($"Error in addOrderWithDetails: {ex.Message}");
 
                 // Return a failed response with the exception message
@@ -197,6 +200,57 @@ namespace Repository
                     message = "No response from the server while placing the order."
                 };
             }
+
+            //try
+            //{
+            //    using (var connection = _dapperContext.createConnection())
+            //    {
+            //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+            //            procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+            //        if (result != null)
+            //        {
+            //            if (result.statusCode == 1)
+            //            {
+            //                result.statusCode = (int)HttpStatusCode.OK;
+            //                result.message = "Order Place Successfully";
+            //                result.data = new OrderResponseData
+            //                {
+            //                    orderNo = addOrderDetails.orderNo
+            //                };
+            //            }
+
+            //            else if (result.statusCode == 0)
+            //            {
+            //                result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+            //                result.message = "Failed to place the order.";
+            //            }
+            //            else
+            //            {
+            //                result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+            //                result.message = "An unexpected error occurred while placing the order.";
+            //            }
+
+            //            return result;
+            //        }
+            //        else
+            //        {
+            //            throw new Exception("No response from the server while placing the order.");
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Log the exception details (use a logging framework or console)
+            //    Console.Error.WriteLine($"Error in addOrderWithDetails: {ex.Message}");
+
+            //    // Return a failed response with the exception message
+            //    return new ResponseViewModel
+            //    {
+            //        statusCode = (int)HttpStatusCode.InternalServerError,
+            //        message = "No response from the server while placing the order."
+            //    };
+            //}
         }
 
         public class OrderResponseData
@@ -220,11 +274,11 @@ namespace Repository
                 return GetAllOrderByOrderId;
             }
         }
-        public async Task<ResponseViewModel> getAllOrderByName(String userName)
+        public async Task<ResponseViewModel> getAllOrderByNameorEmail(String userNameorEmail)
         {
             var procedureName = Constant.spGetAllOrderByUserName;
             var parameters = new DynamicParameters();
-            parameters.Add("@userName", userName, DbType.String);
+            parameters.Add("@search", userNameorEmail, DbType.String);            
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryAsync<OrderDetailsByName>(procedureName, parameters, commandType: CommandType.StoredProcedure);
@@ -237,5 +291,11 @@ namespace Repository
                 return GetAllOrderByName;
             }
         }
+        public class GetOrderRequestModel
+        {
+            public string? UserName { get; set; }
+            public string? Email { get; set; } // nullable string
+        }
+
     }
 }

@@ -53,6 +53,19 @@ namespace Service
             return await _repositoryManager.adminAuthenticationRepository.getAdminDashboardDetails(username);
         }
 
-        
+        public async Task<ResponseViewModel> getAllAdminList()
+        {
+            return await _repositoryManager.adminAuthenticationRepository.getAllAdminList();
+        }
+
+        public async Task<ResponseViewModel> updateAdminStatusActivate(string userId)
+        {
+            return await _repositoryManager.adminAuthenticationRepository.updateAdminStatusActivate(userId);
+        }
+
+        public async Task<ResponseViewModel> updateAdminStatusDeActivate(string userId)
+        {
+            return await _repositoryManager.adminAuthenticationRepository.updateAdminStatusDeActivate(userId);
+        }
     }
 }

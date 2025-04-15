@@ -13,7 +13,8 @@ namespace RepositoryContract
         public Task<ResponseViewModel> getAllCancelOrder(Guid adminUserId);
         public Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel AddOrderWithDetails);
         public Task<ResponseViewModel> getAllOrderByOrderId(Guid orderId);
-        public Task<ResponseViewModel> getAllOrderByName(String userName);
+        public Task<ResponseViewModel> getAllOrderByNameorEmail(String userNameorEmail);
+
 
     }
 }

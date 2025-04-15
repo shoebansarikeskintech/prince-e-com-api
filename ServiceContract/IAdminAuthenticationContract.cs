@@ -11,5 +11,9 @@ namespace ServiceContract
         public Task<ResponseViewModel> adminForgotPassword(AdminForgotPasswordViewModel adminUpdatePassword);
         public Task<ResponseViewModel> getAdminUserDetails(AdminUserGuidViewModel adminUserGuid, string username);
         public Task<ResponseViewModel> getAdminDashboardDetails(string username);
+        public Task<ResponseViewModel> getAllAdminList();
+
+        public Task<ResponseViewModel> updateAdminStatusActivate(string userId);
+        public Task<ResponseViewModel> updateAdminStatusDeActivate(string userId);
     }
 }

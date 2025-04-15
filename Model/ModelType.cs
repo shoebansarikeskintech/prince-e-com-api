@@ -24,6 +24,9 @@ namespace Model
 
         public record AdminUserDetails(Guid adminUserId, Guid appRoleId, string username, string firstName, string middleName,
             string lastName, string email, string phoneNumber);
+
+        public record AdminAllUserDetails(Guid adminUserId, Guid appRoleId, string username, string firstName, string middleName,
+        string lastName,string password, string email, string phoneNumber, DateTime createdDate,Guid createdBy, DateTime updatedDate,Guid updatedBy, bool active, int otp,string activeStatus);
         public record AdminDashboard(int pendingOrder, int todayOrder, int totalOrder, int returnOrder);
         public record TodayOrderList(Guid orderId, Guid userId, Guid addressId, Guid paymentId, DateTime shippedDate, decimal price,
             decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount,

@@ -14,11 +14,14 @@ namespace Common
         public static string spAdminSendOtp = "SpAdminSendOtp";
         public static string spAdminVerifyOtp = "SpAdminVerifyOtp";
         public static string spAdminUpdatePassword = "SpdminUpdatePassword";
+        public static string spUpdateAdminStatusActivate = "spUpdateAdminStatusActivate";
+        public static string spUpdateAdminStatusDeActivate = "spUpdateAdminStatusDeActivate";
 
         public static string spAddAdminUser = "SpAddAdminUser";
         public static string spGetAdminDetails = "SpGetAdminDetails";
         public static string spGetAdminDashboardDetails = "SpGetAdminDashboardDetails";
         public static string spGetTodayOrderList = "SpGetTodayOrderList";
+        public static string spGetAllAdminList = "SpGetAllAdminList";
 
         public static string spGetByIdAppRole = "SpGetByIdAppRole";
         public static string spGetAllAppRole = "SpGetAllAppRole";

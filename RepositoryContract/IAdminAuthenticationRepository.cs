@@ -16,5 +16,8 @@ namespace RepositoryContract
         public Task<ResponseViewModel> adminForgotPassword(AdminForgotPasswordViewModel adminForgotPassword);
         public Task<ResponseViewModel> getAdminUserDetails(AdminUserGuidViewModel adminUserGuid, string username);
         public Task<ResponseViewModel> getAdminDashboardDetails(string username);
+        public Task<ResponseViewModel> getAllAdminList();
+        public Task<ResponseViewModel> updateAdminStatusActivate(string userId);
+        public Task<ResponseViewModel> updateAdminStatusDeActivate(string userId);
     }
 }

@@ -151,7 +151,7 @@ namespace PrinceEcom.Controllers
             var returnData = await _serviceManager.adminAuthenticationContract.getAdminUserDetails(adminUserGuid, loginViewModel.username);
 
             var response = new
-            {               
+            {
                 returnData.statusCode,
                 returnData.message,
                 data = (returnData.data as IEnumerable<object>)?.FirstOrDefault()
@@ -168,6 +168,34 @@ namespace PrinceEcom.Controllers
 
             _logger.logInfo($" {LoggingEvents.updateItem} getAdminDashboardDetails");
             var returnData = await _serviceManager.adminAuthenticationContract.getAdminDashboardDetails(loginViewModel.username);
+            return Ok(returnData);
+        }
+
+        [HttpPost("getAllAdminList")]
+        [Authorize]
+        public async Task<IActionResult> getAllAdminList()
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} getAllAdminList");
+            var returnData = await _serviceManager.adminAuthenticationContract.getAllAdminList();
+            return Ok(returnData);
+        }
+
+        [HttpPost("adminDeActivate")]
+        [Authorize]
+        public async Task<IActionResult> AdminDeActivate(string userId)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} getAdminUserDetails");
+            var returnData = await _serviceManager.adminAuthenticationContract.updateAdminStatusDeActivate(userId);
+            return Ok(returnData);
+        }
+
+        [HttpPost("adminActivate")]
+        [Authorize]
+        public async Task<IActionResult> AdminActivate(string userId)
+        {
+
+            _logger.logInfo($" {LoggingEvents.updateItem} getAdminUserDetails");
+            var returnData = await _serviceManager.adminAuthenticationContract.updateAdminStatusActivate(userId);
             return Ok(returnData);
         }
     }

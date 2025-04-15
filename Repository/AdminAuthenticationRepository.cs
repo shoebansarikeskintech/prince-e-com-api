@@ -264,43 +264,7 @@ namespace Repository
                 };
                 return getAllAppRole;
             }
-        }
-        //    public async Task<ResponseViewModel> getAdminDashboardDetails(string username)
-        //    {
-        //        var procedureDashboard = Constant.spGetAdminDashboardDetails;
-        //        var procedureTodayOrder = Constant.spGetTodayOrderList;
-
-        //        var parameters = new DynamicParameters();
-        //        parameters.Add("@username", username, DbType.String);
-
-        //        using (var connection = _dapperContext.createConnection())
-        //        {
-        //            var resultDashboard = await connection.QueryAsync<AdminDashboard>(procedureDashboard, parameters, commandType: CommandType.StoredProcedure);
-        //            var resultTodayOrder = await connection.QueryAsync<TodayOrderList>(procedureTodayOrder, parameters, commandType: CommandType.StoredProcedure);
-
-        //            var responseDashboard = resultDashboard.FirstOrDefault();
-        //            var responseTodayOrder = resultTodayOrder.ToList();
-
-        //            var responseData = new
-        //            {
-        //                pendingOrder = responseDashboard.pendingOrder,
-        //                todayOrder = responseDashboard.todayOrder,
-        //                totalOrder = responseDashboard.totalOrder,
-        //                returnOrder = responseDashboard.returnOrder,
-        //                todayOrderList = resultTodayOrder
-        //            };
-
-        //            var response = new ResponseViewModel
-        //            {
-        //                statusCode = resultDashboard.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-        //                message = resultDashboard.Count() == 0 ? "Data Not Found" : "Get Admin Dashboard Details.",
-        //                data = responseData
-        //            };
-
-        //            return response;
-        //        }
-        //    }
-        //}
+        }     
         public async Task<ResponseViewModel> getAdminDashboardDetails(string username)
         {
             var procedureDashboard = Constant.spGetAdminDashboardDetails;
@@ -369,6 +333,80 @@ namespace Repository
             }
         }
 
+
+        public async Task<ResponseViewModel> getAllAdminList()
+        {
+            var procedureName = Constant.spGetAllAdminList;
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<AdminAllUserDetails>(procedureName, commandType: CommandType.StoredProcedure);
+
+                    var getAllAppRole = new ResponseViewModel
+                    {
+                        statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                        message = result.Count() == 0 ? "Data Not Found" : "Get Admin User Details.",
+                        data = result
+                    };
+
+                    return getAllAppRole;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Exception log karlo agar chaho toh
+                Console.Error.WriteLine($"Error in getAllAdminList: {ex.Message}");
+
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "Something went wrong while fetching admin list."
+                };
+            }
+        }
+
+
+        public async Task<ResponseViewModel> updateAdminStatusActivate(string userId)
+        {
+            var procedureName = Constant.spUpdateAdminStatusActivate;
+            var parameters = new DynamicParameters();
+            parameters.Add("@userId", userId);
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                var updateAdminStatusActivate = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "User activated successfully." : "User activated successfully.",
+                    data = result
+                };
+
+                return updateAdminStatusActivate;
+            }
+        }
+
+        public async Task<ResponseViewModel> updateAdminStatusDeActivate(string userId)
+        {
+            var procedureName = Constant.spUpdateAdminStatusDeActivate;
+            var parameters = new DynamicParameters();
+            parameters.Add("@userId", userId);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var updateAdminStatusDeActivate = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "User DeActivated Suscessfully." : "User DeActivated Suscessfully.",
+                    data = result
+                };
+                return updateAdminStatusDeActivate;
+            }
+        }
     }
 }
 

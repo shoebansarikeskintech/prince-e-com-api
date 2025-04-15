@@ -105,11 +105,11 @@ namespace PrinceEcom.Controllers
             return Ok(getAllOrder);
         }
 
-        [HttpGet("getAllOrderByName")]
-        public async Task<IActionResult> getAllOrderByName(String userName)
+        [HttpGet("getAllOrderByNameorEmail")]
+        public async Task<IActionResult> getAllOrderByNameorEmail(String userNameorEmail)
         {
-            _logger.logInfo($" {LoggingEvents.getAllItem} GetAllOrderByName");
-            var getAllOrder = await _serviceManager.orderContract.getAllOrderByName(userName);
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllOrderByNameorEmail");
+            var getAllOrder = await _serviceManager.orderContract.getAllOrderByNameorEmail(userNameorEmail);
             if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Details Found");

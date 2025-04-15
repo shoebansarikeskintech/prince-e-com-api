@@ -49,10 +49,10 @@ namespace Service
             var GetAllOrderByOrderId = await _repositoryManager.orderRepository.getAllOrderByOrderId(orderId);
             return GetAllOrderByOrderId;
         }
-        public async Task<ResponseViewModel> getAllOrderByName(String userName)
+        public async Task<ResponseViewModel> getAllOrderByNameorEmail(String userNameorEmail)
         {
-            var GetAllOrderByName = await _repositoryManager.orderRepository.getAllOrderByName(userName);
-            return GetAllOrderByName;
+            var getAllOrderByNameorEmail = await _repositoryManager.orderRepository.getAllOrderByNameorEmail(userNameorEmail);
+            return getAllOrderByNameorEmail;
         }
     }
 }

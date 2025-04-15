@@ -15,7 +15,7 @@ namespace ServiceContract
 
         public Task<ResponseViewModel> getAllOrderByOrderId(Guid orderId);
 
-        public Task<ResponseViewModel> getAllOrderByName(String userName);
+        public Task<ResponseViewModel> getAllOrderByNameorEmail(String userNameorEmail);
 
     }
 }
