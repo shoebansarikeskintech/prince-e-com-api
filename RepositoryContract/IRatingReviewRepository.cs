@@ -10,6 +10,7 @@ namespace RepositoryContract
     public interface IRatingReviewRepository
     {
         public Task<ResponseViewModel> getAllRatingReview(Guid productId);
+        public Task<ResponseViewModel> getAllRatingReviewbyId(Guid productId);
 
         public Task<ResponseViewModel> addRatingReview(RatingReviewViewModel addRatingReview);
         public Task<ResponseViewModel> updateRatinReview(UpdateReviewRatingViewModel updateRatingReview);

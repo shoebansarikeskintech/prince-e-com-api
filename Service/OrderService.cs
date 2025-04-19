@@ -11,10 +11,16 @@ namespace Service
         {
             _repositoryManager = repositoryManager;
         }
-        public async Task<ResponseViewModel> getAllOrder(Guid adminUserId)
+        public async Task<ResponseViewModel> getAllOrder(Guid userId)
         {
-            var getAllOrder = await _repositoryManager.orderRepository.getAllOrder(adminUserId);
+            var getAllOrder = await _repositoryManager.orderRepository.getAllOrder(userId);
             return getAllOrder;
+        }
+
+        public async Task<ResponseViewModel> getAllOrderlist()
+        {
+            var getAllOrderlist = await _repositoryManager.orderRepository.getAllOrderlist();
+            return getAllOrderlist;
         }
         public async Task<ResponseViewModel> getAllPendingOrder(Guid adminUserId)
         {
@@ -44,7 +50,7 @@ namespace Service
             return add;
         }
 
-        public async Task<ResponseViewModel> getAllOrderByOrderId(Guid orderId)
+        public async Task<ResponseViewModel> getAllOrderByOrderId(string orderId)
         {
             var GetAllOrderByOrderId = await _repositoryManager.orderRepository.getAllOrderByOrderId(orderId);
             return GetAllOrderByOrderId;
@@ -53,6 +59,18 @@ namespace Service
         {
             var getAllOrderByNameorEmail = await _repositoryManager.orderRepository.getAllOrderByNameorEmail(userNameorEmail);
             return getAllOrderByNameorEmail;
+        }
+
+        public async Task<ResponseViewModel> updateOrderStatus(UpdateStausViewModel aUpdateStausDetails)
+        {
+            var add = await _repositoryManager.orderRepository.updateOrderStatus(aUpdateStausDetails);
+            return add;
+        }
+
+        public async Task<ResponseViewModel> getOrderWithItems(string orderIdOrOrderNo)
+        {
+            var getOrderWithItems = await _repositoryManager.orderRepository.getOrderWithItems(orderIdOrOrderNo);
+            return getOrderWithItems;
         }
     }
 }

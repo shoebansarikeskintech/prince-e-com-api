@@ -6,6 +6,7 @@ using ViewModel;
 using static Model.ModelType;
 using Common;
 using System.Diagnostics.Metrics;
+using Microsoft.Data.SqlClient;
 
 namespace Repository
 {
@@ -109,6 +110,157 @@ namespace Repository
             var parameters = new DynamicParameters();
             parameters.Add("@shippingMethodId", deleteShippingMethod.shippingMethodId, DbType.Guid);
             parameters.Add("@updatedBy", deleteShippingMethod.updatedBy, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
+
+        public async Task<ResponseViewModel> getAllPinCodeshippingMethod()
+        {
+            var procedureName = Constant.spGetAllPinCodeshipping;
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                try
+                {
+                    var result = await connection.QueryAsync<PinCodeshippingMethod>(
+                        procedureName,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    if (result == null || !result.Any())
+                    {
+                        return new ResponseViewModel
+                        {
+                            statusCode = (int)HttpStatusCode.NotFound,
+                            message = "Data Not Found",
+                            data = null
+                        };
+                    }
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = (int)HttpStatusCode.OK,
+                        message = "Pin CodeShipping Data Found",
+                        data = result
+                    };
+                }
+                catch (SqlException sqlEx)
+                {
+                    return new ResponseViewModel
+                    {
+                        statusCode = (int)HttpStatusCode.InternalServerError,
+                        message = $"SQL Error: {sqlEx.Message}",
+                        data = null
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new ResponseViewModel
+                    {
+                        statusCode = (int)HttpStatusCode.InternalServerError,
+                        message = $"Error: {ex.Message}",
+                        data = null
+                    };
+                }
+            }
+        }
+
+
+
+        public async Task<ResponseViewModel> addPinCodeshippingMethod(AddPinCodeShippingViewModel addPinCodeshippingMethod)
+        {
+            var procedureName = Constant.spAddPinCodeshipping;
+            var parameters = new DynamicParameters();
+            parameters.Add("@pinCode", addPinCodeshippingMethod.pincode, DbType.Int64);
+            parameters.Add("@shippingMethodId", addPinCodeshippingMethod.shippingMethodId, DbType.Guid); ;
+            parameters.Add("@createdBy", addPinCodeshippingMethod.createdBy, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
+
+        public async Task<ResponseViewModel> updatePinCodeShippingMethod(UpdatePinCodeShippingViewModel updatePinCodeShippingMethod)
+        {
+            var procedureName = Constant.spUpdatePinCodeshipping;
+            var parameters = new DynamicParameters();
+            parameters.Add("@pinCodeShippingId", updatePinCodeShippingMethod.pinCodeShippingId, DbType.Guid);
+            parameters.Add("@pinCode", updatePinCodeShippingMethod.pincode, DbType.String);
+            parameters.Add("@updatedBy", updatePinCodeShippingMethod.updatedBy, DbType.Guid);
+            parameters.Add("@active", updatePinCodeShippingMethod.active ? 1 : 0, DbType.Boolean);
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    if (result != null)
+                    {
+                        result.statusCode = result.statusCode == 1 ? (int)HttpStatusCode.OK : (int)HttpStatusCode.ExpectationFailed;
+                    }
+                    else
+                    {
+                        return new ResponseViewModel
+                        {
+                            statusCode = (int)HttpStatusCode.InternalServerError,
+                            message = "No response from stored procedure"
+                        };
+                    }
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"An error occurred: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<ResponseViewModel> deletePinCodeShippingMethod(DeletePinCodeShippingViewModel deletePinCodeShippingMethod)
+        {
+            var procedureName = Constant.spDeletePinCodeshipping;
+            var parameters = new DynamicParameters();
+            parameters.Add("@pinCodeShippingId", deletePinCodeShippingMethod.pinCodeShippingId, DbType.Guid);
+            parameters.Add("@updatedBy", deletePinCodeShippingMethod.updatedBy, DbType.Guid);
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);

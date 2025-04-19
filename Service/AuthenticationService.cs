@@ -35,6 +35,9 @@ namespace Service
         {
             return await _repositoryManager.authenticationRepository.addAppUser(addAppUser); ;
         }
-
+        public async Task<ResponseViewModel> updateAppUser(UpdateAppUserViewModel updateAppUser)
+        {
+            return await _repositoryManager.authenticationRepository.updateAppUser(updateAppUser); ;
+        }
     }
 }

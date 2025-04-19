@@ -13,19 +13,51 @@ namespace Repository
         private readonly DapperContext _dapperContext;
         public OrderRepository(DapperContext dapperContext) =>
             _dapperContext = dapperContext;
-        
-        public async Task<ResponseViewModel> getAllOrder(Guid adminUserId)
+
+        public async Task<ResponseViewModel> getAllOrder(Guid userId)
         {
             var procedureName = Constant.spGetAllOrder;
             var parameters = new DynamicParameters();
-            parameters.Add("@adminUserId", adminUserId, DbType.Guid);
+            parameters.Add("@userId", userId, DbType.Guid);
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<Orderbyuserid>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error if logging system is implemented (optional)
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "An error occurred while fetching the data.",
+                    data = null,
+                    //error = ex.Message // Add 'error' field in ResponseViewModel if not already there
+                };
+            }
+        }
+
+        public async Task<ResponseViewModel> getAllOrderlist()
+        {
+            var procedureName = Constant.spGetAllOrderlist;
+            var parameters = new DynamicParameters();
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryAsync<Order>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryAsync<Order>(procedureName, commandType: CommandType.StoredProcedure);
                 var getAllOrder = new ResponseViewModel
                 {
-                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                    message = result.Any() ? "Data Found" : "Data Not Found",
                     data = result
                 };
                 return getAllOrder;
@@ -141,9 +173,10 @@ namespace Repository
             parameters.Add("@createdBy", addOrderDetails.createdBy, DbType.Guid);
             
             string orderNo = "ORD" + Guid.NewGuid().ToString("N").Substring(0, 8); // Example: ORD9fcac100
-            addOrderDetails.orderNo = orderNo;
-            parameters.Add("@orderNo", addOrderDetails.orderNo, DbType.String);
-
+            //addOrderDetails.orderNo = orderNo;
+            //parameters.Add("@orderNo", addOrderDetails.orderNo, DbType.String);
+            parameters.Add("@orderNo", orderNo, DbType.String);
+            parameters.Add("@couponId", addOrderDetails.couponId, DbType.Guid);
 
             parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String); // Assuming it's a string, not Guid
             try
@@ -161,7 +194,8 @@ namespace Repository
                             result.message = "Order placed successfully.";
                             result.data = new OrderResponseData
                             {
-                                orderNo = addOrderDetails.orderNo
+                                //orderNo = addOrderDetails.orderNo
+                                orderNo = orderNo
                             };
                         }
                         else if (result.statusCode == -1)
@@ -199,69 +233,18 @@ namespace Repository
                     statusCode = (int)HttpStatusCode.InternalServerError,
                     message = "No response from the server while placing the order."
                 };
-            }
-
-            //try
-            //{
-            //    using (var connection = _dapperContext.createConnection())
-            //    {
-            //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
-            //            procedureName, parameters, commandType: CommandType.StoredProcedure);
-
-            //        if (result != null)
-            //        {
-            //            if (result.statusCode == 1)
-            //            {
-            //                result.statusCode = (int)HttpStatusCode.OK;
-            //                result.message = "Order Place Successfully";
-            //                result.data = new OrderResponseData
-            //                {
-            //                    orderNo = addOrderDetails.orderNo
-            //                };
-            //            }
-
-            //            else if (result.statusCode == 0)
-            //            {
-            //                result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-            //                result.message = "Failed to place the order.";
-            //            }
-            //            else
-            //            {
-            //                result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-            //                result.message = "An unexpected error occurred while placing the order.";
-            //            }
-
-            //            return result;
-            //        }
-            //        else
-            //        {
-            //            throw new Exception("No response from the server while placing the order.");
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    // Log the exception details (use a logging framework or console)
-            //    Console.Error.WriteLine($"Error in addOrderWithDetails: {ex.Message}");
-
-            //    // Return a failed response with the exception message
-            //    return new ResponseViewModel
-            //    {
-            //        statusCode = (int)HttpStatusCode.InternalServerError,
-            //        message = "No response from the server while placing the order."
-            //    };
-            //}
+            }            
         }
 
         public class OrderResponseData
         {
             public string? orderNo { get; set; }
         }
-        public async Task<ResponseViewModel> getAllOrderByOrderId(Guid orderId)
+        public async Task<ResponseViewModel> getAllOrderByOrderId(string orderId)
         {
-            var procedureName = Constant.spGetAllOrderByOrderId;
+            var procedureName = Constant.spGetAllOrderByOrderIdorOrderNo;
             var parameters = new DynamicParameters();
-            parameters.Add("@orderId", orderId, DbType.Guid);
+            parameters.Add("@orderIdOrOrderNo", orderId, DbType.String);
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryAsync<OrderDetailsById>(procedureName, parameters, commandType: CommandType.StoredProcedure);
@@ -276,7 +259,7 @@ namespace Repository
         }
         public async Task<ResponseViewModel> getAllOrderByNameorEmail(String userNameorEmail)
         {
-            var procedureName = Constant.spGetAllOrderByUserName;
+            var procedureName = Constant.spGetAllOrderByUserNameorEmail;
             var parameters = new DynamicParameters();
             parameters.Add("@search", userNameorEmail, DbType.String);            
             using (var connection = _dapperContext.createConnection())
@@ -290,12 +273,79 @@ namespace Repository
                 };
                 return GetAllOrderByName;
             }
-        }
-        public class GetOrderRequestModel
+        }        
+
+        public async Task<ResponseViewModel> updateOrderStatus(UpdateStausViewModel updateStausViewModel)
         {
-            public string? UserName { get; set; }
-            public string? Email { get; set; } // nullable string
+            var procedureName = Constant.spUpdateOrderStatus;
+            var parameters = new DynamicParameters();
+            parameters.Add("@orderId", updateStausViewModel.orderId, DbType.Guid);
+            parameters.Add("@status", updateStausViewModel.status, DbType.String);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var updateOrderStatus = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Server Error pls try again" : "Update Status Succesfully",
+                    data = result
+                };
+                return updateOrderStatus;
+            }
+         }
+
+        public async Task<ResponseViewModel> getOrderWithItems(string orderIdOrOrderNo)
+        {
+            var procedureName = Constant.getOrderWithItems;
+            var parameters = new DynamicParameters();
+            parameters.Add("@orderIdOrOrderNo", orderIdOrOrderNo, DbType.String);
+
+            var response = new ResponseViewModel();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    using (var multi = await connection.QueryMultipleAsync(procedureName, parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        var order = await multi.ReadFirstOrDefaultAsync<OrderViewModel>();
+                        if (order != null)
+                        {
+                            order.items = (await multi.ReadAsync<OrderItemModel>()).ToList();
+
+                            response.statusCode = 200;
+                            response.message = "Order fetched successfully.";
+                            response.data = order;
+                        }
+                        else
+                        {
+                            response.statusCode = 404;
+                            response.message = "Order not found.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.statusCode = 500;
+                response.message = $"Server error: {ex.Message}";
+            }
+
+            return response;
         }
+
+
+        //using (var connection = _dapperContext.createConnection())
+        //{
+        //    var result = await connection.QueryAsync<Order>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //    var getAllPendngOrder = new ResponseViewModel
+        //    {
+        //        statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+        //        message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+        //        data = result
+        //    };
+        //    return getAllPendngOrder;
+        //}
 
     }
 }

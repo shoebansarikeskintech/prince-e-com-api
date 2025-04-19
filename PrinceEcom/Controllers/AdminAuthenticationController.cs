@@ -161,13 +161,17 @@ namespace PrinceEcom.Controllers
 
         [HttpPost("getAdminDashboardDetails")]
         [Authorize]
-        public async Task<IActionResult> getAdminDashboardDetails()
+        public async Task<IActionResult> getAdminDashboardDetails(string username)
         {
-            var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            AdminTokenDetailsViewModel loginViewModel = extractToken.ExtractAdminUserDetailsFromToken(token);
+            //var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            //AdminTokenDetailsViewModel loginViewModel = extractToken.ExtractAdminUserDetailsFromToken(token);
+
+            //_logger.logInfo($" {LoggingEvents.updateItem} getAdminDashboardDetails");
+            //var returnData = await _serviceManager.adminAuthenticationContract.getAdminDashboardDetails(loginViewModel.username);
+
 
             _logger.logInfo($" {LoggingEvents.updateItem} getAdminDashboardDetails");
-            var returnData = await _serviceManager.adminAuthenticationContract.getAdminDashboardDetails(loginViewModel.username);
+            var returnData = await _serviceManager.adminAuthenticationContract.getAdminDashboardDetails(username);
             return Ok(returnData);
         }
 
@@ -182,20 +186,20 @@ namespace PrinceEcom.Controllers
 
         [HttpPost("adminDeActivate")]
         [Authorize]
-        public async Task<IActionResult> AdminDeActivate(string userId)
+        public async Task<IActionResult> adminDeActivate(string adminuserId)
         {
             _logger.logInfo($" {LoggingEvents.updateItem} getAdminUserDetails");
-            var returnData = await _serviceManager.adminAuthenticationContract.updateAdminStatusDeActivate(userId);
+            var returnData = await _serviceManager.adminAuthenticationContract.updateAdminStatusDeActivate(adminuserId);
             return Ok(returnData);
         }
 
         [HttpPost("adminActivate")]
         [Authorize]
-        public async Task<IActionResult> AdminActivate(string userId)
+        public async Task<IActionResult> adminActivate(string adminuserId)
         {
 
             _logger.logInfo($" {LoggingEvents.updateItem} getAdminUserDetails");
-            var returnData = await _serviceManager.adminAuthenticationContract.updateAdminStatusActivate(userId);
+            var returnData = await _serviceManager.adminAuthenticationContract.updateAdminStatusActivate(adminuserId);
             return Ok(returnData);
         }
     }

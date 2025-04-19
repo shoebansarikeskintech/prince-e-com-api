@@ -39,7 +39,52 @@ namespace Repository
                 return getAllOrder;
             }
         }
+        public async Task<ResponseViewModel> getAllRatingReviewbyId(Guid productId)
+        {
+            var response = new ResponseViewModel();
+            try
+            {
+                var procedureName = Constant.sp_GetRatingPercentage;
+                var parameters = new DynamicParameters();
+                parameters.Add("@productId", productId, DbType.Guid);
 
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<RatingRiviewStar>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    response.statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound;
+                    response.message = result.Any() ? "Data Found" : "Data Not Found";
+                    response.data = result;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log exception here if needed (e.g., using Serilog, NLog, etc.)
+                response.statusCode = (int)HttpStatusCode.InternalServerError;
+                response.message = "Something went wrong: " + ex.Message;
+                response.data = null;
+            }
+
+            return response;
+        }
+
+        //public async Task<ResponseViewModel> getAllRatingReviewbyId(Guid productId)
+        //{
+        //    var procedureName = Constant.sp_GetRatingPercentage;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@productId", productId, DbType.Guid);
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryAsync<RatingRiviewStar>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        var getAllRatingReviewbyId = new ResponseViewModel
+        //        {
+        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+        //            message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+        //            data = result
+        //        };
+        //        return getAllRatingReviewbyId;
+        //    }
+        //}
         public async Task<ResponseViewModel> addRatingReview(RatingReviewViewModel RatingReviewModelViewModel)
         {
             var procedureName = Constant.spAddRatingReview;

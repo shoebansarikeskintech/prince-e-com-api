@@ -10,7 +10,7 @@ namespace PrinceEcom.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   
     public class NotificationController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -57,6 +57,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("addNotification")]
+        [Authorize]
         public async Task<IActionResult> addNotification(AddNotificationViewModel addNotification)
         {
             _logger.logInfo($" {LoggingEvents.addItem} addNotification");
@@ -65,6 +66,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("updateNotification")]
+        [Authorize]
         public async Task<IActionResult> updateNotification(UpdateNotificationViewModel updateNotification)
         {
             _logger.logInfo($" {LoggingEvents.updateItem} updateNotification");
@@ -73,6 +75,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("deleteNotification")]
+        [Authorize]
         public async Task<IActionResult> deleteNotification(DeleteNotificationViewModel deleteNotification)
         {
             _logger.logInfo($" {LoggingEvents.deleteItem} deleteNotification");

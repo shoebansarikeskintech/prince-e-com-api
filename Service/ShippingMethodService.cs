@@ -35,5 +35,28 @@ namespace Service
             var delete = await _repositoryManager.shippingMethodRepository.deleteShippingMethod(deleteShippingMethod);
             return delete;
         }
+        public async Task<ResponseViewModel> getAllPinCodeShippingMethod()
+        {
+            var getAllPinCodeshipping = await _repositoryManager.shippingMethodRepository.getAllPinCodeshippingMethod();
+            return getAllPinCodeshipping;
+        }
+
+        public async Task<ResponseViewModel> addPinCodeShippingMethod(AddPinCodeShippingViewModel addPinCodeshippingMethod)
+        {
+            var add = await _repositoryManager.shippingMethodRepository.addPinCodeshippingMethod(addPinCodeshippingMethod);
+            return add;
+        }
+
+        public async Task<ResponseViewModel> updatePinCodeShippingMethod(UpdatePinCodeShippingViewModel updatePinCodeshippingMethod)
+        {
+            var update = await _repositoryManager.shippingMethodRepository.updatePinCodeShippingMethod(updatePinCodeshippingMethod);
+            return update;
+        }
+
+        public async Task<ResponseViewModel> deletePinCodeShippingMethod(DeletePinCodeShippingViewModel deletePinCodeShippingMethod)
+        {
+            var delete = await _repositoryManager.shippingMethodRepository.deletePinCodeShippingMethod(deletePinCodeShippingMethod);
+            return delete;
+        }
     }
 }

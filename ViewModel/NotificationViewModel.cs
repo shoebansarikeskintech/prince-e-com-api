@@ -8,9 +8,8 @@ namespace ViewModel
         [Required]
         public string? title { get; set; }
         [Required]
-        public string? descrption { get; set; }
-        [Required]
-        public string? status { get; set; }
+        public string? description { get; set; }
+
         [Required]
         public Guid createdBy { get; set; }
     }
@@ -28,10 +27,11 @@ namespace ViewModel
         [Required]
         public string? title { get; set; }
         [Required]
-        public string? descrption { get; set; }
-        [Required]
-        public string? status { get; set; }
+        public string? description { get; set; }
+
+    
         [Required]
         public Guid updatedBy { get; set; }
+        public bool active { get; set; }
     }
 }

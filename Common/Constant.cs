@@ -9,6 +9,7 @@ namespace Common
         public static string spVerifyOtp = "SpVerifyOtp";
         public static string spUpdatePassword = "SpUpdatePassword";
         public static string spAddAppUser = "SpAddAppUser";
+        public static string SpUpdateAppuser = "spUpdateAppuser";
    
         public static string spAdminUserLogin = "SpAdminUserLogin";
         public static string spAdminSendOtp = "SpAdminSendOtp";
@@ -119,6 +120,12 @@ namespace Common
         public static string spUpdateDiscount = "SpUpdateDiscount";
         public static string spDeleteDiscount = "SpDeleteDiscount";
 
+        public static string spGetAllCouponbyId = "SpGetAllCouponbyId";
+        public static string spGetAllCoupon = "SpGetAllCoupon";
+        public static string spAddCoupon = "SpAddCoupon";
+        public static string updateCoupon = "SpUpdateCoupon";
+        public static string spDeleteCoupon = "SpDeleteCoupon";
+
         public static string spGetByIdGiftCard = "SpGetByIdGiftCard";
         public static string spGetAllGiftCard = "SpGetAllGiftCard";
         public static string spAddGiftCard = "SpAddGiftCard";
@@ -133,13 +140,16 @@ namespace Common
         public static string spDeleteNotification = "SpDeleteNotification";
 
         public static string spGetAllOrder = "SpGetAllOrderList";
+        public static string spGetAllOrderlist = "SpGetAllOrder";
         public static string spGetAllPendingOrder = "SpGetAllPeningOrder";
         public static string spGetAllProcessingOrder = "SpGetAllProcessingOrder";
         public static string spGetAllCompletedOrder = "SpGetAllCompletedOrder";
         public static string spGetAllCancelOrder = "SpGetAllCancelOrder";
+        public static string spUpdateOrderStatus = "SpUpdateOrderStatus";
+        public static string getOrderWithItems = "GetOrderWithItems";
 
-        public static string spGetAllOrderByOrderId = "SpGetAllOrderByOrderId";
-        public static string spGetAllOrderByUserName = "SpGetAllOrderByUserName";
+        public static string spGetAllOrderByOrderIdorOrderNo = "SpGetAllOrderByOrderIdorOrderNo";
+        public static string spGetAllOrderByUserNameorEmail = "SpGetAllOrderByUserNameorEmail";
 
 
         public static string spGetAllOrderDetails = "SpGetAllOrderListDetails";
@@ -209,6 +219,13 @@ namespace Common
 
         public static string spAddRatingReview = "SpAddRatingReview";
         public static string spGetRatingReview = "SpGetRatingReview";
+        public static string sp_GetRatingPercentage = "sp_GetRatingPercentage";
         public static string spUpdateRatingReview = "SpUpdateRatingReview";
+
+        public static string spGetAllPinCodeshipping = "SpGetAllPinCodeshipping";
+        public static string spAddPinCodeshipping = "SpAddPinCodeshipping";
+
+        public static string spUpdatePinCodeshipping = "SpUpdatePinCodeshipping";
+        public static string spDeletePinCodeshipping = "SpDeletePinCodeshipping";
     }
 }

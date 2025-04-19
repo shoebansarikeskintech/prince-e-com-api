@@ -21,8 +21,15 @@ namespace ViewModel
         public string? note { get; set; }
         public string? status { get; set; }
         public Guid? createdBy { get; set; }
+        public Guid? couponId { get; set; }
         public DateTime? cancelOrderDate { get; set; }
-        public string? orderNo { get; set; }
+        //public string? orderNo { get; set; }
         public string? OrderDetailsXML { get; set; }
+    }
+    
+    public class UpdateStausViewModel
+    {
+        public Guid orderId { get; set; }
+        public string? status { get; set; }
     }
 }

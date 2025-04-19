@@ -22,13 +22,24 @@ namespace PrinceEcom.Controllers
             _serviceManager = serviceManager;
             _logger = logger;
         }
-        
-        
+
+        [HttpGet("getAllOrderlist")]
+        public async Task<IActionResult> getAllOrderlist()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllOrderlist");
+            var getAllOrder = await _serviceManager.orderContract.getAllOrderlist();
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Found");
+            }
+            return Ok(getAllOrder);
+        }
+
         [HttpGet("getAllOrder")]
-        public async Task<IActionResult> getAllOrder(Guid adminUserId)
+        public async Task<IActionResult> getAllOrder(Guid userId)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllOrder");
-            var getAllOrder = await _serviceManager.orderContract.getAllOrder(adminUserId);
+            var getAllOrder = await _serviceManager.orderContract.getAllOrder(userId);
             if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Found");
@@ -93,8 +104,8 @@ namespace PrinceEcom.Controllers
             return Ok(add);
         }
 
-        [HttpGet("getAllOrderByOrderId")]
-        public async Task<IActionResult> getAllOrderByOrderId(Guid orderId)
+        [HttpGet("getAllOrderByOrderIdOrOrderNo")]
+        public async Task<IActionResult> getAllOrderByOrderIdOrOrderNo(string orderId)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} SpGetAllOrderByOrderId");
             var getAllOrder = await _serviceManager.orderContract.getAllOrderByOrderId(orderId);
@@ -113,6 +124,27 @@ namespace PrinceEcom.Controllers
             if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Details Found");
+            }
+            return Ok(getAllOrder);
+        }
+
+        [HttpPost("updateOrderStatus")]
+        [Authorize]
+        public async Task<IActionResult> updateOrderStatus(UpdateStausViewModel updateStausViewModel)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} updateOrderStatus");
+            var add = await _serviceManager.orderContract.updateOrderStatus(updateStausViewModel);
+            return Ok(add);
+        }
+
+        [HttpGet("OrderWithItems")]
+        public async Task<IActionResult> OrderWithItems(string orderId)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getOrderWithItems");
+            var getAllOrder = await _serviceManager.orderContract.getOrderWithItems(orderId);
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Found");
             }
             return Ok(getAllOrder);
         }

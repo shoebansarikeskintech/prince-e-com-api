@@ -9,5 +9,10 @@ namespace ServiceContract
         public Task<ResponseViewModel> updateShippingMethod(UpdateShippingMethodViewModel updateShippingMethod);
         public Task<ResponseViewModel> deleteShippingMethod(DeleteShippingMethodViewModel deleteShippingMethod);
 
+        public Task<ResponseViewModel> getAllPinCodeShippingMethod();
+        public Task<ResponseViewModel> addPinCodeShippingMethod(AddPinCodeShippingViewModel addPinCodeshippingMethod);
+        public Task<ResponseViewModel> updatePinCodeShippingMethod(UpdatePinCodeShippingViewModel updateShippingMethod);
+        public Task<ResponseViewModel> deletePinCodeShippingMethod(DeletePinCodeShippingViewModel DeletePinCodeshippingMethod);
+
     }
 }

@@ -13,7 +13,7 @@ namespace ServiceContract
         public Task<ResponseViewModel> getAdminDashboardDetails(string username);
         public Task<ResponseViewModel> getAllAdminList();
 
-        public Task<ResponseViewModel> updateAdminStatusActivate(string userId);
-        public Task<ResponseViewModel> updateAdminStatusDeActivate(string userId);
+        public Task<ResponseViewModel> updateAdminStatusActivate(string adminuserId);
+        public Task<ResponseViewModel> updateAdminStatusDeActivate(string adminuserId);
     }
 }

@@ -31,6 +31,7 @@ namespace PrinceEcom.Controllers
         }
 
 
+
         [HttpGet("getAllRatingReview")]
         public async Task<IActionResult> getAllRatingReview(Guid productId)
         {
@@ -42,6 +43,19 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllOrder);
         }
+
+        [HttpGet("getAllRatingReviewstar")]
+        public async Task<IActionResult> getAllRatingReviewstar(Guid productId)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllRatingReviewbyId");
+            var getAllOrder = await _serviceManager.ratingReviewContract.getAllRatingReviewbyId(productId);
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Review Star");
+            }
+            return Ok(getAllOrder);
+        }
+
 
         [HttpPost("updateRatinReview")]
         [Authorize]

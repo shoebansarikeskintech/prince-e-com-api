@@ -67,5 +67,55 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.discountContract.deleteDiscount(deleteDiscount);
             return Ok(delete);
         }
+
+
+
+        [HttpGet("getAllCoupon")]
+        public async Task<IActionResult> getAllCoupon()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllCoupon");
+            var getAllDiscount = await _serviceManager.discountContract.getAllCoupon();
+            if (getAllDiscount.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Discount Found");
+            }
+            return Ok(getAllDiscount);
+        }
+
+        [HttpGet("getByIdCoupon")]
+        public async Task<IActionResult> getByIdCoupon(Guid couponId)
+        {
+            _logger.logInfo($" {LoggingEvents.getByIdItem} getByIdCoupon discountId ${couponId}");
+            var getByIdDiscount = await _serviceManager.discountContract.getByIdCoupon(couponId);
+            if (getByIdDiscount.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Discount Found");
+            }
+            return Ok(getByIdDiscount);
+        }
+
+        [HttpPost("addCoupon")]
+        public async Task<IActionResult> addCoupon(AddCouponViewModel addCoupon)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} addCoupon");
+            var add = await _serviceManager.discountContract.addCoupon(addCoupon);
+            return Ok(add);
+        }
+
+        [HttpPost("updateCoupon")]
+        public async Task<IActionResult> updateCoupon(UpdateCouponViewModel updateCoupon)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} updateCoupon");
+            var update = await _serviceManager.discountContract.updateCoupon(updateCoupon);
+            return Ok(update);
+        }
+
+        [HttpPost("deleteCoupon")]
+        public async Task<IActionResult> deleteCoupon(DeleteCouponViewModel deleteCoupon)
+        {
+            _logger.logInfo($" {LoggingEvents.deleteItem} deleteCoupon");
+            var delete = await _serviceManager.discountContract.deleteCoupon(deleteCoupon);
+            return Ok(delete);
+        }
     }
 }

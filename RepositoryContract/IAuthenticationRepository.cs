@@ -9,5 +9,7 @@ namespace RepositoryContract
         public Task<ResponseViewModel> verifyOtp(VerifyOtpViewModel verifyOtp);
         public Task<ResponseViewModel> forgotPassword(ForgotPasswordViewModel forgotPassword);
         public Task<ResponseViewModel> addAppUser(AddAppUserViewModel addAppUser);
+        public Task<ResponseViewModel> updateAppUser(UpdateAppUserViewModel updateAppUser);
+
     }
 }

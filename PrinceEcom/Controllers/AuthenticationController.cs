@@ -137,6 +137,12 @@ namespace PrinceEcom.Controllers
             return Ok(returnData);
         }
 
-
+        [HttpPost("updateAppUser")]
+        public async Task<IActionResult> updateAppUser(UpdateAppUserViewModel updateAppUser)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} updateAppUser");
+            var returnData = await _serviceManager.authenticationContract.updateAppUser(updateAppUser);
+            return Ok(returnData);
+        }
     }
 }

@@ -41,5 +41,40 @@ namespace Service
             var delete = await _repositoryManager.discountRepository.deleteDiscount(deleteDiscount);
             return delete;
         }
+
+        /// <summary>
+        /// Add Coupon 
+        /// </summary>
+        /// <param name="discountId"></param>
+        /// <returns></returns>
+        public async Task<ResponseViewModel> getByIdCoupon(Guid couponId)
+        {
+            var getByIdCoupon = await _repositoryManager.discountRepository.getByIdCoupon(couponId);
+            return getByIdCoupon;
+        }
+
+        public async Task<ResponseViewModel> getAllCoupon()
+        {
+            var getAllCoupon = await _repositoryManager.discountRepository.getAllCoupon();
+            return getAllCoupon;
+        }
+
+        public async Task<ResponseViewModel> addCoupon(AddCouponViewModel addCoupon)
+        {
+            var add = await _repositoryManager.discountRepository.addCoupon(addCoupon);
+            return add;
+        }
+
+        public async Task<ResponseViewModel> updateCoupon(UpdateCouponViewModel updateCoupon)
+        {
+            var update = await _repositoryManager.discountRepository.updateCoupon(updateCoupon);
+            return update;
+        }
+
+        public async Task<ResponseViewModel> deleteCoupon(DeleteCouponViewModel deleteCoupon)
+        {
+            var delete = await _repositoryManager.discountRepository.deleteCoupon(deleteCoupon);
+            return delete;
+        }
     }
 }

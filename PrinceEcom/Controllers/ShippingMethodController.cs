@@ -59,5 +59,43 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.shippingMethodContract.deleteShippingMethod(deleteShippingMethod);
             return Ok(delete);
         }
+
+        [HttpGet("getAllPinCodeShipping")]
+        public async Task<IActionResult> getAllPinCodeShipping()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllPinCodeShippingMethod");
+            var getAllShippingMethod = await _serviceManager.shippingMethodContract.getAllPinCodeShippingMethod();
+            if (getAllShippingMethod.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Shipping Method List");
+            }
+            return Ok(getAllShippingMethod);
+        }
+
+        [HttpPost("addPinCodeShipping")]
+        [Authorize]
+        public async Task<IActionResult> addPinCodeShipping(AddPinCodeShippingViewModel addPinCodeshipping)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} SpAddPinCodeshipping");
+            var add = await _serviceManager.shippingMethodContract.addPinCodeShippingMethod(addPinCodeshipping);
+            return Ok(add);
+        }
+        [HttpPost("updateShippingPinCodeMethod")]
+        [Authorize]
+        public async Task<IActionResult> updateShippingPinCodeMethod(UpdatePinCodeShippingViewModel updatePinCodeShippingMethod)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} SpUpdatePinCodeshipping");
+            var add = await _serviceManager.shippingMethodContract.updatePinCodeShippingMethod(updatePinCodeShippingMethod);
+            return Ok(add);
+        }
+
+        [HttpPost("deletePinCodeShipping")]
+        [Authorize]
+        public async Task<IActionResult> deletePinCodeShipping(DeletePinCodeShippingViewModel deletePinCodeShippingMethod)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} SpDeletePinCodeshipping");
+            var delete = await _serviceManager.shippingMethodContract.deletePinCodeShippingMethod(deletePinCodeShippingMethod);
+            return Ok(delete);
+        }
     }
 }

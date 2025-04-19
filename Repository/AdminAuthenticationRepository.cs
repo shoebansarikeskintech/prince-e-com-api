@@ -264,76 +264,117 @@ namespace Repository
                 };
                 return getAllAppRole;
             }
-        }     
+        }
+        //public async Task<ResponseViewModel> getAdminDashboardDetails(string username)
+        //{
+        //    var procedureDashboard = Constant.spGetAdminDashboardDetails;
+        //    var procedureTodayOrder = Constant.spGetTodayOrderList;
+
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@username", username, DbType.String);
+
+        //    try
+        //    {
+        //        using (var connection = _dapperContext.createConnection())
+        //        {
+        //            var resultDashboard = await connection.QueryAsync<AdminDashboardToday>(procedureDashboard, parameters, commandType: CommandType.StoredProcedure);
+        //            //var resultTodayOrder = await connection.QueryAsync<TodayOrderList>(procedureTodayOrder, parameters, commandType: CommandType.StoredProcedure);
+
+        //            var responseDashboard = resultDashboard.FirstOrDefault();
+
+        //            // Check if dashboard is null or contains error status
+        //            if (responseDashboard == null)
+        //            {
+        //                return new ResponseViewModel
+        //                {
+        //                    statusCode = (int)HttpStatusCode.NotFound,
+        //                    message = "Data Not Found",
+        //                    data = null
+        //                };
+        //            }
+
+        //            if (responseDashboard.StatusCode == -1 || responseDashboard.StatusCode == -2)
+        //            {
+        //                return new ResponseViewModel
+        //                {
+        //                    statusCode = (int)HttpStatusCode.Unauthorized,
+        //                    message = responseDashboard.Message ?? "Unauthorized access or error occurred.",
+        //                    data = null
+        //                };
+        //            }
+
+        //            var responseTodayOrder = resultDashboard.ToList();
+
+        //            var responseData = new
+        //            {
+        //                totalUsers = responseDashboard.totalUsers,
+        //                totalOrder = responseDashboard.totalOrder,
+        //                pendingOrder = responseDashboard.pendingOrder,
+        //                todayOrder = responseDashboard.todayOrder,
+        //                returnOrder = responseDashboard.returnOrder,
+        //                lowProduct = responseDashboard.lowProduct,
+        //                outOfStock = responseDashboard.outOfStock,
+        //                totalProduct = responseDashboard.totalProduct,
+        //                totalRevenue = responseDashboard.totalRevenue,
+        //                todayRevenue = responseDashboard.todayRevenue,
+        //                cancelOrder = responseDashboard.cancelOrder,
+        //                todayOrderList = responseTodayOrder
+        //            };
+
+        //            return new ResponseViewModel
+        //            {
+        //                statusCode = (int)HttpStatusCode.OK,
+        //                message = "Get Admin Dashboard Details.",
+        //                data = responseData
+        //            };
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new ResponseViewModel
+        //        {
+        //            statusCode = (int)HttpStatusCode.InternalServerError,
+        //            message = "An error occurred while fetching admin dashboard details.",
+        //            data = ex.Message  // optionally return error for debugging
+        //        };
+        //    }
+        //}
+
         public async Task<ResponseViewModel> getAdminDashboardDetails(string username)
         {
-            var procedureDashboard = Constant.spGetAdminDashboardDetails;
-            var procedureTodayOrder = Constant.spGetTodayOrderList;
-
+            var procedureName = Constant.spGetAdminDashboardDetails;
             var parameters = new DynamicParameters();
-            parameters.Add("@username", username, DbType.String);
 
             try
             {
                 using (var connection = _dapperContext.createConnection())
                 {
-                    var resultDashboard = await connection.QueryAsync<AdminDashboardToday>(procedureDashboard, parameters, commandType: CommandType.StoredProcedure);
-                    var resultTodayOrder = await connection.QueryAsync<TodayOrderList>(procedureTodayOrder, parameters, commandType: CommandType.StoredProcedure);
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add("@username", username);
+                    var result = await connection.QueryAsync<AdminDashboardToday>(procedureName,param, commandType: CommandType.StoredProcedure);
 
-                    var responseDashboard = resultDashboard.FirstOrDefault();
-
-                    // Check if dashboard is null or contains error status
-                    if (responseDashboard == null)
+                    var getAllAppRole = new ResponseViewModel
                     {
-                        return new ResponseViewModel
-                        {
-                            statusCode = (int)HttpStatusCode.NotFound,
-                            message = "Data Not Found",
-                            data = null
-                        };
-                    }
-
-                    if (responseDashboard.StatusCode == -1 || responseDashboard.StatusCode == -2)
-                    {
-                        return new ResponseViewModel
-                        {
-                            statusCode = (int)HttpStatusCode.Unauthorized,
-                            message = responseDashboard.Message ?? "Unauthorized access or error occurred.",
-                            data = null
-                        };
-                    }
-
-                    var responseTodayOrder = resultTodayOrder.ToList();
-
-                    var responseData = new
-                    {
-                        pendingOrder = responseDashboard.PendingOrder,
-                        todayOrder = responseDashboard.TodayOrder,
-                        totalOrder = responseDashboard.TotalOrder,
-                        returnOrder = responseDashboard.ReturnOrder,
-                        todayOrderList = responseTodayOrder
+                        statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                        message = result.Count() == 0 ? "Data Not Found" : "Get Admin Dashboard Users Details.",
+                        data = result
                     };
 
-                    return new ResponseViewModel
-                    {
-                        statusCode = (int)HttpStatusCode.OK,
-                        message = "Get Admin Dashboard Details.",
-                        data = responseData
-                    };
+                    return getAllAppRole;
                 }
             }
             catch (Exception ex)
             {
+                // Exception log karlo agar chaho toh
+                Console.Error.WriteLine($"Error in getAllAdminList: {ex.Message}");
+
                 return new ResponseViewModel
                 {
                     statusCode = (int)HttpStatusCode.InternalServerError,
-                    message = "An error occurred while fetching admin dashboard details.",
-                    data = ex.Message  // optionally return error for debugging
+                    message = "Something went wrong while fetching admin list."
                 };
             }
         }
-
-
         public async Task<ResponseViewModel> getAllAdminList()
         {
             var procedureName = Constant.spGetAllAdminList;
@@ -369,11 +410,11 @@ namespace Repository
         }
 
 
-        public async Task<ResponseViewModel> updateAdminStatusActivate(string userId)
+        public async Task<ResponseViewModel> updateAdminStatusActivate(string adminuserId)
         {
             var procedureName = Constant.spUpdateAdminStatusActivate;
             var parameters = new DynamicParameters();
-            parameters.Add("@userId", userId);
+            parameters.Add("@userId", adminuserId);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -390,11 +431,11 @@ namespace Repository
             }
         }
 
-        public async Task<ResponseViewModel> updateAdminStatusDeActivate(string userId)
+        public async Task<ResponseViewModel> updateAdminStatusDeActivate(string adminuserId)
         {
             var procedureName = Constant.spUpdateAdminStatusDeActivate;
             var parameters = new DynamicParameters();
-            parameters.Add("@userId", userId);
+            parameters.Add("@userId", adminuserId);
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);

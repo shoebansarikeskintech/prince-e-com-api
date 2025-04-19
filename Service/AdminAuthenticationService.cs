@@ -58,14 +58,14 @@ namespace Service
             return await _repositoryManager.adminAuthenticationRepository.getAllAdminList();
         }
 
-        public async Task<ResponseViewModel> updateAdminStatusActivate(string userId)
+        public async Task<ResponseViewModel> updateAdminStatusActivate(string admindminuserId)
         {
-            return await _repositoryManager.adminAuthenticationRepository.updateAdminStatusActivate(userId);
+            return await _repositoryManager.adminAuthenticationRepository.updateAdminStatusActivate(admindminuserId);
         }
 
-        public async Task<ResponseViewModel> updateAdminStatusDeActivate(string userId)
+        public async Task<ResponseViewModel> updateAdminStatusDeActivate(string adminuserId)
         {
-            return await _repositoryManager.adminAuthenticationRepository.updateAdminStatusDeActivate(userId);
+            return await _repositoryManager.adminAuthenticationRepository.updateAdminStatusDeActivate(adminuserId);
         }
     }
 }

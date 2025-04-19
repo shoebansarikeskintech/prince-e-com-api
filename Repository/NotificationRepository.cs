@@ -34,18 +34,32 @@ namespace Repository
         {
             var procedureName = Constant.spGetAllNotification;
 
-            using (var connection = _dapperContext.createConnection())
+            try
             {
-                var result = await connection.QueryAsync<Notification>(procedureName, null, commandType: CommandType.StoredProcedure);
-                var getAllNotification = new ResponseViewModel
+                using (var connection = _dapperContext.createConnection())
                 {
-                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
-                    data = result
+                    var result = await connection.QueryAsync<Notification>(procedureName, null, commandType: CommandType.StoredProcedure);
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "An error occurred while fetching notifications.",
+                    data = null,
+                   // error = ex.Message // Make sure ResponseViewModel has this property
                 };
-                return getAllNotification;
             }
         }
+
         public async Task<ResponseViewModel> getAllNotificationForUser()
         {
             var procedureName = Constant.spGetAllNotificationForUser;
@@ -67,8 +81,7 @@ namespace Repository
             var procedureName = Constant.spAddNotification;
             var parameters = new DynamicParameters();
             parameters.Add("@title", addNotification.title);
-            parameters.Add("@description", addNotification.descrption, DbType.String);
-            parameters.Add("@status", addNotification.status, DbType.String);
+            parameters.Add("@description", addNotification.description, DbType.String);
             parameters.Add("@createdBy", addNotification.createdBy, DbType.Guid);
             using (var connection = _dapperContext.createConnection())
             {
@@ -98,9 +111,9 @@ namespace Repository
             var parameters = new DynamicParameters();
             parameters.Add("@notificationId", updateNotification.notificationId, DbType.Guid);
             parameters.Add("@title", updateNotification.title, DbType.String);
-            parameters.Add("@description", updateNotification.descrption, DbType.String);
-            parameters.Add("@status", updateNotification.status, DbType.String);
+            parameters.Add("@description", updateNotification.description, DbType.String);
             parameters.Add("@updatedBy", updateNotification.updatedBy, DbType.Guid);
+            parameters.Add("@active", updateNotification.active, DbType.Boolean);
 
             using (var connection = _dapperContext.createConnection())
             {

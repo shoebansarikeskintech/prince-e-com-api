@@ -5,7 +5,8 @@ namespace ServiceContract
 {
    public interface IOrderContract
     {
-        public Task<ResponseViewModel> getAllOrder(Guid adminUserId);
+        public Task<ResponseViewModel> getAllOrder(Guid userId);
+        public Task<ResponseViewModel> getAllOrderlist();
         public Task<ResponseViewModel> getAllPendingOrder(Guid adminUserId);
         public Task<ResponseViewModel> getAllProcessingOrder(Guid adminUserId);
         public Task<ResponseViewModel> getAllCompletedOrder(Guid adminUserId);
@@ -13,9 +14,13 @@ namespace ServiceContract
 
         public Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderWithDetails);
 
-        public Task<ResponseViewModel> getAllOrderByOrderId(Guid orderId);
+        public Task<ResponseViewModel> getAllOrderByOrderId(string orderId);
 
         public Task<ResponseViewModel> getAllOrderByNameorEmail(String userNameorEmail);
+        public Task<ResponseViewModel> updateOrderStatus(UpdateStausViewModel aUpdateStausDetails);
+
+        public Task<ResponseViewModel> getOrderWithItems(string orderIdOrOrderNo);
+
 
     }
 }
