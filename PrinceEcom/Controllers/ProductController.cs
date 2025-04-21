@@ -47,6 +47,20 @@ namespace PrinceEcom.Controllers
             return Ok(getAllProduct);
         }
 
+        [HttpGet("getBestSeller")]
+        [Authorize]
+        public async Task<IActionResult> getBestSeller()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
+            var getAllProduct = await _serviceManager.productContract.getAllProduct();
+            if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+            }
+            return Ok(getAllProduct);
+        }
+
+
         [HttpGet("getAllProductForUser")]
         public async Task<IActionResult> getAllProductForUser()
         {

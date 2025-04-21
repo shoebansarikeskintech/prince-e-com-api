@@ -95,6 +95,22 @@ namespace Repository
                 return getAllProduct;
             }
         }
+
+        public async Task<ResponseViewModel> getBestSeller()
+        {
+            var procedureName = Constant.spGetBestSeller;
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<Product>(procedureName, null, commandType: CommandType.StoredProcedure);
+                var getAllProduct = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return getAllProduct;
+            }
+        }
         public async Task<ResponseViewModel> getAllProductForUser()
         {
             var procedureName = Constant.spGetAllProductForUser;

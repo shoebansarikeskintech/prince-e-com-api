@@ -300,59 +300,5 @@ namespace Repository
             return returnData;
         }
 
-
-        //public async Task<ResponseViewModel> updateAppUser(UpdateAppUserViewModel updateAppUser)
-        //{
-        //    var procedureName = Constant.spUpdateAppuser;
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("@userId", updateAppUser.userId, DbType.Guid);
-        //    parameters.Add("@age", updateAppUser.age, DbType.Int64);
-        //    parameters.Add("@gender", updateAppUser.gender, DbType.String);
-        //    parameters.Add("@skinType", updateAppUser.skinType, DbType.String);
-        //    parameters.Add("@isSkinSensitve", updateAppUser.isSkinSensitve, DbType.String);
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = await connection.QueryAsync<RegistrationValidation>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-        //        ResponseViewModel returnData;
-        //        if (result != null && result.Any())
-        //        {
-        //            var validation = result.First();
-        //            if (validation.statusCode == 1)
-        //            {
-        //                returnData = new ResponseViewModel
-        //                {
-        //                    statusCode = (int)HttpStatusCode.OK,
-        //                    message = validation.message
-        //                };
-        //            }
-        //            else if (validation.statusCode == 0)
-        //            {
-        //                returnData = new ResponseViewModel
-        //                {
-        //                    statusCode = (int)HttpStatusCode.Conflict,
-        //                    message = validation.message
-        //                };
-        //            }
-        //            else
-        //            {
-        //                returnData = new ResponseViewModel
-        //                {
-        //                    statusCode = (int)HttpStatusCode.BadRequest,
-        //                    message = validation.message
-        //                };
-        //            }
-        //        }
-        //        else
-        //        {
-        //            returnData = new ResponseViewModel
-        //            {
-        //                statusCode = (int)HttpStatusCode.NotFound,
-        //                message = "Something went to wrong with server error."
-        //            };
-        //        }
-        //        return returnData;
-        //    }
-        //}
     }
 }

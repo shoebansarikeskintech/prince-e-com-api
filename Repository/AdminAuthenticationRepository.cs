@@ -340,7 +340,7 @@ namespace Repository
         //    }
         //}
 
-        public async Task<ResponseViewModel> getAdminDashboardDetails(string username)
+        public async Task<ResponseViewModel> getAdminDashboardDetails()
         {
             var procedureName = Constant.spGetAdminDashboardDetails;
             var parameters = new DynamicParameters();
@@ -349,9 +349,7 @@ namespace Repository
             {
                 using (var connection = _dapperContext.createConnection())
                 {
-                    DynamicParameters param = new DynamicParameters();
-                    param.Add("@username", username);
-                    var result = await connection.QueryAsync<AdminDashboardToday>(procedureName,param, commandType: CommandType.StoredProcedure);
+                    var result = await connection.QueryAsync<AdminDashboardToday>(procedureName, commandType: CommandType.StoredProcedure);
 
                     var getAllAppRole = new ResponseViewModel
                     {

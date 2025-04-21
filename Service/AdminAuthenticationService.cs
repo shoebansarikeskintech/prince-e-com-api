@@ -48,9 +48,9 @@ namespace Service
             return await _repositoryManager.adminAuthenticationRepository.getAdminUserDetails(adminUserGuid, username); 
         }
 
-        public async Task<ResponseViewModel> getAdminDashboardDetails(string username)
+        public async Task<ResponseViewModel> getAdminDashboardDetails()
         {
-            return await _repositoryManager.adminAuthenticationRepository.getAdminDashboardDetails(username);
+            return await _repositoryManager.adminAuthenticationRepository.getAdminDashboardDetails();
         }
 
         public async Task<ResponseViewModel> getAllAdminList()

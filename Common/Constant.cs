@@ -100,6 +100,7 @@ namespace Common
 
         public static string spGetByIdProduct = "SpGetByIdProduct";
         public static string spGetAllProduct = "SpGetAllProduct";
+        public static string spGetBestSeller = "SpGetBestSeller";
         public static string spGetAllProductForUser = "SpGetAllProductForUser";
         public static string spGetAllProductDetails = "SpGetAllProductDetails";
         public static string spAddProduct = "SpAddProduct";

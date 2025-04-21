@@ -65,7 +65,7 @@ namespace ViewModel
     public class UpdateAppUserViewModel
     {
         public Guid userId { get; set; }
-        public int? age { get; set; }
+        public string? age { get; set; }
         public string? gender { get; set; }
         public string? skinType { get; set; }
         public string? isSkinSensitve { get; set; }

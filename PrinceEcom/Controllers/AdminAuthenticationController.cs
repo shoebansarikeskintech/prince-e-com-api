@@ -161,7 +161,7 @@ namespace PrinceEcom.Controllers
 
         [HttpPost("getAdminDashboardDetails")]
         [Authorize]
-        public async Task<IActionResult> getAdminDashboardDetails(string username)
+        public async Task<IActionResult> getAdminDashboardDetails()
         {
             //var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             //AdminTokenDetailsViewModel loginViewModel = extractToken.ExtractAdminUserDetailsFromToken(token);
@@ -171,7 +171,7 @@ namespace PrinceEcom.Controllers
 
 
             _logger.logInfo($" {LoggingEvents.updateItem} getAdminDashboardDetails");
-            var returnData = await _serviceManager.adminAuthenticationContract.getAdminDashboardDetails(username);
+            var returnData = await _serviceManager.adminAuthenticationContract.getAdminDashboardDetails();
             return Ok(returnData);
         }
 

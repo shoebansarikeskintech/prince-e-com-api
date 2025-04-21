@@ -7,6 +7,7 @@ namespace ServiceContract
     {
         public Task<ResponseViewModel> getByIdProduct(Guid productId);
         public Task<ResponseViewModel> getAllProduct();
+        public Task<ResponseViewModel> getBestSeller();
         public Task<ResponseViewModel> getAllProductForUser();
         public Task<ResponseViewModel> getAllProductDetails(Guid productId);
         public Task<ResponseViewModel> addProduct(AddProductViewModel addProduct);
