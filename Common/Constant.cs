@@ -42,6 +42,7 @@ namespace Common
         public static string spAddSubMenu = "SpAddSubMenu";
         public static string spUpdateSubMenu = "SpUpdateSubMenu";
         public static string spDeleteSubMenu = "SpDeleteSubMenu";
+        public static string spGetSubMenubyMenuId = "SpGetSubMenubyMenuId";
 
         public static string spGetByIdRoleMenu = "SpGetByIdRoleMenu";
         public static string spGetAllRoleMenu = "SpGetAllRoleMenu";
@@ -107,6 +108,8 @@ namespace Common
         public static string spUpdateProduct = "SpUpdateProduct";
         public static string spDeleteProduct = "SpDeleteProduct";
         public static string spGetAllImageById = "SpGetAllImageById";
+        public static string spGetAllSteps = "SpGetAllSteps";
+        public static string spGetAllTypeofProduct = "SpGetAllTypeofProduct";
 
         public static string spGetByIdProductImage = "SpGetByIdProductImage";
         public static string spGetAllProductImage = "SpGetAllProductImage";
@@ -179,6 +182,7 @@ namespace Common
 
         public static string spGetAllBannerForUser = "SpGetAllBannerForUser";
         public static string spGetSortBy = "SpGetSortBy";
+        public static string spGetPrdoctSearchByFilter = "SpGetPrdoctSearchByFilter";
 
         public static string spGetAllAppUser = "SpGetAllAppUser";
         public static string spGetAllOrderByUserId = "SpGetAllOrderByUserId";

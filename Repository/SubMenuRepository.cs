@@ -128,5 +128,37 @@ namespace Repository
                 return result;
             }
         }
+        public async Task<ResponseViewModel> getSubMenubyMenuId(Guid menuId)
+        {
+            var procedureName = Constant.spGetSubMenubyMenuId;
+            var parameters = new DynamicParameters();
+            parameters.Add("@menuId", menuId, DbType.Guid);
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<SubMenubyid>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    var response = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "An error occurred while fetching the data.",
+                    data = null
+                };
+            }
+        }
     }
 }

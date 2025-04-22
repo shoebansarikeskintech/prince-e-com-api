@@ -195,42 +195,50 @@ namespace Repository
         {
             var procedureName = Constant.spAddAppUser;
             var parameters = new DynamicParameters();
-            parameters.Add("@username", addAppUser.username, DbType.String);
-            parameters.Add("@name", addAppUser.name, DbType.String);
-            parameters.Add("@email", addAppUser.email, DbType.String);
-            parameters.Add("@phoneNumber", addAppUser.phoneNumber, DbType.String);
-            parameters.Add("@password", addAppUser.password, DbType.String);
-            parameters.Add("@Age", addAppUser.Age, DbType.String);
-            parameters.Add("@Gender", addAppUser.Gender, DbType.String);
-            parameters.Add("@Skintype", addAppUser.Skintype, DbType.String);
-            parameters.Add("@IsSkinSensitve", addAppUser.IsSkinSensitve, DbType.String);
+            parameters.Add("@username", addAppUser.username);
+            parameters.Add("@name", addAppUser.name);
+            parameters.Add("@email", addAppUser.email);
+            parameters.Add("@phoneNumber", addAppUser.phoneNumber);
+            parameters.Add("@password", addAppUser.password);
+            parameters.Add("@Age", addAppUser.Age);
+            parameters.Add("@Gender", addAppUser.Gender);
+            parameters.Add("@Skintype", addAppUser.Skintype);
+            parameters.Add("@IsSkinSensitve", addAppUser.IsSkinSensitve);
 
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryAsync<RegistrationValidation>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                ResponseViewModel returnData;
+                var result = await connection.QueryAsync<RegistrationValidation>(
+                    procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                ResponseViewModel response;
+
                 if (result != null && result.Any())
                 {
                     var validation = result.First();
+
                     if (validation.statusCode == 1)
                     {
-                        returnData = new ResponseViewModel
+                        response = new ResponseViewModel
                         {
                             statusCode = (int)HttpStatusCode.OK,
-                            message = validation.message
-                        };
-                    }
-                    else if (validation.statusCode == 0)
-                    {
-                        returnData = new ResponseViewModel
-                        {
-                            statusCode = (int)HttpStatusCode.Conflict,
-                            message = validation.message
+                            message = validation.message,
+                            data = new
+                            {
+                                addAppUser.username,
+                                addAppUser.name,
+                                addAppUser.email,
+                                addAppUser.phoneNumber,
+                                addAppUser.password,
+                                addAppUser.Age,
+                                addAppUser.Gender,
+                                addAppUser.Skintype,
+                                addAppUser.IsSkinSensitve,
+                            }
                         };
                     }
                     else
                     {
-                        returnData = new ResponseViewModel
+                        response = new ResponseViewModel
                         {
                             statusCode = (int)HttpStatusCode.BadRequest,
                             message = validation.message
@@ -239,15 +247,76 @@ namespace Repository
                 }
                 else
                 {
-                    returnData = new ResponseViewModel
+                    response = new ResponseViewModel
                     {
-                        statusCode = (int)HttpStatusCode.NotFound,
-                        message = "Something went to wrong with server error."
+                        statusCode = (int)HttpStatusCode.ExpectationFailed,
+                        message = "Unexpected error occurred during registration."
                     };
                 }
-                return returnData;
+
+                return response;
             }
         }
+
+
+        //public async Task<ResponseViewModel> addAppUser(AddAppUserViewModel addAppUser)
+        //{
+        //    var procedureName = Constant.spAddAppUser;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@username", addAppUser.username, DbType.String);
+        //    parameters.Add("@name", addAppUser.name, DbType.String);
+        //    parameters.Add("@email", addAppUser.email, DbType.String);
+        //    parameters.Add("@phoneNumber", addAppUser.phoneNumber, DbType.String);
+        //    parameters.Add("@password", addAppUser.password, DbType.String);
+        //    parameters.Add("@Age", addAppUser.Age, DbType.String);
+        //    parameters.Add("@Gender", addAppUser.Gender, DbType.String);
+        //    parameters.Add("@Skintype", addAppUser.Skintype, DbType.String);
+        //    parameters.Add("@IsSkinSensitve", addAppUser.IsSkinSensitve, DbType.String);
+
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryAsync<RegistrationValidation>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        ResponseViewModel returnData;
+        //        if (result != null && result.Any())
+        //        {
+        //            var validation = result.First();
+        //            if (validation.statusCode == 1)
+        //            {
+        //                returnData = new ResponseViewModel
+        //                {
+        //                    statusCode = (int)HttpStatusCode.OK,
+        //                    message = validation.message,
+        //                    data=result
+        //                };
+        //            }
+        //            else if (validation.statusCode == 0)
+        //            {
+        //                returnData = new ResponseViewModel
+        //                {
+        //                    statusCode = (int)HttpStatusCode.Conflict,
+        //                    message = validation.message
+        //                };
+        //            }
+        //            else
+        //            {
+        //                returnData = new ResponseViewModel
+        //                {
+        //                    statusCode = (int)HttpStatusCode.BadRequest,
+        //                    message = validation.message
+        //                };
+        //            }
+        //        }
+        //        else
+        //        {
+        //            returnData = new ResponseViewModel
+        //            {
+        //                statusCode = (int)HttpStatusCode.NotFound,
+        //                message = "Something went to wrong with server error."
+        //            };
+        //        }
+        //        return returnData;
+        //    }
+        //}
 
         public async Task<ResponseViewModel> updateAppUser(UpdateAppUserViewModel updateAppUser)
         {
@@ -260,7 +329,7 @@ namespace Repository
                 parameters.Add("@userId", updateAppUser.userId, DbType.Guid);
 
                 if (updateAppUser.age != null)
-                    parameters.Add("@age", updateAppUser.age, DbType.Int32);
+                    parameters.Add("@age", updateAppUser.age, DbType.String);
 
                 if (!string.IsNullOrEmpty(updateAppUser.gender))
                     parameters.Add("@gender", updateAppUser.gender, DbType.String);

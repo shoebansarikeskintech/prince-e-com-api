@@ -22,5 +22,8 @@ namespace RepositoryContract
         public Task<ResponseViewModel> updateProductImage(UpdateProductImageViewModel updateProductImage);
         public Task<ResponseViewModel> deleteProductImage(DeleteProductImageViewModel deleteProductImage);
         public Task<ResponseViewModel> getByIdImage(Guid productId);
+
+        public Task<ResponseViewModel> getAllSteps();
+        public Task<ResponseViewModel> getAllTypeofProduct();
     }
 }

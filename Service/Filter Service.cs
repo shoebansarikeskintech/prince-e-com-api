@@ -24,7 +24,13 @@ namespace Service
             var getAllFilter = await _repositoryManager.filterRepository.getAllFilter();
             return getAllFilter;
         }
-    }
 
-    
+        public async Task<ResponseViewModel> getPrdoctSearchByFilter(FilterViewModel model)
+        {
+            var getPrdoctSearchByFilter = await _repositoryManager.filterRepository.getPrdoctSearchByFilter(model);
+            return getPrdoctSearchByFilter;
+        }
+
+     
+    }    
 }

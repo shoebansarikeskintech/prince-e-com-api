@@ -19,6 +19,17 @@ namespace Model
 
         public record SubMenu(Guid subMenuId, Guid menuId, string subMenuName, string subMenuPageName, string menuName, string pageName);
 
+        public record SubMenubyid(
+    Guid subMenuId,
+    Guid menuId,
+    string subMenuName,
+    string subMenuPageName,
+    int displayOrder,
+    string createdDate,   // 👈 string किया गया
+    Guid createdBy,
+    string Status,
+    bool active);
+
         public record RoleMenu(int id, Guid roleMenuId, Guid menuId, Guid appRoleId, Guid subMenuId, string menuName,
             string subMenuName, string roleName, int displayOrder);
 
@@ -52,6 +63,7 @@ namespace Model
             public int totalRevenue { get; set; }
             public int todayRevenue { get; set; }
             public int cancelOrder { get; set; }
+            public int lastWeekUsers { get; set; }
             //public int StatusCode { get; set; }  // For error/unauthorized case
             //public string Message { get; set; }
 
@@ -80,6 +92,12 @@ namespace Model
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
             DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId);
 
+
+        public record AllSteps(
+            Int64 id, Guid StepsId, string name, string description, DateTime createdDate, string status, bool active);
+
+        public record AllTypeofProduct(
+            Int64 id, Guid TypeofProductId, string name, string description, DateTime createdDate, string status, bool active);
         public class Productdetaisl
         {
             public Int64 Id { get; set; }
@@ -167,12 +185,31 @@ namespace Model
        decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
        decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
        string Status, string CreatedDate, string orderNo, Guid couponId);
+        public class OrderDetailsById
+        {
+            public long Id { get; set; }
+            public string? ShippedDate { get; set; }
+            public string? TransactionId { get; set; }
+            public string? Status { get; set; }
+            public string? OrderNo { get; set; }
+            public int Quantity { get; set; }
+            public decimal Price { get; set; }
+            public decimal DiscountPrice { get; set; }
+            public decimal TotalAmount { get; set; }
+            public string? Username { get; set; }
+            public string? Name { get; set; }
+            public string? Image { get; set; }
+            public string? ProductName { get; set; }
+            public Guid CouponId { get; set; }
+            public string? BillingAddress { get; set; }
+            public string? SellerName { get; set; }
+            public string? SellerAddress { get; set; }
+        }
+            // public record OrderDetailsById(
+            //long Id, string ShippedDate, string TransactionId, string Status, string orderNo, int Quantity, decimal Price,
+            //decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName, Guid couponId,string BillingAddress,string sellerName,string sellerAddress);
 
-        public record OrderDetailsById(
-       long Id, string ShippedDate, string TransactionId, string Status, string orderNo, int Quantity, decimal Price,
-       decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName, Guid couponId,string BillingAddress,string sellerName,string sellerAddress);
-
-        public record OrderDetailsByName(
+            public record OrderDetailsByName(
        long Id, string ShippedDate, string TransactionId, string Status, int Quantity, decimal Price,
        decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName);
 
@@ -211,6 +248,45 @@ namespace Model
             decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount);
 
         public record SortBy(Int64 id, Guid sortById, string sortByName, DateTime createdDate, string status, bool active);
+        public class PrdoctSearchByFilter
+        {
+            public string? categoryName { get; set; }
+            public string? subCategoryName { get; set; }
+            public string? subcategoryType { get; set; }
+            public string? productName { get; set; }
+            public long stock { get; set; }
+            public string? productDescription { get; set; }
+            public decimal productPrice { get; set; }
+            public decimal discountPrice { get; set; }
+            public string? productImage { get; set; }
+            public int rating { get; set; }
+            public int noOfRating { get; set; }
+            public string? sellerName { get; set; }
+            public string? brandName { get; set; }
+            public string? sizeName { get; set; }
+            public string? concernName { get; set; }
+            public string? ingredientName { get; set; }
+        }
+
+
+        //public record PrdoctSearchByFilter(
+        //    string categoryName,
+        //    string subCategoryName,
+        //    string subcategoryType,
+        //    string productName,
+        //    Int64 stock,
+        //    string productDescription,
+        //    decimal productPrice,
+        //    decimal discountPrice,
+        //    string productImage,
+        //    Int64 rating,
+        //    Int64 noOfRating,
+        //    string sellerName,
+        //    string brandName,
+        //    string sizeName,
+        //    string concernName,
+        //    string ingredientName
+        //);
 
         public class PinCodeshippingMethod
         {

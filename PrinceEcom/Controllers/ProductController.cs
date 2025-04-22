@@ -191,5 +191,29 @@ namespace PrinceEcom.Controllers
             return Ok(getByIdImage);
         }
 
+        [HttpGet("getAllSteps")]
+        public async Task<IActionResult> getAllSteps()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllSteps");
+            var getAllSteps = await _serviceManager.productContract.getAllSteps();
+            if (getAllSteps.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+            }
+            return Ok(getAllSteps);
+        }
+
+        [HttpGet("getAllTypeofProduct")]
+        public async Task<IActionResult> getAllTypeofProduct()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllTypeofProduct");
+            var getAllTypeofProduct = await _serviceManager.productContract.getAllTypeofProduct();
+            if (getAllTypeofProduct.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+            }
+            return Ok(getAllTypeofProduct);
+        }
+
     }
 }

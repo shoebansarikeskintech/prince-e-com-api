@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PrinceEcom.Utils;
 using ServiceContract;
 using System.Net;
+using ViewModel;
 
 namespace PrinceEcom.Controllers
 {
@@ -43,5 +44,17 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllFilter);
         }
+
+        [HttpGet("getPrductSearchByFilter")]
+        public async Task<IActionResult> getPrductSearchByFilter(FilterViewModel model)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getPrdoctSearchByFilter");
+            var getPrdoctSearchByFilter = await _serviceManager.filterContract.getPrdoctSearchByFilter(model);
+            if (getPrdoctSearchByFilter.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Sort By Found");
+            }
+            return Ok(getPrdoctSearchByFilter);
+        }       
     }
 }

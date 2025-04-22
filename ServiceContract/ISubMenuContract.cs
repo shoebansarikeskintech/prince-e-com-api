@@ -14,6 +14,7 @@ namespace ServiceContract
         public Task<ResponseViewModel> addSubMenu(AddSubMenuViewModel addSubMenuViewModel);
         public Task<ResponseViewModel> updateSubMenu(UpdateSubMenuViewModel updateSubMenuViewModel);
         public Task<ResponseViewModel> deleteSubMenu(DeleteSubMenuViewModel deleteSubMenuViewModel);
+        public Task<ResponseViewModel> getSubMenubyMenuId(Guid menuId);
 
     }
 }

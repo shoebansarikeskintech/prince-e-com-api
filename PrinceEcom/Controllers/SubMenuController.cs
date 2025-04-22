@@ -71,5 +71,17 @@ namespace PrinceEcom.Controllers
             var deleteSubMenu = await _serviceManager.subMenuContract.deleteSubMenu(deleteSubMenuViewModel);
             return Ok(deleteSubMenu);
         }
+
+        [HttpGet("getSubMenubyMenuId")]
+        public async Task<IActionResult> getSubMenubyMenuId(Guid menuId)
+        {
+            _logger.logInfo($" {LoggingEvents.getByIdItem} getSubMenubyMenuId MenuId ${menuId}");
+            var getByIdSubMenu = await _serviceManager.subMenuContract.getSubMenubyMenuId(menuId);
+            if (getByIdSubMenu.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No SubMenu Found");
+            }
+            return Ok(getByIdSubMenu);
+        }
     }
 }

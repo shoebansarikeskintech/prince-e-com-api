@@ -481,6 +481,38 @@ namespace Repository
                 return getAllProductForUser;
             }
         }
+
+        public async Task<ResponseViewModel> getAllSteps()
+        {
+            var procedureName = Constant.spGetAllSteps;
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<AllSteps>(procedureName, null, commandType: CommandType.StoredProcedure);
+                var spGetAllSteps = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return spGetAllSteps;
+            }
+        }
+
+        public async Task<ResponseViewModel> getAllTypeofProduct()
+        {
+            var procedureName = Constant.spGetAllTypeofProduct;
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<AllTypeofProduct>(procedureName, null, commandType: CommandType.StoredProcedure);
+                var spGetAllTypeofProduct = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return spGetAllTypeofProduct;
+            }
+        }
     }
 }
 

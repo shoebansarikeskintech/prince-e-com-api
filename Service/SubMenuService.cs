@@ -47,5 +47,11 @@ namespace Service
             return deleteSubMenu;
         }
 
+        public async Task<ResponseViewModel> getSubMenubyMenuId(Guid menuId)
+        {
+            var getSubMenubyMenuId = await _repositoryManager.subMenuRepository.getSubMenubyMenuId(menuId);
+            return getSubMenubyMenuId;
+        }
+
     }
 }

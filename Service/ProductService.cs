@@ -101,5 +101,17 @@ namespace Service
             var getByIdImage = await _repositoryManager.productRepository.getByIdImage(productId);
             return getByIdImage;
         }
+
+        public async Task<ResponseViewModel> getAllSteps()
+        {
+            var getAllSteps = await _repositoryManager.productRepository.getAllSteps();
+            return getAllSteps;
+        }
+
+        public async Task<ResponseViewModel> getAllTypeofProduct()
+        {
+            var getAllTypeofProduct = await _repositoryManager.productRepository.getAllTypeofProduct();
+            return getAllTypeofProduct;
+        }
     }
 }
