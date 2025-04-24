@@ -12,7 +12,7 @@ namespace Service
             _repositoryManager = repositoryManager;
         }
 
-        public async Task<ResponseViewModel> getByIdProduct(Guid productId )
+        public async Task<ResponseViewModel> getByIdProduct(Guid productId)
         {
             var getByIdProduct = await _repositoryManager.productRepository.getByIdProduct(productId);
             return getByIdProduct;
@@ -108,10 +108,44 @@ namespace Service
             return getAllSteps;
         }
 
+        public async Task<ResponseViewModel> addAllSteps(AddStepsViewModel addSteps)
+        {
+            var add = await _repositoryManager.productRepository.addAllSteps(addSteps);
+            return add;
+        }
+
+        public async Task<ResponseViewModel> updateAllSteps(UpdateStepsViewModel updateSteps)
+        {
+            var update = await _repositoryManager.productRepository.updateAllSteps(updateSteps);
+            return update;
+        }
+
+        public async Task<ResponseViewModel> deleteAllSteps(DeleteStepsViewModel deleteSteps)
+        {
+            var delete = await _repositoryManager.productRepository.deleteAllSteps(deleteSteps);
+            return delete;
+        }
         public async Task<ResponseViewModel> getAllTypeofProduct()
         {
             var getAllTypeofProduct = await _repositoryManager.productRepository.getAllTypeofProduct();
             return getAllTypeofProduct;
+        }
+
+        public async Task<ResponseViewModel> addTypeOfProduct(AddTypeOfProductViewModel addTypeOfProduct)
+        {
+            var add = await _repositoryManager.productRepository.addTypeOfProduct(addTypeOfProduct);
+            return add;
+        }
+
+        public async Task<ResponseViewModel> updateTypeOfProduct(UpdateTypeOfProductViewModel updateTypeOfProduct)
+        {
+            var update = await _repositoryManager.productRepository.updateTypeOfProduct(updateTypeOfProduct);
+            return update;
+        }
+        public async Task<ResponseViewModel> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct)
+        {
+            var delete = await _repositoryManager.productRepository.deleteTypeOfProduct(deleteSTypeOfProduct);
+            return delete;
         }
     }
 }

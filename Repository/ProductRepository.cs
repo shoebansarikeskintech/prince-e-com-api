@@ -13,7 +13,7 @@ namespace Repository
     {
         private readonly DapperContext _dapperContext;
         public ProductRepository(DapperContext dapperContext) =>
-            _dapperContext = dapperContext;      
+            _dapperContext = dapperContext;
         public async Task<ResponseViewModel> getByIdProduct(Guid productId)
         {
             var procedureName = Constant.spGetByIdProduct;
@@ -24,8 +24,8 @@ namespace Repository
             {
                 var result = (await connection.QueryAsync<Productdetaisl>(procedureName, parameters, commandType: CommandType.StoredProcedure)).ToList();
 
-                var product = result.FirstOrDefault(); 
-                var imageUrls = result.Select(x => x.ImageUrl).ToList(); 
+                var product = result.FirstOrDefault();
+                var imageUrls = result.Select(x => x.ImageUrl).ToList();
 
                 var getbyIdProduct = new ResponseViewModel
                 {
@@ -71,7 +71,7 @@ namespace Repository
                             IngredientId = product.IngredientId,
                             imageUrls = imageUrls
                         },
-                       
+
                     } : null
                 };
 
@@ -79,13 +79,13 @@ namespace Repository
             }
         }
 
-     
+
         public async Task<ResponseViewModel> getAllProduct()
         {
             var procedureName = Constant.spGetAllProduct;
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryAsync<Product>(procedureName, null, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryAsync<AllProduct>(procedureName, null, commandType: CommandType.StoredProcedure);
                 var getAllProduct = new ResponseViewModel
                 {
                     statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
@@ -165,6 +165,11 @@ namespace Repository
             parameters.Add("@createdBy", addProduct.createdBy, DbType.Guid);
             parameters.Add("@ConcernId", addProduct.ConcernId, DbType.Guid);
             parameters.Add("@IngredientId", addProduct.IngredientId, DbType.Guid);
+            parameters.Add("@TypeofProductId", addProduct.TypeofProductId, DbType.Guid);
+            parameters.Add("@StepsId", addProduct.StepsId, DbType.Guid);
+            parameters.Add("@isNewArrial", addProduct.isNewArrial, DbType.Boolean);
+            parameters.Add("@isBestSeller", addProduct.isBestSeller, DbType.Boolean);
+            parameters.Add("@isRecommended", addProduct.isRecommended, DbType.Boolean);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -212,6 +217,11 @@ namespace Repository
             parameters.Add("@updatedBy", updateProduct.updatedBy, DbType.Guid);
             parameters.Add("@ConcernId", updateProduct.ConcernId, DbType.Guid);
             parameters.Add("@IngredientId", updateProduct.IngredientId, DbType.Guid);
+            parameters.Add("@TypeofProductId", updateProduct.TypeofProductId, DbType.Guid);
+            parameters.Add("@StepsId", updateProduct.StepsId, DbType.Guid);
+            parameters.Add("@isNewArrial", updateProduct.isNewArrial, DbType.Boolean);
+            parameters.Add("@isBestSeller", updateProduct.isBestSeller, DbType.Boolean);
+            parameters.Add("@isRecommended", updateProduct.isRecommended, DbType.Boolean);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -349,7 +359,7 @@ namespace Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@productId", addProductImage.productId, DbType.Guid);
                 parameters.Add("@title", addProductImage.title, DbType.String);
-                parameters.Add("@image",imagePath, DbType.String);
+                parameters.Add("@image", imagePath, DbType.String);
                 parameters.Add("@createdBy", addProductImage.createdBy, DbType.Guid);
 
                 using (var connection = _dapperContext.createConnection())
@@ -498,6 +508,97 @@ namespace Repository
             }
         }
 
+        public async Task<ResponseViewModel> addAllSteps(AddStepsViewModel addSteps)
+        {
+            var procedureName = Constant.spAddSteps;
+            var parameters = new DynamicParameters();
+            parameters.Add("@name", addSteps.name, DbType.String);
+            parameters.Add("@description", addSteps.description, DbType.String);
+            parameters.Add("@@createdBy", addSteps.createdBy, DbType.Guid);
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
+
+        public async Task<ResponseViewModel> deleteAllSteps(DeleteStepsViewModel deleteSteps)
+        {
+            var procedureName = Constant.spDeleteSteps;
+            var parameters = new DynamicParameters();
+            parameters.Add("@stepsId", deleteSteps.stepsId, DbType.Guid);
+            parameters.Add("@updatedBy", deleteSteps.updatedBy, DbType.Guid);
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
+
+        public async Task<ResponseViewModel> updateAllSteps(UpdateStepsViewModel updateSteps)
+        {
+            var procedureName = Constant.spUpdateSteps;
+            var parameters = new DynamicParameters();
+            parameters.Add("@stepsId", updateSteps.stepsId, DbType.Guid);
+            parameters.Add("@name", updateSteps.name, DbType.String);
+            parameters.Add("@description", updateSteps.description, DbType.String);
+            parameters.Add("@active", updateSteps.active, DbType.Boolean);
+            parameters.Add("@updatedBy", updateSteps.updatedBy, DbType.Guid);
+
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
         public async Task<ResponseViewModel> getAllTypeofProduct()
         {
             var procedureName = Constant.spGetAllTypeofProduct;
@@ -512,6 +613,133 @@ namespace Repository
                 };
                 return spGetAllTypeofProduct;
             }
+        }
+
+        public async Task<ResponseViewModel> addTypeOfProduct(AddTypeOfProductViewModel addTypeOfProduct)
+        {
+            var response = new ResponseViewModel();
+            try
+            {
+                var procedureName = Constant.spAddTypeofProduct;
+                var parameters = new DynamicParameters();
+                parameters.Add("@name", addTypeOfProduct.name, DbType.String);
+                parameters.Add("@description", addTypeOfProduct.description, DbType.String);
+                parameters.Add("@createdBy", addTypeOfProduct.createdBy, DbType.Guid);
+
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                        procedureName,
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    if (result != null)
+                    {
+                        if (result.statusCode == 1)
+                        {
+                            result.statusCode = (int)HttpStatusCode.OK;
+                        }
+                        else
+                        {
+                            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                        }
+                        return result;
+                    }
+                    else
+                    {
+                        response.statusCode = (int)HttpStatusCode.NoContent;
+                        response.message = "No response from stored procedure.";
+                        return response;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.statusCode = (int)HttpStatusCode.InternalServerError;
+                response.message = "An error occurred: " + ex.Message;
+                return response;
+            }
+        }
+
+        public async Task<ResponseViewModel> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct)
+        {
+            var procedureName = Constant.spDeleteTypeofProduct;
+            var parameters = new DynamicParameters();
+            parameters.Add("@TypeofProductId", deleteSTypeOfProduct.TypeofProductId, DbType.Guid);
+            parameters.Add("@updatedBy", deleteSTypeOfProduct.updatedBy, DbType.Guid);
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
+        public async Task<ResponseViewModel> updateTypeOfProduct(UpdateTypeOfProductViewModel updateTypeOfProduct)
+        {
+            var response = new ResponseViewModel();
+
+            try
+            {
+                var procedureName = Constant.spUpdateTypeofProduct;
+                var parameters = new DynamicParameters();
+                parameters.Add("@TypeofProductId", updateTypeOfProduct.TypeofProductId, DbType.Guid);
+                parameters.Add("@name", updateTypeOfProduct.name, DbType.String);
+                parameters.Add("@description", updateTypeOfProduct.description, DbType.String);
+                parameters.Add("@active", updateTypeOfProduct.active, DbType.Boolean);
+                parameters.Add("@updatedBy", updateTypeOfProduct.updateddBy, DbType.Guid);
+
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryFirstOrDefaultAsync<SPResponseModel>(
+                        procedureName,
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    if (result != null)
+                    {
+                        response.statusCode = (result.statusCode == 1)
+                            ? (int)HttpStatusCode.OK
+                            : (int)HttpStatusCode.ExpectationFailed;
+                        response.message = result.message;
+                    }
+                    else
+                    {
+                        response.statusCode = (int)HttpStatusCode.NoContent;
+                        response.message = "No response from stored procedure.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.statusCode = (int)HttpStatusCode.InternalServerError;
+                response.message = "An error occurred: " + ex.Message;
+            }
+
+            return response;
+        }
+
+        // Minimal response model for SP
+        private class SPResponseModel
+        {
+            public int statusCode { get; set; }
+            public string message { get; set; }
         }
     }
 }

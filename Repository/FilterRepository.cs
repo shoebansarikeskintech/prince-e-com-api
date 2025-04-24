@@ -92,7 +92,7 @@ namespace Repository
         //        return getPrdoctSearchByFilter;
         //    }
         //}
-        public async Task<ResponseViewModel> getPrdoctSearchByFilter(FilterViewModel model)
+        public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
         {
             var procedureName = Constant.spGetPrdoctSearchByFilter;
 

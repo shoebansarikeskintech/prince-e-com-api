@@ -11,6 +11,9 @@ namespace ViewModel
         public int displayOrder { get; set; }
         [Required]
         public Guid createdBy { get; set; }
+
+        [Required]
+        public string? menuIcon { get; set; }
     }
     public class DeleteMenuViewModel
     {
@@ -35,6 +38,9 @@ namespace ViewModel
         public int displayOrder { get; set; }
         [Required]
         public Guid updatedBy { get; set; }
+
+        [Required]
+        public string? menuIcon { get; set; }
     }
 
     public class MenuByUserRoleViewModel

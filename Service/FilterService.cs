@@ -25,10 +25,10 @@ namespace Service
             return getAllFilter;
         }
 
-        public async Task<ResponseViewModel> getPrdoctSearchByFilter(FilterViewModel model)
+        public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
         {
-            var getPrdoctSearchByFilter = await _repositoryManager.filterRepository.getPrdoctSearchByFilter(model);
-            return getPrdoctSearchByFilter;
+            var getProductSearchByFilter = await _repositoryManager.filterRepository.getProductSearchByFilter(model);
+            return getProductSearchByFilter;
         }
 
      

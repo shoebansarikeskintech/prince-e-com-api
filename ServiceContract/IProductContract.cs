@@ -25,6 +25,16 @@ namespace ServiceContract
         public Task<ResponseViewModel> getByIdImage(Guid productId);
 
         public Task<ResponseViewModel> getAllSteps();
+
+        public Task<ResponseViewModel> addAllSteps(AddStepsViewModel addSteps);
+        public Task<ResponseViewModel> updateAllSteps(UpdateStepsViewModel updateSteps);
+        public Task<ResponseViewModel> deleteAllSteps(DeleteStepsViewModel deleteSteps);
+
+
         public Task<ResponseViewModel> getAllTypeofProduct();
+
+        public Task<ResponseViewModel> addTypeOfProduct(AddTypeOfProductViewModel addTypeOfProduct);
+        public Task<ResponseViewModel> updateTypeOfProduct(UpdateTypeOfProductViewModel updateTypeOfProduct);
+        public Task<ResponseViewModel> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct);
     }
 }

@@ -43,6 +43,15 @@ namespace ViewModel
         public Guid ConcernId { get; set; }
         [Required]
         public Guid IngredientId { get; set; }
+
+        [Required]
+        public Guid TypeofProductId { get; set; }
+
+        [Required]
+        public Guid StepsId { get; set; }
+        public bool isNewArrial { get; set; }
+        public bool isBestSeller { get; set; }
+        public bool isRecommended { get; set; }
     }
     public class UpdateProductViewModel
     {
@@ -81,6 +90,15 @@ namespace ViewModel
         public Guid ConcernId { get; set; }
         [Required]
         public Guid IngredientId { get; set; }
+
+        [Required]
+        public Guid TypeofProductId { get; set; }
+
+        [Required]
+        public Guid StepsId { get; set; }
+        public bool isNewArrial { get; set; }
+        public bool isBestSeller { get; set; }
+        public bool isRecommended { get; set; }
     }
     public class DeleteProductViewModel
     {
@@ -101,7 +119,7 @@ namespace ViewModel
         [Required]
         public Guid productId { get; set; }
         public string? title { get; set; }
-        [Required] 
+        [Required]
         public List<IFormFile>? image { get; set; }
         [Required]
         public Guid createdBy { get; set; }
@@ -125,6 +143,50 @@ namespace ViewModel
         [Required]
         public Guid productId { get; set; }
         [Required]
+        public Guid updatedBy { get; set; }
+    }
+
+    public class AddStepsViewModel
+    {
+        public string? name { get; set; }
+        public string? description { get; set; }
+        public Guid createdBy { get; set; }
+    }
+    public class UpdateStepsViewModel
+    {
+        [Required]
+        public Guid stepsId { get; set; }
+        public string? name { get; set; }
+        public string? description { get; set; }
+        public bool active { get; set; }
+        public Guid updatedBy { get; set; }
+    }
+
+    public class DeleteStepsViewModel
+    {
+        public Guid stepsId { get; set; }
+        public Guid updatedBy { get; set; }
+    }
+
+    public class AddTypeOfProductViewModel
+    {
+        public string? name { get; set; }
+        public string? description { get; set; }
+        public Guid? createdBy { get; set; }
+    }
+    public class UpdateTypeOfProductViewModel
+    {
+        [Required]
+        public Guid TypeofProductId { get; set; }
+        public string? name { get; set; }
+        public string? description { get; set; }
+        public bool active { get; set; }
+        public Guid? updateddBy { get; set; }
+    }
+
+    public class DeleteSTypeOfProductMdoel
+    {
+        public Guid TypeofProductId { get; set; }
         public Guid updatedBy { get; set; }
     }
 }

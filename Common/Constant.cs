@@ -109,7 +109,13 @@ namespace Common
         public static string spDeleteProduct = "SpDeleteProduct";
         public static string spGetAllImageById = "SpGetAllImageById";
         public static string spGetAllSteps = "SpGetAllSteps";
+        public static string spAddSteps = "SpAddSteps";
+        public static string spUpdateSteps = "SpUpdateSteps";
+        public static string spDeleteSteps = "SpDeleteSteps";
         public static string spGetAllTypeofProduct = "SpGetAllTypeofProduct";
+        public static string spAddTypeofProduct = "SpAddTypeofProduct";
+        public static string spDeleteTypeofProduct = "SpDeleteTypeofProduct";
+        public static string spUpdateTypeofProduct = "SpUpdateTypeofProduct";
 
         public static string spGetByIdProductImage = "SpGetByIdProductImage";
         public static string spGetAllProductImage = "SpGetAllProductImage";

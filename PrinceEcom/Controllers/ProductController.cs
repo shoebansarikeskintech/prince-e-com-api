@@ -203,6 +203,35 @@ namespace PrinceEcom.Controllers
             return Ok(getAllSteps);
         }
 
+
+
+        [HttpPost("addAllSteps")]
+        [Authorize]
+        public async Task<IActionResult> addAllSteps(AddStepsViewModel addSteps)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} addAllSteps");
+            var add = await _serviceManager.productContract.addAllSteps(addSteps);
+            return Ok(add);
+        }
+
+        [HttpPost("updateAllSteps")]
+        [Authorize]
+        public async Task<IActionResult> updateAllSteps(UpdateStepsViewModel updateSteps)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} updateSteps");
+            var update = await _serviceManager.productContract.updateAllSteps(updateSteps);
+            return Ok(update);
+        }
+
+        [HttpPost("deleteAllSteps")]
+        [Authorize]
+        public async Task<IActionResult> deleteAllSteps(DeleteStepsViewModel deleteSteps)
+        {
+            _logger.logInfo($" {LoggingEvents.deleteItem} deleteProduct");
+            var delete = await _serviceManager.productContract.deleteAllSteps(deleteSteps);
+            return Ok(delete);
+        }
+
         [HttpGet("getAllTypeofProduct")]
         public async Task<IActionResult> getAllTypeofProduct()
         {
@@ -213,6 +242,35 @@ namespace PrinceEcom.Controllers
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
             }
             return Ok(getAllTypeofProduct);
+        }
+
+
+
+        [HttpPost("addTypeOfProduct")]
+        [Authorize]
+        public async Task<IActionResult> addTypeOfProduct(AddTypeOfProductViewModel addTypeOfProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} addTypeOfProduct");
+            var add = await _serviceManager.productContract.addTypeOfProduct(addTypeOfProduct);
+            return Ok(add);
+        }
+
+        [HttpPost("updateTypeOfProduct")]
+        [Authorize]
+        public async Task<IActionResult> updateTypeOfProduct(UpdateTypeOfProductViewModel updateTypeOfProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} updateTypeOfProduct");
+            var update = await _serviceManager.productContract.updateTypeOfProduct(updateTypeOfProduct);
+            return Ok(update);
+        }
+
+        [HttpPost("deleteTypeOfProduct")]
+        [Authorize]
+        public async Task<IActionResult> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.deleteItem} deleteTypeOfProduct");
+            var delete = await _serviceManager.productContract.deleteTypeOfProduct(deleteSTypeOfProduct);
+            return Ok(delete);
         }
 
     }

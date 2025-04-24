@@ -11,8 +11,13 @@ namespace Model
         public record RegistrationValidation(Int32 statusCode, string message);
 
         public record AppRole(Guid appRoleId, string roleName);
-
-        public record Menu(Guid menuId, string menuName, string menuIcon);
+        public class Menu
+        {
+            public long id { get; set; }
+            public Guid menuId { get; set; }
+            public string? menuName { get; set; }
+            public string? menuIcon { get; set; }
+        }
 
         public record MenuByUserRole(int id, string menuName, string actionName, string controllerName, string pageName,
             int displayOrder, string roleName);
@@ -25,7 +30,7 @@ namespace Model
     string subMenuName,
     string subMenuPageName,
     int displayOrder,
-    string createdDate,   // 👈 string किया गया
+    string createdDate,   
     Guid createdBy,
     string Status,
     bool active);
@@ -92,7 +97,12 @@ namespace Model
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
             DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId);
 
-
+        public record AllProduct(
+    Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
+    Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid brandId, string brandName,
+    Guid colorId, string colorName, string colorCode, Guid sizeId, string sizeName, string sizeCode, string productName,
+    string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
+    DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId,Guid TypeofProductId, Guid StepsId, bool isNewArrial,bool isBestSeller,bool isRecommended);
         public record AllSteps(
             Int64 id, Guid StepsId, string name, string description, DateTime createdDate, string status, bool active);
 
@@ -327,7 +337,7 @@ namespace Model
             Guid userId, string username, string firstName, string middleName, string lastName, string email, string phoneNumber, DateTime createdDate);
 
         public record Address(
-            long id, Guid addressId, int isDefualt, string name, string mobile, string email, string streetAddress, string state, string city, string pincode, string country, DateTime createdDate, string Status, bool active, string city_Name, string state_Name, string country_Name);
+            long id, Guid addressId, bool isDefualt, string name, string mobile, string email, string streetAddress, string state, string city, string pincode, string country, DateTime createdDate, string Status, bool active, string city_Name, string state_Name, string country_Name);
 
         public record CartItemCount
         {

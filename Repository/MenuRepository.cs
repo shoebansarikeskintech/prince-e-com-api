@@ -30,23 +30,50 @@ namespace Repository
                 return getbyIdMenu;
             }
         }
-
         public async Task<ResponseViewModel> getAllMenu()
         {
             var procedureName = Constant.spGetAllMenu;
-
-            using (var connection = _dapperContext.createConnection())
+            try
             {
-                var result = await connection.QueryAsync<Menu>(procedureName, null, commandType: CommandType.StoredProcedure);
-                var getAllMenu = new ResponseViewModel
+                using (var connection = _dapperContext.createConnection())
                 {
-                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
-                    data = result
+                    var result = await connection.QueryAsync<Menu>(procedureName, null, commandType: CommandType.StoredProcedure);
+                    var getAllMenu = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+                    return getAllMenu;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error: {ex.Message}",
+                    data = null
                 };
-                return getAllMenu;
             }
         }
+
+        //public async Task<ResponseViewModel> getAllMenu()
+        //{
+        //    var procedureName = Constant.spGetAllMenu;
+
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryAsync<Menu>(procedureName, null, commandType: CommandType.StoredProcedure);
+        //        var getAllMenu = new ResponseViewModel
+        //        {
+        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+        //            message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+        //            data = result
+        //        };
+        //        return getAllMenu;
+        //    }
+        //}
         public async Task<ResponseViewModel> getMenuByUserRole(string userName)
         {
             var procedureName = Constant.spGetMenuByUserRole;
@@ -71,6 +98,7 @@ namespace Repository
             parameters.Add("@menuName", addMenuViewModel.menuName, DbType.String);
             parameters.Add("@displayOrder", addMenuViewModel.displayOrder, DbType.Int32);
             parameters.Add("@createdBy", addMenuViewModel.createdBy, DbType.Guid);
+            parameters.Add("@menuIcon", addMenuViewModel.menuIcon, DbType.String);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -105,6 +133,7 @@ namespace Repository
             parameters.Add("@actionName", updateMenuViewModel.actionName, DbType.String);
             parameters.Add("@displayOrder", updateMenuViewModel.displayOrder, DbType.Int32);
             parameters.Add("@updatedBy", updateMenuViewModel.updatedBy, DbType.Guid);
+            parameters.Add("@menuIcon", updateMenuViewModel.menuIcon, DbType.String);
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
