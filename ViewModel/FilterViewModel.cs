@@ -51,10 +51,11 @@ namespace ViewModel
         public string? Skintype { get; set; }
         public string? SkinSensitive { get; set; }
         public Guid updatedBy { get; set; }
+        public bool active { get; set; }
     }
     public class DeleteSkinInsightProductViewModel
     {
-        public Guid? skininsightproductId { get; set; }
+        public Guid skininsightproductId { get; set; }
         public Guid updatedBy { get; set; }
     }
 }

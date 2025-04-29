@@ -11,7 +11,7 @@ namespace RepositoryContract
         public Task<ResponseViewModel> getIsRecommended();
         public Task<ResponseViewModel> getIsNewArrial();
         public Task<ResponseViewModel> getAllProductForUser();
-        public Task<ResponseViewModel> getAllProductDetails(Guid productId);
+        public Task<ResponseViewModel> getAllProductDetails(Int32 id);
         public Task<ResponseViewModelProduct> addProduct(AddProductViewModel addProduct);
         public Task<ResponseViewModel> updateProduct(UpdateProductViewModel updateProduct);
         public Task<ResponseViewModel> deleteProduct(DeleteProductViewModel deleteProduct);

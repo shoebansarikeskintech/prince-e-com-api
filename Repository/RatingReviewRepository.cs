@@ -184,6 +184,7 @@ namespace Repository
             parameters.Add("@Title", addFAQ.Title, DbType.String);
             parameters.Add("@Description", addFAQ.Description, DbType.String);
             parameters.Add("@createdBy", addFAQ.createdBy, DbType.Guid);
+            parameters.Add("@faqType", addFAQ.faqType, DbType.String);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -239,6 +240,7 @@ namespace Repository
             parameters.Add("@Description", updateFAQ.Description, DbType.String);         
             parameters.Add("@active", updateFAQ.active, DbType.Boolean);         
             parameters.Add("@updatedBy", updateFAQ.updatedBy, DbType.Guid);
+            parameters.Add("@faqType", updateFAQ.faqType, DbType.String);
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);

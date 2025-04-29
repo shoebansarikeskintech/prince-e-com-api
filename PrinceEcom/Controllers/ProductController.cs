@@ -101,10 +101,10 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpGet("getAllProductDetails")]
-        public async Task<IActionResult> getAllProductDetails(Guid productId)
+        public async Task<IActionResult> getAllProductDetails(Int32 id)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllProductDetails");
-            var getAllProductDetails = await _serviceManager.productContract.getAllProductDetails(productId);
+            var getAllProductDetails = await _serviceManager.productContract.getAllProductDetails(id);
             if (getAllProductDetails.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Details Found");

@@ -96,17 +96,56 @@ namespace Model
 
         public record Product(
             Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
-            Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid brandId, string brandName,
-            Guid colorId, string colorName, string colorCode, Guid sizeId, string sizeName, string sizeCode, string productName,
+            Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid stepsId, string stepsName,
+            Guid typeOfProductId, string typeOfProductIdName, Guid sizeId, string sizeName, string sizeCode, string productName,
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
             DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId);
-
         public record AllProduct(
-    Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
-    Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid brandId, string brandName,
-    Guid colorId, string colorName, string colorCode, Guid sizeId, string sizeName, string sizeCode, string productName,
-    string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-    DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId, Guid TypeofProductId, Guid StepsId, bool isNewArrial, bool isBestSeller, bool isRecommended);
+    Int64 id,
+    Guid productId,
+    Guid categoryId,
+    string categoryName,
+    Guid subCategoryId,
+    string subCategoryName,
+    Guid subCategoryTypeId,
+    string subCategoryTypeName,
+    Guid sellerId,
+    string sellerName,
+    Guid sizeId,
+    string sizeName,
+    string sizeCode,
+    string productName,
+    string subName,
+    string description,
+    Int32 rating,
+    Int32 noOfRating,
+    Int32 stock,
+    Decimal price,
+    Decimal discountPrice,
+    DateTime createdDate,
+    DateTime updatedDate,
+    string status,
+    bool active,
+    string imageUrl,
+    string concernName,
+    string ingredientName,
+    Guid concernId,
+    Guid ingredientId,
+    bool isNewArrial,
+    bool isBestSeller,
+    bool isRecommended,
+    Guid stepsId,
+    string stepsName,
+    Guid typeOfProductId,
+    string typeOfProductName
+);
+
+        //    public record AllProduct(
+        //Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
+        //Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName,Guid sizeId, string sizeName, string sizeCode, string productName,
+        //string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
+        //DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId, Guid TypeofProductId, Guid StepsId, bool isNewArrial, bool isBestSeller, bool isRecommended,
+        //Guid stepsId,string stepsName,Guid typeOfProductId,string typeOfProductName);
         public record AllSteps(
             Int64 id, Guid StepsId, string name, string description, DateTime createdDate, string status, bool active);
 
@@ -158,10 +197,9 @@ namespace Model
         }
 
         public record ProductDetails(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
-            Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid brandId, string brandName,
-            Guid colorId, string colorName, string colorCode, Guid sizeId, string sizeName, string sizeCode, string productName,
+            Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid sizeId, string sizeName, string sizeCode, string productName,
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-            DateTime createdDate, DateTime updatedDate, String status, bool active, string image, string concernName, string ingredientName);
+            DateTime createdDate, DateTime updatedDate, String status, bool active, string image, string concernName, string ingredientName,Guid stepsId,string stepsName,Guid typeOfProductId,string typeOfProductName);
         public record ProductImage(Int64 id, Guid productImageId, Guid productId, string title, string imageUrl, DateTime createdDate);
         public record Discount(Int64 id, Guid discountId, Guid productId, string code, string discountType, Decimal discount,
             Decimal productAmount, DateTime validDate, DateTime expireDate, DateTime createdDate, string Status);
@@ -375,8 +413,8 @@ Guid skininsightproductId,
 
         public record RatingRiview(long id, string username, string description, int like, int dislike, DateTime createdDate, DateTime updatedDate, bool active, string title);
 
-        public record RatingRiviewByProductId(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate,string Status, bool active);
-        public record Faq(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active);
+        public record RatingRiviewByProductId(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate,string Status, bool active,string faqType);
+        public record Faq(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active,string faqType);
 
         public record ProductSpecification(long id, Guid ProductSpecificationid, Guid productId, string producttype, string netquantity, string shelfLife, string countryOfOrigin, string SKUcode, Guid ManufacturedBy, string ConsumerCareAddress, Guid CreatedBy, string CreatedDate, Guid updatedBy, string updatedDate, string status, bool active);
 

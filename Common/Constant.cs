@@ -101,6 +101,7 @@ namespace Common
 
         public static string spGetAllProductFAQbyProductId = "SpGetAllProductFAQbyProductId";
         public static string spGetAllProductSpecificationByPacakageId = "SpGetAllProductSpecificationByPacakageId";
+        public static string spGetAllSkinInsightByProductId = "SpGetAllSkinInsightByProductId";
 
         public static string spGetByIdProduct = "SpGetByIdProduct";
         public static string spGetAllProduct = "SpGetAllProduct";
@@ -196,6 +197,9 @@ namespace Common
         public static string spGetProductSearchByFilter = "SpGetProductSearchByFilter";
         public static string spGetProductSearchByFilterNew = "SpGetProductSearchByFilterNew";
         public static string spGetAllSkinInsightProduct = "SpGetAllSkinInsightProduct";
+        public static string spAddSkinInsightProduct = "SpAddSkinInsightProduct";
+        public static string spUpdateSkinInsightProduct = "SpUpdateSkinInsightProduct";
+        public static string spDeleteSkinInsightProduct = "SpDeleteSkinInsightProduct";
 
         public static string spGetAllAppUser = "SpGetAllAppUser";
         public static string spGetAllOrderByUserId = "SpGetAllOrderByUserId";

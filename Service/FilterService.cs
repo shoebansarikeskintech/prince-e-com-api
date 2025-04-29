@@ -41,19 +41,22 @@ namespace Service
             return getAllSkinInsightProduct;
         }
 
-        public Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
+        public async Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
         {
-            throw new NotImplementedException();
+            var add = await _repositoryManager.filterRepository.addSkinInsightProduct(addSkinInsightProduct);
+            return add;
         }
 
-        public Task<ResponseViewModel> deleteSkinInsightProduct(DeleteSkinInsightProductViewModel deleteSkinInsightProduct)
+        public async Task<ResponseViewModel> updateSkinInsightProduct(UpdateSkinInsightProductViewModel updateSkinInsightProduct)
         {
-            throw new NotImplementedException();
+            var update = await _repositoryManager.filterRepository.updateSkinInsightProduct(updateSkinInsightProduct);
+            return update;
         }
 
-        public Task<ResponseViewModel> updateSkinInsightProduct(UpdateSkinInsightProductViewModel updateSkinInsightProduct)
+        public async Task<ResponseViewModel> deleteSkinInsightProduct(DeleteSkinInsightProductViewModel deleteSkinInsightProduct)
         {
-            throw new NotImplementedException();
+            var delete = await _repositoryManager.filterRepository.deleteSkinInsightProduct(deleteSkinInsightProduct);
+            return delete;
         }
     }    
 }

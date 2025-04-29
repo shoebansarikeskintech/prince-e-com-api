@@ -92,6 +92,7 @@ namespace Repository
             var procedureName = Constant.spGetByIdProduct;
             var procedureFAQ = Constant.spGetAllProductFAQbyProductId;
             var procedureSpecification = Constant.spGetAllProductSpecificationByPacakageId;
+            var SkinInsight = Constant.spGetAllSkinInsightByProductId;
 
             var parameters = new DynamicParameters();
             parameters.Add("@productId", productId, DbType.Guid);
@@ -149,7 +150,13 @@ namespace Repository
                         IngredientId = p.IngredientId,
                         imageUrls = result.Select(x => x.ImageUrl).ToList()
                     })
-                    .FirstOrDefault();   
+                    .FirstOrDefault();
+
+
+                // 5) Fetch Specifications
+                var skin = (await connection
+                    .QueryAsync<AllSkinInsightProduct>(SkinInsight, parameters, commandType: CommandType.StoredProcedure))
+                    .ToList();
 
                 var response = new ResponseViewModel
                 {
@@ -160,7 +167,8 @@ namespace Repository
                                  {
                                      productDetail = product,   // ← singular name
                                      FAQ = faqList,   // ← array
-                                     Specification = specList   // ← array
+                                     Specification = specList,   // ← array
+                                     skin = skin   // ← array
                                  }
                                  : null
                 };
@@ -169,21 +177,51 @@ namespace Repository
             }
         }
 
+        //public async Task<ResponseViewModel> getAllProduct()
+        //{
+        //    var procedureName = Constant.spGetAllProduct;
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryAsync<AllProduct>(procedureName, null, commandType: CommandType.StoredProcedure);
+        //        var getAllProduct = new ResponseViewModel
+        //        {
+        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+        //            message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+        //            data = result
+        //        };
+        //        return getAllProduct;
+        //    }
+        //}
+
         public async Task<ResponseViewModel> getAllProduct()
         {
             var procedureName = Constant.spGetAllProduct;
-            using (var connection = _dapperContext.createConnection())
+
+            try
             {
-                var result = await connection.QueryAsync<AllProduct>(procedureName, null, commandType: CommandType.StoredProcedure);
-                var getAllProduct = new ResponseViewModel
+                using (var connection = _dapperContext.createConnection())
                 {
-                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
-                    data = result
+                    var result = await connection.QueryAsync<AllProduct>(procedureName, null, commandType: CommandType.StoredProcedure);
+                    var getAllProduct = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+                    return getAllProduct;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error occurred: {ex.Message}",
+                    data = null
                 };
-                return getAllProduct;
             }
         }
+
 
         public async Task<ResponseViewModel> getBestSeller()
         {
@@ -247,13 +285,13 @@ namespace Repository
                 return getAllProductForUser;
             }
         }
-        public async Task<ResponseViewModel> getAllProductDetails(Guid productId)
+        public async Task<ResponseViewModel> getAllProductDetails(Int32 id)
         {
             var procedureName = Constant.spGetAllProductDetails;
             using (var connection = _dapperContext.createConnection())
             {
                 var parameters = new DynamicParameters();
-                parameters.Add("@productId", productId, DbType.Guid);
+                parameters.Add("@id", id, DbType.Int32);
                 var result = await connection.QueryAsync<ProductDetails>(procedureName, parameters, commandType: CommandType.StoredProcedure);
                 var getAllProductForUser = new ResponseViewModel
                 {
@@ -272,26 +310,24 @@ namespace Repository
             parameters.Add("@categoryId", addProduct.categoryId, DbType.Guid);
             parameters.Add("@subCategoryId", addProduct.subCategoryId, DbType.Guid);
             parameters.Add("@subCategoryTypeId", addProduct.subCategoryTypeId, DbType.Guid);
-            parameters.Add("@sellerId", addProduct.sellerId, DbType.Guid);
-            parameters.Add("@brandId", addProduct.brandId, DbType.Guid);
-            parameters.Add("@colorId", addProduct.colorId, DbType.Guid);
+            parameters.Add("@sellerId", addProduct.sellerId, DbType.Guid);          
             parameters.Add("@sizeId", addProduct.sizeId, DbType.Guid);
             parameters.Add("@title", addProduct.title, DbType.String);
             parameters.Add("@subTitle", addProduct.subTitle, DbType.String);
+            parameters.Add("@description", addProduct.description, DbType.String);
             parameters.Add("@rating", addProduct.rating, DbType.Int32);
             parameters.Add("@noOfRating", addProduct.noOfRating, DbType.Int32);
             parameters.Add("@stock", addProduct.stock, DbType.Int32);
             parameters.Add("@price", addProduct.price, DbType.Decimal);
-            parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);
-            parameters.Add("@description", addProduct.description, DbType.String);
+            parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);          
             parameters.Add("@createdBy", addProduct.createdBy, DbType.Guid);
             parameters.Add("@ConcernId", addProduct.ConcernId, DbType.Guid);
             parameters.Add("@IngredientId", addProduct.IngredientId, DbType.Guid);
             parameters.Add("@TypeofProductId", addProduct.TypeofProductId, DbType.Guid);
             parameters.Add("@StepsId", addProduct.StepsId, DbType.Guid);
-            parameters.Add("@isNewArrial", addProduct.isNewArrial, DbType.Boolean);
-            parameters.Add("@isBestSeller", addProduct.isBestSeller, DbType.Boolean);
-            parameters.Add("@isRecommended", addProduct.isRecommended, DbType.Boolean);
+            parameters.Add("@isNewArrial", addProduct.isNewArrial ? 1 : 0, DbType.Boolean);
+            parameters.Add("@isBestSeller", addProduct.isBestSeller ? 1 : 0, DbType.Boolean);
+            parameters.Add("@isRecommended", addProduct.isRecommended ? 1 : 0, DbType.Boolean);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -331,8 +367,6 @@ namespace Repository
             parameters.Add("@subCategoryId", updateProduct.subCategoryId, DbType.Guid);
             parameters.Add("@subCategoryTypeId", updateProduct.subCategoryTypeId, DbType.Guid);
             parameters.Add("@sellerId", updateProduct.sellerId, DbType.Guid);
-            parameters.Add("@brandId", updateProduct.brandId, DbType.Guid);
-            parameters.Add("@colorId", updateProduct.colorId, DbType.Guid);
             parameters.Add("@sizeId", updateProduct.sizeId, DbType.Guid);
             parameters.Add("@title", updateProduct.title, DbType.String);
             parameters.Add("@subTitle", updateProduct.subTitle, DbType.String);
@@ -348,9 +382,9 @@ namespace Repository
             parameters.Add("@IngredientId", updateProduct.IngredientId, DbType.Guid);
             parameters.Add("@TypeofProductId", updateProduct.TypeofProductId, DbType.Guid);
             parameters.Add("@StepsId", updateProduct.StepsId, DbType.Guid);
-            parameters.Add("@isNewArrial", updateProduct.isNewArrial, DbType.Boolean);
-            parameters.Add("@isBestSeller", updateProduct.isBestSeller, DbType.Boolean);
-            parameters.Add("@isRecommended", updateProduct.isRecommended, DbType.Boolean);
+            parameters.Add("@isNewArrial", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
+            parameters.Add("@isBestSeller", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
+            parameters.Add("@isRecommended", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
 
             using (var connection = _dapperContext.createConnection())
             {

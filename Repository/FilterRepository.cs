@@ -186,6 +186,106 @@ namespace Repository
             }
         }
 
+        public async Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
+        {
+            var procedureName = Constant.spAddSkinInsightProduct;
+            var parameters = new DynamicParameters();
+            parameters.Add("@productId", addSkinInsightProduct.productId, DbType.Guid);
+            parameters.Add("@Age", addSkinInsightProduct.Age, DbType.String);
+            parameters.Add("@Gender", addSkinInsightProduct.Gender, DbType.String);
+            parameters.Add("@Skintype", addSkinInsightProduct.Skintype, DbType.String);
+            parameters.Add("@SkinSensitive", addSkinInsightProduct.SkinSensitive, DbType.String);            
+            parameters.Add("@createdBy", addSkinInsightProduct.createdBy, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
 
+        public async Task<ResponseViewModel> updateSkinInsightProduct(UpdateSkinInsightProductViewModel updateSkinInsightProduct)
+        {
+            var procedureName = Constant.spUpdateSkinInsightProduct;
+            var parameters = new DynamicParameters();
+            parameters.Add("@skininsightproductId", updateSkinInsightProduct.skininsightproductId, DbType.Guid);
+            parameters.Add("@Age", updateSkinInsightProduct.Age, DbType.String);
+            parameters.Add("@Gender", updateSkinInsightProduct.Gender, DbType.String);
+            parameters.Add("@Skintype", updateSkinInsightProduct.Skintype, DbType.String);
+            parameters.Add("@SkinSensitive", updateSkinInsightProduct.SkinSensitive, DbType.String);                 
+            parameters.Add("@updatedBy", updateSkinInsightProduct.updatedBy, DbType.Guid);
+            parameters.Add("@active", updateSkinInsightProduct.active ? 1 : 0, DbType.Boolean);
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                return result;
+            }
+        }
+        public async Task<ResponseViewModel> deleteSkinInsightProduct(DeleteSkinInsightProductViewModel deleteSkinInsightProduct)
+        {
+            var response = new ResponseViewModel();
+
+            try
+            {
+                var procedureName = Constant.spDeleteSkinInsightProduct;
+                var parameters = new DynamicParameters();
+                parameters.Add("@skininsightproductId", deleteSkinInsightProduct.skininsightproductId, DbType.Guid);
+                parameters.Add("@updatedBy", deleteSkinInsightProduct.updatedBy, DbType.Guid);
+
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                        procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    if (result != null)
+                    {
+                        response.statusCode = result.statusCode == 1 ? (int)HttpStatusCode.OK : (int)HttpStatusCode.ExpectationFailed;
+                        response.message = result.message;
+                    }
+                    else
+                    {
+                        response.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                        response.message = "No response from procedure.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.statusCode = (int)HttpStatusCode.InternalServerError;
+                response.message = $"Exception: {ex.Message}";
+            }
+
+            return response;
+        }
     }
 }

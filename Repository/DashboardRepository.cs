@@ -6,6 +6,7 @@ using System.Data;
 using System.Net;
 using ViewModel;
 using Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Repository
 {
@@ -31,6 +32,7 @@ namespace Repository
                 return getAllBannerForUser;
             }
         }
+       
 
         public async Task<ResponseViewModel> getAllCategories()
         {

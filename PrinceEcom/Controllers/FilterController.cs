@@ -82,5 +82,30 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllSortBy);
         }
+
+        //------
+        [HttpPost("addSkinInsightProduct")]
+        public async Task<IActionResult> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} addSkinInsightProduct");
+            var add = await _serviceManager.filterContract.addSkinInsightProduct(addSkinInsightProduct);
+            return Ok(add);
+        }
+
+        [HttpPost("updateSkinInsightProduct")]
+        public async Task<IActionResult> updateSkinInsightProduct(UpdateSkinInsightProductViewModel updateSkinInsightProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} updateSkinInsightProduct");
+            var update = await _serviceManager.filterContract.updateSkinInsightProduct(updateSkinInsightProduct);
+            return Ok(update);
+        }
+
+        [HttpPost("deleteSkinInsightProduct")]
+        public async Task<IActionResult> deleteSkinInsightProduct(DeleteSkinInsightProductViewModel deleteSkinInsightProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.deleteItem} deleteShipping");
+            var delete = await _serviceManager.filterContract.deleteSkinInsightProduct(deleteSkinInsightProduct);
+            return Ok(delete);
+        }
     }
 }

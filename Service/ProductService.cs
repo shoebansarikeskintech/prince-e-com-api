@@ -47,9 +47,9 @@ namespace Service
             return getAllProductForUser;
         }
 
-        public async Task<ResponseViewModel> getAllProductDetails(Guid productId)
+        public async Task<ResponseViewModel> getAllProductDetails(Int32 id)
         {
-            var getAllProductDetails = await _repositoryManager.productRepository.getAllProductDetails(productId);
+            var getAllProductDetails = await _repositoryManager.productRepository.getAllProductDetails(id);
             return getAllProductDetails;
         }
 

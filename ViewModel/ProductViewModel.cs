@@ -14,10 +14,7 @@ namespace ViewModel
         public Guid subCategoryTypeId { get; set; }
         [Required]
         public Guid sellerId { get; set; }
-        [Required]
-        public Guid brandId { get; set; }
-        [Required]
-        public Guid colorId { get; set; }
+
         [Required]
         public Guid sizeId { get; set; }
         [Required]

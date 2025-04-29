@@ -12,5 +12,10 @@ namespace RepositoryContract
         public Task<ResponseViewModel> getProductSearchByFilterNew(FilterViewModelNew model);
         public Task<ResponseViewModel> getAllSkinInsightProduct();
 
+        public Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct);
+        public Task<ResponseViewModel> deleteSkinInsightProduct(DeleteSkinInsightProductViewModel deleteSkinInsightProduct);
+
+        public Task<ResponseViewModel> updateSkinInsightProduct(UpdateSkinInsightProductViewModel updateSkinInsightProduct);
+
     }
 }
