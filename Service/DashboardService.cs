@@ -29,5 +29,11 @@ namespace Service
             var getAllSubCategory = await _repositoryManager.dashboardRepository.getShopByCategory();
             return getAllSubCategory;
         }
+
+        public async Task<ResponseViewModel> getAllCategoriesNew()
+        {
+            var getAllSubCategory = await _repositoryManager.dashboardRepository.getAllCategoriesNew();
+            return getAllSubCategory;
+        }
     }
 }

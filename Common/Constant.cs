@@ -99,9 +99,14 @@ namespace Common
         public static string spUpdateSize = "SpUpdateSize";
         public static string spDeleteSize = "SpDeleteSize";
 
+        public static string spGetAllProductFAQbyProductId = "SpGetAllProductFAQbyProductId";
+        public static string spGetAllProductSpecificationByPacakageId = "SpGetAllProductSpecificationByPacakageId";
+
         public static string spGetByIdProduct = "SpGetByIdProduct";
         public static string spGetAllProduct = "SpGetAllProduct";
-        public static string spGetBestSeller = "SpGetBestSeller";
+        public static string spGetBestSeller = "spGetBestSeller";
+        public static string spGetisRecommended = "SpGetisRecommended";
+        public static string spGetIsNewArrial = "SpGetIsNewArrial";
         public static string spGetAllProductForUser = "SpGetAllProductForUser";
         public static string spGetAllProductDetails = "SpGetAllProductDetails";
         public static string spAddProduct = "SpAddProduct";
@@ -188,7 +193,9 @@ namespace Common
 
         public static string spGetAllBannerForUser = "SpGetAllBannerForUser";
         public static string spGetSortBy = "SpGetSortBy";
-        public static string spGetPrdoctSearchByFilter = "SpGetPrdoctSearchByFilter";
+        public static string spGetProductSearchByFilter = "SpGetProductSearchByFilter";
+        public static string spGetProductSearchByFilterNew = "SpGetProductSearchByFilterNew";
+        public static string spGetAllSkinInsightProduct = "SpGetAllSkinInsightProduct";
 
         public static string spGetAllAppUser = "SpGetAllAppUser";
         public static string spGetAllOrderByUserId = "SpGetAllOrderByUserId";
@@ -230,8 +237,20 @@ namespace Common
 
         public static string spAddRatingReview = "SpAddRatingReview";
         public static string spGetRatingReview = "SpGetRatingReview";
+        public static string spGetProductFAQByProductId = "SpGetProductFAQByProductId";
         public static string sp_GetRatingPercentage = "sp_GetRatingPercentage";
         public static string spUpdateRatingReview = "SpUpdateRatingReview";
+
+        public static string spGetAllProductFAQ = "SpGetAllProductFAQ";
+        public static string spAddProductFAQ = "SpAddProductFAQ";
+        public static string spUpdateProductFAQ = "SpUpdateProductFAQ";
+        public static string spDeleteProductFAQ = "SpDeleteProductFAQ";
+
+
+        public static string spGetAllProductSpecification = "SpGetAllProductSpecification";
+        public static string spAddProductSpecification = "SpAddProductSpecification";
+        public static string spUpdateProductSpecification = "SpUpdateProductSpecification";
+        public static string spDeleteProductSpecification = "SpDeleteProductSpecification";
 
         public static string spGetAllPinCodeshipping = "SpGetAllPinCodeshipping";
         public static string spAddPinCodeshipping = "SpAddPinCodeshipping";

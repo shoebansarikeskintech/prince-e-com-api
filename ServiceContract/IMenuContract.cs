@@ -10,7 +10,7 @@ namespace ServiceContract
     public interface IMenuContract
     {
         public Task<ResponseViewModel> getByIdMenu(Guid id);
-        public Task<ResponseViewModel> getAllMenu();
+        public Task<ResponseViewModel> getAllMenu(Int64 type);
         public Task<ResponseViewModel> addMenu(AddMenuViewModel addMenuViewModel);
         public Task<ResponseViewModel> updateMenu(UpdateMenuViewModel updateMenuViewModel);
         public Task<ResponseViewModel> deleteMenu(DeleteMenuViewModel deleteMenuViewModel);

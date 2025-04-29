@@ -47,12 +47,39 @@ namespace PrinceEcom.Controllers
             return Ok(getAllProduct);
         }
 
-        [HttpGet("getBestSeller")]
+        [HttpGet("getIsBestSellerProduct")]
         [Authorize]
-        public async Task<IActionResult> getBestSeller()
+        public async Task<IActionResult> getIsBestSellerProduct()
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
-            var getAllProduct = await _serviceManager.productContract.getAllProduct();
+            var getAllProduct = await _serviceManager.productContract.getBestSeller();
+            if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+            }
+            return Ok(getAllProduct);
+        }
+
+
+        [HttpGet("getAllIsRecommendedProduct")]
+        [Authorize]
+        public async Task<IActionResult> getAllIsRecommendedProduct()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
+            var getAllProduct = await _serviceManager.productContract.getIsRecommended();
+            if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+            }
+            return Ok(getAllProduct);
+        }
+
+        [HttpGet("getAllIsNewArrialProduct")]
+        [Authorize]
+        public async Task<IActionResult> getAllIsNewArrialProduct()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllIsNewArrialProduct");
+            var getAllProduct = await _serviceManager.productContract.getIsNewArrial();
             if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");

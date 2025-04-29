@@ -14,5 +14,21 @@ namespace RepositoryContract
 
         public Task<ResponseViewModel> addRatingReview(RatingReviewViewModel addRatingReview);
         public Task<ResponseViewModel> updateRatinReview(UpdateReviewRatingViewModel updateRatingReview);
+
+        public Task<ResponseViewModel> getAllFAQ();
+
+        public Task<ResponseViewModel> getAllFAQByProductId(Guid productId);
+
+        public Task<ResponseViewModel> addFAQ(AddFAQViewModel addFAQ);
+        public Task<ResponseViewModel> updateFAQ(UpdateFAQViewModel updateFAQ);
+
+        public Task<ResponseViewModel> deleteFAQ(DeleteFAQViewModel deleteFAQ);
+
+        public Task<ResponseViewModel> getProductSpecification();
+
+        public Task<ResponseViewModel> addProductSpecification(AddProductSpecificationViewModel addProductSpecification);
+        public Task<ResponseViewModel> updateProductSpecification(UpdateProductSpecificationViewModel updateProductSpecification);
+
+        public Task<ResponseViewModel> deleteProductSpecification(DeleteProductSpecificationViewModel deleteProductSpecification);
     }
 }

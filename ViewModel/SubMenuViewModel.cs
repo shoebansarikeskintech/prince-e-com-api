@@ -41,5 +41,7 @@ namespace ViewModel
         public int displayOrder { get; set; }
         [Required]
         public Guid updatedBy { get; set; }
+        public bool active { get; set; }
+
     }
 }

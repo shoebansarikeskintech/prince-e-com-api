@@ -94,17 +94,28 @@ namespace Repository
             parameters.Add("@subMenuPageName", updateSubMenuViewModel.subMenuPageName, DbType.String);
             parameters.Add("@displayOrder", updateSubMenuViewModel.displayOrder, DbType.Int32);
             parameters.Add("@updatedBy", updateSubMenuViewModel.updatedBy, DbType.Guid);
+            parameters.Add("@active", updateSubMenuViewModel.active, DbType.Boolean);
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                if (result.statusCode == 0)
+                if (result.statusCode == 1)
                 {
-                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.statusCode = (int)HttpStatusCode.OK; // 200
                 }
                 else
                 {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed; // 417
                 }
+
+
+                //if (result.statusCode == 0)
+                //{
+                //    result.statusCode = (int)HttpStatusCode.OK;
+                //}
+                //else
+                //{
+                //    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                //}
                 return result;
             }
         }
@@ -117,13 +128,21 @@ namespace Repository
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                if (result.statusCode == 0)
+                //if (result.statusCode == 0)
+                //{
+                //    result.statusCode = (int)HttpStatusCode.OK;
+                //}
+                //else
+                //{
+                //    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                //}
+                if (result.statusCode == 1)
                 {
-                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.statusCode = (int)HttpStatusCode.OK; // 200
                 }
                 else
                 {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed; // 417
                 }
                 return result;
             }

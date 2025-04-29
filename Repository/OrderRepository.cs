@@ -334,18 +334,5 @@ namespace Repository
             return response;
         }
 
-
-        //using (var connection = _dapperContext.createConnection())
-        //{
-        //    var result = await connection.QueryAsync<Order>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-        //    var getAllPendngOrder = new ResponseViewModel
-        //    {
-        //        statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-        //        message = result.Count() == 0 ? "Data Not Found" : "Data Found",
-        //        data = result
-        //    };
-        //    return getAllPendngOrder;
-        //}
-
     }
 }

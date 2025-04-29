@@ -67,34 +67,9 @@ namespace Repository
                 return response;
             }
         }
-        //public async Task<ResponseViewModel> getPrdoctSearchByFilter(FilterViewModel model)
-        //{
-        //    var procedureName = Constant.spGetPrdoctSearchByFilter;
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        DynamicParameters param = new DynamicParameters();
-        //        param.Add("@categoryName", model.categoryName);
-        //        param.Add("@subCategoryName", model.subCategoryName);
-        //        param.Add("@productName", model.productName);
-        //        param.Add("@sellerName", model.sellerName);
-        //        param.Add("@brandName", model.brandName);
-        //        param.Add("@sizeName", model.sizeName);
-        //        param.Add("@concernName", model.concernName);
-        //        param.Add("@ingredientName", model.ingredientName);
-        //        var result = await connection.QueryAsync<PrdoctSearchByFilter>(procedureName, null, commandType: CommandType.StoredProcedure);
-        //        var getPrdoctSearchByFilter = new ResponseViewModel
-        //        {
-        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-        //            message = result.Count() == 0 ? "Data Not Found" : "Data Found",
-        //            data = result
-        //        };
-        //        return getPrdoctSearchByFilter;
-        //    }
-        //}
         public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
         {
-            var procedureName = Constant.spGetPrdoctSearchByFilter;
+            var procedureName = Constant.spGetProductSearchByFilter;
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -103,9 +78,11 @@ namespace Repository
                     DynamicParameters param = new DynamicParameters();
                     param.Add("@categoryName", model.categoryName ?? "");
                     param.Add("@subCategoryName", model.subCategoryName ?? "");
+                    param.Add("@subcategoryTypeName", model.subcategoryTypeName ?? "");
                     param.Add("@productName", model.productName ?? "");
                     param.Add("@sellerName", model.sellerName ?? "");
-                    param.Add("@brandName", model.brandName ?? "");
+                    param.Add("@stepsName", model.stepsName ?? "");
+                    param.Add("@typeofProductName", model.typeofProductName ?? "");
                     param.Add("@sizeName", model.sizeName ?? "");
                     param.Add("@concernName", model.concernName ?? "");
                     param.Add("@ingredientName", model.ingredientName ?? "");
@@ -131,8 +108,84 @@ namespace Repository
                 }
             }
         }
+        public async Task<ResponseViewModel> getProductSearchByFilterNew(FilterViewModelNew model)
+        {
+            var procedureName = Constant.spGetProductSearchByFilterNew;
 
-     
+            using (var connection = _dapperContext.createConnection())
+            {
+                try
+                {
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add("@categoryIds", model.categoryIds ?? "");
+                    param.Add("@subCategoryIds", model.subCategoryIds ?? "");
+                    param.Add("@subcategoryTypeIds", model.subcategoryTypeIds ?? "");
+                    param.Add("@productIds", model.productIds ?? "");
+                    param.Add("@sellerIds", model.sellerIds ?? "");
+                    param.Add("@stepsIds", model.stepsIds ?? "");
+                    param.Add("@typeofProductIds", model.typeofProductIds ?? "");
+                    param.Add("@sizeIds", model.sizeIds ?? "");
+                    param.Add("@concernIds", model.concernIds ?? "");
+                    param.Add("@ingredientIds", model.ingredientIds ?? "");
+
+                    var result = await connection.QueryAsync<PrdoctSearchByFilter>(
+                        procedureName, param, commandType: CommandType.StoredProcedure);
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? 200 : 404,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new ResponseViewModel
+                    {
+                        statusCode = 500,
+                        message = "Error: " + ex.Message,
+                        data = null
+                    };
+                }
+            }
+        }
+
+        public async Task<ResponseViewModel> getAllSkinInsightProduct()
+        {
+            var procedureName = Constant.spGetAllSkinInsightProduct;
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<AllSkinInsightProduct>(
+                        procedureName,
+                        null,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    var getAllSortBy = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllSortBy;
+                }
+            }
+            catch (Exception ex)
+            {
+                // (Optional) Log the error here if needed
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "An error occurred while fetching Skin Insight Products: " + ex.Message,
+                    data = null
+                };
+            }
+        }
+
 
     }
 }

@@ -13,27 +13,35 @@ namespace Model
         public record AppRole(Guid appRoleId, string roleName);
         public class Menu
         {
-            public long id { get; set; }
+            public int id { get; set; }
             public Guid menuId { get; set; }
             public string? menuName { get; set; }
             public string? menuIcon { get; set; }
+            public string? status { get; set; }
+            public bool active { get; set; }
         }
 
         public record MenuByUserRole(int id, string menuName, string actionName, string controllerName, string pageName,
             int displayOrder, string roleName);
 
         public record SubMenu(Guid subMenuId, Guid menuId, string subMenuName, string subMenuPageName, string menuName, string pageName);
+        public record GetAllSubMenu(int id, Guid subMenuId, Guid menuId, string subMenuName, string subMenuPageName, string menuName, string pageName, string status, bool active);
+
 
         public record SubMenubyid(
-    Guid subMenuId,
-    Guid menuId,
-    string subMenuName,
-    string subMenuPageName,
-    int displayOrder,
-    string createdDate,   
-    Guid createdBy,
-    string Status,
-    bool active);
+        int id,
+        Guid subMenuId,
+        Guid menuId,
+        string subMenuName,
+        string subMenuPageName,
+        int displayOrder,
+        string createdDate,
+        Guid createdBy,
+
+        string Status,
+             bool active
+    );
+
 
         public record RoleMenu(int id, Guid roleMenuId, Guid menuId, Guid appRoleId, Guid subMenuId, string menuName,
             string subMenuName, string roleName, int displayOrder);
@@ -69,10 +77,6 @@ namespace Model
             public int todayRevenue { get; set; }
             public int cancelOrder { get; set; }
             public int lastWeekUsers { get; set; }
-            //public int StatusCode { get; set; }  // For error/unauthorized case
-            //public string Message { get; set; }
-
-            //public AdminDashboardToday() { }
         }
 
         public record SubCategoryTypeForUser(
@@ -102,7 +106,7 @@ namespace Model
     Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid brandId, string brandName,
     Guid colorId, string colorName, string colorCode, Guid sizeId, string sizeName, string sizeCode, string productName,
     string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-    DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId,Guid TypeofProductId, Guid StepsId, bool isNewArrial,bool isBestSeller,bool isRecommended);
+    DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId, Guid TypeofProductId, Guid StepsId, bool isNewArrial, bool isBestSeller, bool isRecommended);
         public record AllSteps(
             Int64 id, Guid StepsId, string name, string description, DateTime createdDate, string status, bool active);
 
@@ -120,11 +124,6 @@ namespace Model
             public string? SubCategoryTypeName { get; set; }
             public Guid SellerId { get; set; }
             public string? SellerName { get; set; }
-            public Guid BrandId { get; set; }
-            public string? BrandName { get; set; }
-            public Guid ColorId { get; set; }
-            public string? ColorName { get; set; }
-            public string? ColorCode { get; set; }
             public Guid? SizeId { get; set; }
             public string? SizeName { get; set; }
             public string? SizeCode { get; set; }
@@ -155,7 +154,7 @@ namespace Model
             public string name { get; set; }
             public string imageUrl { get; set; }
 
-            public ProductbyIdImage() { } // 👈 parameterless constructor required for Dapper
+            public ProductbyIdImage() { }
         }
 
         public record ProductDetails(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
@@ -166,7 +165,7 @@ namespace Model
         public record ProductImage(Int64 id, Guid productImageId, Guid productId, string title, string imageUrl, DateTime createdDate);
         public record Discount(Int64 id, Guid discountId, Guid productId, string code, string discountType, Decimal discount,
             Decimal productAmount, DateTime validDate, DateTime expireDate, DateTime createdDate, string Status);
-        public record Coupon( long Id,Guid CouponId, string Code, string Details, string AmountType, decimal Amount,Guid CreatedBy, DateTime CreatedDate,string  Status,bool active, Guid UpdatedBy,DateTime UpdatedDate);
+        public record Coupon(long Id, Guid CouponId, string Code, string Details, string AmountType, decimal Amount, Guid CreatedBy, DateTime CreatedDate, string Status, bool active, Guid UpdatedBy, DateTime UpdatedDate);
 
         public record GiftCard(
             Int64 id, Guid giftCardId, Guid appUserId, string cardNumber, Decimal balance, string status, DateTime issueDate,
@@ -178,8 +177,8 @@ namespace Model
             public string? title { get; set; }
             public string? description { get; set; }
             public string? createdDate { get; set; }
-            public string? status { get; set; }          
-            public bool active { get; set; }          
+            public string? status { get; set; }
+            public bool active { get; set; }
         }
 
 
@@ -215,13 +214,10 @@ namespace Model
             public string? SellerName { get; set; }
             public string? SellerAddress { get; set; }
         }
-            // public record OrderDetailsById(
-            //long Id, string ShippedDate, string TransactionId, string Status, string orderNo, int Quantity, decimal Price,
-            //decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName, Guid couponId,string BillingAddress,string sellerName,string sellerAddress);
 
-            public record OrderDetailsByName(
-       long Id, string ShippedDate, string TransactionId, string Status, int Quantity, decimal Price,
-       decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName);
+        public record OrderDetailsByName(
+   long Id, string ShippedDate, string TransactionId, string Status, int Quantity, decimal Price,
+   decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName);
 
         public record OrderDetails(
             Int64 id, Guid orderId, Guid userId, string username, string firstName, string middleName, string lastName, string phoneNumber, string email, Guid addressId, Guid paymentId, string shippedDate, decimal price,
@@ -258,11 +254,37 @@ namespace Model
             decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount);
 
         public record SortBy(Int64 id, Guid sortById, string sortByName, DateTime createdDate, string status, bool active);
+        //public record AllSkinInsightProduct(int id, Guid skininsightproductId,Guid productId, string Age,string Gender,string Skintype,string SkinSensitive, DateTime createdDate,Guid createdBy, string status, bool active);
+        public record AllSkinInsightProduct(
+long id,
+Guid skininsightproductId,
+            Guid productId,
+            string Age,
+            string Gender,
+            string Skintype,
+            string SkinSensitive,
+            DateTime createdDate,
+            Guid createdBy,
+            string Status,
+            bool active
+        );
+
+
         public class PrdoctSearchByFilter
         {
+            public int categoryId { get; set; }
+            public int subcategoryId { get; set; }
+            public int subcategoryTypeId { get; set; }
+            public int productId { get; set; }
+            public int sellerId { get; set; }
+            public int stepsId { get; set; }
+            public int typeofProductId { get; set; }
+            public int SizeId { get; set; }
+            public int concernId { get; set; }
+            public int ingredientId { get; set; }
             public string? categoryName { get; set; }
             public string? subCategoryName { get; set; }
-            public string? subcategoryType { get; set; }
+            public string? subcategoryTypeName { get; set; }
             public string? productName { get; set; }
             public long stock { get; set; }
             public string? productDescription { get; set; }
@@ -272,31 +294,13 @@ namespace Model
             public int rating { get; set; }
             public int noOfRating { get; set; }
             public string? sellerName { get; set; }
-            public string? brandName { get; set; }
+            public string? stepsName { get; set; }
+            public string? typeofProductName { get; set; }
             public string? sizeName { get; set; }
             public string? concernName { get; set; }
             public string? ingredientName { get; set; }
         }
 
-
-        //public record PrdoctSearchByFilter(
-        //    string categoryName,
-        //    string subCategoryName,
-        //    string subcategoryType,
-        //    string productName,
-        //    Int64 stock,
-        //    string productDescription,
-        //    decimal productPrice,
-        //    decimal discountPrice,
-        //    string productImage,
-        //    Int64 rating,
-        //    Int64 noOfRating,
-        //    string sellerName,
-        //    string brandName,
-        //    string sizeName,
-        //    string concernName,
-        //    string ingredientName
-        //);
 
         public class PinCodeshippingMethod
         {
@@ -308,10 +312,8 @@ namespace Model
             public string Status { get; set; }
             public bool Active { get; set; }
 
-            // Ensure the class has a parameterless constructor
             public PinCodeshippingMethod() { }
 
-            // Or, constructor matching the signature
             public PinCodeshippingMethod(long id, Guid pinCodeShippingId, int pinCode, Guid shippingMethodId, DateTime createdDate, string status, bool active)
             {
                 Id = id;
@@ -347,7 +349,6 @@ namespace Model
             public CartItemCount(Int64 itemCount) => ItemCount = itemCount;
         }
 
-        //public record CartItemCount(Int64 ItemCount);
         public record Cart(
             Guid productId, string productName, string subName, string image, decimal price, decimal discountPrice,
             Int32 quantity, decimal totalPrice);
@@ -374,6 +375,12 @@ namespace Model
 
         public record RatingRiview(long id, string username, string description, int like, int dislike, DateTime createdDate, DateTime updatedDate, bool active, string title);
 
+        public record RatingRiviewByProductId(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate,string Status, bool active);
+        public record Faq(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active);
+
+        public record ProductSpecification(long id, Guid ProductSpecificationid, Guid productId, string producttype, string netquantity, string shelfLife, string countryOfOrigin, string SKUcode, Guid ManufacturedBy, string ConsumerCareAddress, Guid CreatedBy, string CreatedDate, Guid updatedBy, string updatedDate, string status, bool active);
+
+
         public class RatingRiviewStar
         {
             public long TotalReview { get; set; }
@@ -392,7 +399,7 @@ namespace Model
             public string? shippedDate { get; set; }
             public string? orderNo { get; set; }
             public string? BillingAddress { get; set; }
-                   
+
             public string? sellerAddress { get; set; }
             public List<OrderItemModel> items { get; set; }
         }

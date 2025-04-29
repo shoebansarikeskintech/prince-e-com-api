@@ -30,14 +30,16 @@ namespace Repository
                 return getbyIdMenu;
             }
         }
-        public async Task<ResponseViewModel> getAllMenu()
+        public async Task<ResponseViewModel> getAllMenu(Int64 type)
         {
             var procedureName = Constant.spGetAllMenu;
             try
             {
                 using (var connection = _dapperContext.createConnection())
                 {
-                    var result = await connection.QueryAsync<Menu>(procedureName, null, commandType: CommandType.StoredProcedure);
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add("@type", type);
+                    var result = await connection.QueryAsync<Menu>(procedureName,param, null, commandType: CommandType.StoredProcedure);
                     var getAllMenu = new ResponseViewModel
                     {
                         statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
@@ -58,22 +60,6 @@ namespace Repository
             }
         }
 
-        //public async Task<ResponseViewModel> getAllMenu()
-        //{
-        //    var procedureName = Constant.spGetAllMenu;
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = await connection.QueryAsync<Menu>(procedureName, null, commandType: CommandType.StoredProcedure);
-        //        var getAllMenu = new ResponseViewModel
-        //        {
-        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-        //            message = result.Count() == 0 ? "Data Not Found" : "Data Found",
-        //            data = result
-        //        };
-        //        return getAllMenu;
-        //    }
-        //}
         public async Task<ResponseViewModel> getMenuByUserRole(string userName)
         {
             var procedureName = Constant.spGetMenuByUserRole;
@@ -134,6 +120,7 @@ namespace Repository
             parameters.Add("@displayOrder", updateMenuViewModel.displayOrder, DbType.Int32);
             parameters.Add("@updatedBy", updateMenuViewModel.updatedBy, DbType.Guid);
             parameters.Add("@menuIcon", updateMenuViewModel.menuIcon, DbType.String);
+            parameters.Add("@active", updateMenuViewModel.active, DbType.Boolean);
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
@@ -187,36 +174,48 @@ namespace Repository
             var procedureMenu = Constant.spGetAllMenu;
             var procedureSubMenu = Constant.spGetAllSubMenu;
 
-            using (var connection = _dapperContext.createConnection())
+            try
             {
-                var resultMenu = await connection.QueryAsync<Menu>(procedureMenu, commandType: CommandType.StoredProcedure);
-                var resultSubMenu = await connection.QueryAsync<SubMenu>(procedureSubMenu, commandType: CommandType.StoredProcedure);
-
-                var subMenuLookup = resultSubMenu.ToLookup(sub => sub.menuId);
-
-                var menuList = resultMenu.Select(menu => new
+                using (var connection = _dapperContext.createConnection())
                 {
-                    menuId = menu.menuId,
-                    menuName = menu.menuName,
-                    subMenu = subMenuLookup[menu.menuId].Select(sub => new
+                    var resultMenu = await connection.QueryAsync<Menu>(procedureMenu, commandType: CommandType.StoredProcedure);
+                    var resultSubMenu = await connection.QueryAsync<GetAllSubMenu>(procedureSubMenu, commandType: CommandType.StoredProcedure);
+
+                    var subMenuLookup = resultSubMenu.ToLookup(sub => sub.menuId);
+
+                    var menuList = resultMenu.Select(menu => new
                     {
-                        subMenuId = sub.subMenuId,
-                        menuId = sub.menuId,
-                        subMenuName = sub.subMenuName,
-                        subMenuPageName = sub.subMenuPageName,
-                        menuName = sub.menuName,
-                        pageName = sub.pageName
-                    }).ToList()
-                }).ToList();
+                        menuId = menu.menuId,
+                        menuName = menu.menuName,
+                        subMenu = subMenuLookup[menu.menuId].Select(sub => new
+                        {
+                            subMenuId = sub.subMenuId,
+                            menuId = sub.menuId,
+                            subMenuName = sub.subMenuName,
+                            subMenuPageName = sub.subMenuPageName,
+                            menuName = sub.menuName,
+                            pageName = sub.pageName
+                        }).ToList()
+                    }).ToList();
 
-                var response = new ResponseViewModel
+                    return new ResponseViewModel
+                    {
+                        statusCode = menuList.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = menuList.Any() ? "Data Found" : "Data Not Found",
+                        data = menuList
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
                 {
-                    statusCode = menuList.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
-                    message = menuList.Any() ? "Data Found" : "Data Not Found",
-                    data = menuList
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error occurred: {ex.Message}",
+                    data = null
                 };
-                return response;
             }
         }
+
     }
 }

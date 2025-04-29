@@ -50,10 +50,10 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpGet("getAllMenu")]
-        public async Task<IActionResult> getAllMenu()
+        public async Task<IActionResult> getAllMenu(Int64 type)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllMenu");
-            var getAllMenu = await _serviceManager.menuContract.getAllMenu();
+            var getAllMenu = await _serviceManager.menuContract.getAllMenu(type);
             if (getAllMenu.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Menu Found");

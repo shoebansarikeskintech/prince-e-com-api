@@ -259,65 +259,6 @@ namespace Repository
         }
 
 
-        //public async Task<ResponseViewModel> addAppUser(AddAppUserViewModel addAppUser)
-        //{
-        //    var procedureName = Constant.spAddAppUser;
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("@username", addAppUser.username, DbType.String);
-        //    parameters.Add("@name", addAppUser.name, DbType.String);
-        //    parameters.Add("@email", addAppUser.email, DbType.String);
-        //    parameters.Add("@phoneNumber", addAppUser.phoneNumber, DbType.String);
-        //    parameters.Add("@password", addAppUser.password, DbType.String);
-        //    parameters.Add("@Age", addAppUser.Age, DbType.String);
-        //    parameters.Add("@Gender", addAppUser.Gender, DbType.String);
-        //    parameters.Add("@Skintype", addAppUser.Skintype, DbType.String);
-        //    parameters.Add("@IsSkinSensitve", addAppUser.IsSkinSensitve, DbType.String);
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = await connection.QueryAsync<RegistrationValidation>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-        //        ResponseViewModel returnData;
-        //        if (result != null && result.Any())
-        //        {
-        //            var validation = result.First();
-        //            if (validation.statusCode == 1)
-        //            {
-        //                returnData = new ResponseViewModel
-        //                {
-        //                    statusCode = (int)HttpStatusCode.OK,
-        //                    message = validation.message,
-        //                    data=result
-        //                };
-        //            }
-        //            else if (validation.statusCode == 0)
-        //            {
-        //                returnData = new ResponseViewModel
-        //                {
-        //                    statusCode = (int)HttpStatusCode.Conflict,
-        //                    message = validation.message
-        //                };
-        //            }
-        //            else
-        //            {
-        //                returnData = new ResponseViewModel
-        //                {
-        //                    statusCode = (int)HttpStatusCode.BadRequest,
-        //                    message = validation.message
-        //                };
-        //            }
-        //        }
-        //        else
-        //        {
-        //            returnData = new ResponseViewModel
-        //            {
-        //                statusCode = (int)HttpStatusCode.NotFound,
-        //                message = "Something went to wrong with server error."
-        //            };
-        //        }
-        //        return returnData;
-        //    }
-        //}
-
         public async Task<ResponseViewModel> updateAppUser(UpdateAppUserViewModel updateAppUser)
         {
             var procedureName = Constant.SpUpdateAppuser;

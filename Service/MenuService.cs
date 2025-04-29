@@ -23,9 +23,9 @@ namespace Service
             return getByIdMenu;
         }
 
-        public async Task<ResponseViewModel> getAllMenu()
+        public async Task<ResponseViewModel> getAllMenu(Int64 type)
         {
-            var getAllMenu = await _repositoryManager.menuRepository.getAllMenu();
+            var getAllMenu = await _repositoryManager.menuRepository.getAllMenu(type);
             return getAllMenu;
         }
 

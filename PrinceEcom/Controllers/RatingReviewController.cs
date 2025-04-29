@@ -66,5 +66,101 @@ namespace PrinceEcom.Controllers
             return Ok(add);
 
         }
+
+        [HttpPost("addProductFAQ")]
+        [Authorize]
+        public async Task<IActionResult> addFAQ(AddFAQViewModel addFAQ)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} AddRatingReview");
+            var add = await _serviceManager.ratingReviewContract.addFAQ(addFAQ);
+            return Ok(add);
+        }
+
+        [HttpGet("getAllFAQByProductId")]
+        public async Task<IActionResult> getAllFAQByProductId(Guid productId)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllFAQByProductId");
+            var getAllOrder = await _serviceManager.ratingReviewContract.getAllFAQByProductId(productId);
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All FAQ");
+            }
+            return Ok(getAllOrder);
+        }
+
+        [HttpGet("getAllProductFAQ")]
+        public async Task<IActionResult> getAllFAQ()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllFAQ");
+            var getAllOrder = await _serviceManager.ratingReviewContract.getAllFAQ();
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All FAQ");
+            }
+            return Ok(getAllOrder);
+        }
+
+
+        [HttpPost("updateProductFAQ")]
+        [Authorize]
+        public async Task<IActionResult> updateFAQ(UpdateFAQViewModel updateFAQ)
+        {
+            _logger.logInfo($"{LoggingEvents.addItem} UpdateRatingReview");
+            var add = await _serviceManager.ratingReviewContract.updateFAQ(updateFAQ);
+            return Ok(add);
+
+        }
+
+        [HttpGet("deleteProductFAQ")]
+        public async Task<IActionResult> deleteFAQ(DeleteFAQViewModel deleteFAQ)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllRatingReviewbyId");
+            var delete = await _serviceManager.ratingReviewContract.deleteFAQ(deleteFAQ);
+            return Ok(delete);
+        }
+
+
+        [HttpPost("addProductSpecification")]
+        [Authorize]
+        public async Task<IActionResult> addProductSpecification(AddProductSpecificationViewModel addProductSpecification)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} addProductSpecification");
+            var add = await _serviceManager.ratingReviewContract.addProductSpecification(addProductSpecification);
+            return Ok(add);
+        }
+
+
+
+        [HttpGet("getProductSpecification")]
+        public async Task<IActionResult> getProductSpecification()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getProductSpecification");
+            var getAllOrder = await _serviceManager.ratingReviewContract.getProductSpecification();
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All FAQ");
+            }
+            return Ok(getAllOrder);
+        }
+
+
+        [HttpPost("updateProductSpecification")]
+        [Authorize]
+        public async Task<IActionResult> updateProductSpecification(UpdateProductSpecificationViewModel updateProductSpecification)
+        {
+            _logger.logInfo($"{LoggingEvents.addItem} updateProductSpecification");
+            var add = await _serviceManager.ratingReviewContract.updateProductSpecification(updateProductSpecification);
+            return Ok(add);
+
+        }
+
+        [HttpGet("deleteProductSpecification")]
+        public async Task<IActionResult> deleteProductSpecification(DeleteProductSpecificationViewModel deleteProductSpecification)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} deleteProductSpecification");
+            var delete = await _serviceManager.ratingReviewContract.deleteProductSpecification(deleteProductSpecification);
+            return Ok(delete);
+        }
+
     }
 }

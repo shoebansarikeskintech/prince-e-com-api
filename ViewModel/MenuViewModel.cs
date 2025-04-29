@@ -41,6 +41,7 @@ namespace ViewModel
 
         [Required]
         public string? menuIcon { get; set; }
+        public bool active { get; set; }
     }
 
     public class MenuByUserRoleViewModel

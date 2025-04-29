@@ -26,7 +26,19 @@ namespace Service
 
         public async Task<ResponseViewModel> getBestSeller()
         {
-            var getAllProduct = await _repositoryManager.productRepository.getAllProduct();
+            var getAllProduct = await _repositoryManager.productRepository.getBestSeller();
+            return getAllProduct;
+        }
+
+        public async Task<ResponseViewModel> getIsRecommended()
+        {
+            var getAllProduct = await _repositoryManager.productRepository.getIsRecommended();
+            return getAllProduct;
+        }
+
+        public async Task<ResponseViewModel> getIsNewArrial()
+        {
+            var getAllProduct = await _repositoryManager.productRepository.getIsNewArrial();
             return getAllProduct;
         }
         public async Task<ResponseViewModel> getAllProductForUser()
@@ -41,7 +53,7 @@ namespace Service
             return getAllProductDetails;
         }
 
-        public async Task<ResponseViewModel> addProduct(AddProductViewModel addProduct)
+        public async Task<ResponseViewModelProduct> addProduct(AddProductViewModel addProduct)
         {
             var add = await _repositoryManager.productRepository.addProduct(addProduct);
             return add;

@@ -30,7 +30,30 @@ namespace Service
             var getProductSearchByFilter = await _repositoryManager.filterRepository.getProductSearchByFilter(model);
             return getProductSearchByFilter;
         }
+        public async Task<ResponseViewModel> getProductSearchByFilterNew(FilterViewModelNew model)
+        {
+            var getProductSearchByFilter = await _repositoryManager.filterRepository.getProductSearchByFilterNew(model);
+            return getProductSearchByFilter;
+        }
+        public async Task<ResponseViewModel> getAllSkinInsightProduct()
+        {
+            var getAllSkinInsightProduct = await _repositoryManager.filterRepository.getAllSkinInsightProduct();
+            return getAllSkinInsightProduct;
+        }
 
-     
+        public Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseViewModel> deleteSkinInsightProduct(DeleteSkinInsightProductViewModel deleteSkinInsightProduct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseViewModel> updateSkinInsightProduct(UpdateSkinInsightProductViewModel updateSkinInsightProduct)
+        {
+            throw new NotImplementedException();
+        }
     }    
 }
