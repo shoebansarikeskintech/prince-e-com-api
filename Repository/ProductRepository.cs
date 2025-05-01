@@ -6,6 +6,7 @@ using static Model.ModelType;
 using ViewModel;
 using Common;
 using static Repository.OrderRepository;
+using Microsoft.AspNetCore.Http;
 
 
 namespace Repository
@@ -15,77 +16,6 @@ namespace Repository
         private readonly DapperContext _dapperContext;
         public ProductRepository(DapperContext dapperContext) =>
             _dapperContext = dapperContext;
-        //public async Task<ResponseViewModel> getByIdProduct(Guid productId)
-        //{
-        //    var procedureName = Constant.spGetByIdProduct;
-        //    var procedureFAQ = Constant.spGetAllProductFAQbyProductId;
-        //    var procedureSpecifiqation = Constant.spGetAllProductSpecificationByPacakageId;
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("@productId", productId, DbType.Guid);
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = (await connection.QueryAsync<Productdetaisl>(procedureName, parameters, commandType: CommandType.StoredProcedure)).ToList();
-        //        var FAQ = (await connection.QueryAsync<Faq>(procedureFAQ, parameters, commandType: CommandType.StoredProcedure)).ToList();
-        //        var Specification = (await connection.QueryAsync<ProductSpecification>(procedureSpecifiqation, parameters, commandType: CommandType.StoredProcedure)).ToList();
-
-        //        var product = result.FirstOrDefault();
-        //        var imageUrls = result.Select(x => x.ImageUrl).ToList();
-
-        //        var getbyIdProduct = new ResponseViewModel
-        //        {
-        //            statusCode = product != null ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
-        //            message = product != null ? "Data Found" : "Data Not Found",
-        //            data = product != null ? new
-        //            {
-        //                productDetails = new
-        //                {
-        //                    id = product.Id,
-        //                    productId = product.ProductId.ToString(),
-        //                    categoryId = product.CategoryId.ToString(),
-        //                    categoryName = product.CategoryName,
-        //                    subCategoryId = product.SubCategoryId.ToString(),
-        //                    subCategoryName = product.SubCategoryName,
-        //                    subCategoryTypeId = product.SubCategoryTypeId.ToString(),
-        //                    subCategoryTypeName = product.SubCategoryTypeName,
-        //                    sellerId = product.SellerId.ToString(),
-        //                    sellerName = product.SellerName,
-        //                    brandId = product.BrandId.ToString(),
-        //                    brandName = product.BrandName,
-        //                    colorId = product.ColorId.ToString(),
-        //                    colorName = product.ColorName,
-        //                    colorCode = product.ColorCode,
-        //                    sizeId = product.SizeId.ToString(),
-        //                    sizeName = product.SizeName,
-        //                    sizeCode = product.SizeCode,
-        //                    productName = product.ProductName,
-        //                    subName = product.SubName,
-        //                    description = product.Description,
-        //                    rating = product.Rating,
-        //                    noOfRating = product.NoOfRating,
-        //                    stock = product.Stock,
-        //                    price = product.Price,
-        //                    discountPrice = product.DiscountPrice,
-        //                    createdDate = product.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ss"),
-        //                    updatedDate = product.UpdatedDate != DateTime.MinValue ? product.UpdatedDate.ToString("yyyy-MM-ddTHH:mm:ss") : null,
-        //                    status = product.Status,
-        //                    active = product.Active,
-        //                    concernName = product.concernName,
-        //                    ingredientName = product.ingredientName,
-        //                    ConcernId = product.ConcernId,
-        //                    IngredientId = product.IngredientId,
-        //                    imageUrls = imageUrls
-        //                },
-        //                FAQ = FAQ, // All FAQ  data
-        //                Specification = Specification // All Specification  data
-
-
-        //            } : null
-        //        };
-
-        //        return getbyIdProduct;
-        //    }
-        //}
 
         public async Task<ResponseViewModel> getByIdProduct(Guid productId)
         {
@@ -177,21 +107,7 @@ namespace Repository
             }
         }
 
-        //public async Task<ResponseViewModel> getAllProduct()
-        //{
-        //    var procedureName = Constant.spGetAllProduct;
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = await connection.QueryAsync<AllProduct>(procedureName, null, commandType: CommandType.StoredProcedure);
-        //        var getAllProduct = new ResponseViewModel
-        //        {
-        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-        //            message = result.Count() == 0 ? "Data Not Found" : "Data Found",
-        //            data = result
-        //        };
-        //        return getAllProduct;
-        //    }
-        //}
+    
 
         public async Task<ResponseViewModel> getAllProduct()
         {
@@ -302,56 +218,256 @@ namespace Repository
                 return getAllProductForUser;
             }
         }
+
+
+
+        //public async Task<ResponseViewModelProduct> addProduct(AddProductViewModel addProduct)
+        //{
+        //    var response = new ResponseViewModelProduct();
+        //    var procedureName = "spAddProduct";
+        //    var parameters = new DynamicParameters();
+
+        //    try
+        //    {
+
+        //        // Add parameters for the stored procedure call
+        //        parameters.Add("@categoryId", addProduct.categoryId == Guid.Empty ? (object)DBNull.Value : addProduct.categoryId, DbType.Guid);
+        //        parameters.Add("@subCategoryId", addProduct.subCategoryId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryId, DbType.Guid);
+        //        parameters.Add("@subCategoryTypeId", addProduct.subCategoryTypeId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryTypeId, DbType.Guid);
+        //        parameters.Add("@sellerId", addProduct.sellerId == Guid.Empty ? (object)DBNull.Value : addProduct.sellerId, DbType.Guid);
+        //        parameters.Add("@sizeId", addProduct.sizeId == Guid.Empty ? (object)DBNull.Value : addProduct.sizeId, DbType.Guid);
+        //        parameters.Add("@createdBy", addProduct.createdBy == Guid.Empty ? (object)DBNull.Value : addProduct.createdBy, DbType.Guid);
+        //        parameters.Add("@ConcernId", addProduct.ConcernId == Guid.Empty ? (object)DBNull.Value : addProduct.ConcernId, DbType.Guid);
+        //        parameters.Add("@IngredientId", addProduct.IngredientId == Guid.Empty ? (object)DBNull.Value : addProduct.IngredientId, DbType.Guid);
+        //        parameters.Add("@TypeofProductId", addProduct.TypeofProductId == Guid.Empty ? (object)DBNull.Value : addProduct.TypeofProductId, DbType.Guid);
+        //        parameters.Add("@StepsId", addProduct.StepsId == Guid.Empty ? (object)DBNull.Value : addProduct.StepsId, DbType.Guid);
+
+        //        parameters.Add("@title", addProduct.title ?? "", DbType.String);
+        //        parameters.Add("@subTitle", addProduct.subTitle ?? "", DbType.String);
+        //        parameters.Add("@description", addProduct.description ?? "", DbType.String);
+        //        parameters.Add("@rating", addProduct.rating, DbType.Int32);
+        //        parameters.Add("@noOfRating", addProduct.noOfRating, DbType.Int32);
+        //        parameters.Add("@stock", addProduct.stock, DbType.Int32);
+        //        parameters.Add("@price", addProduct.price, DbType.Decimal);
+        //        parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);
+
+        //        parameters.Add("@isNewArrial", addProduct.isNewArrial, DbType.Boolean);
+        //        parameters.Add("@isBestSeller", addProduct.isBestSeller, DbType.Boolean);
+        //        parameters.Add("@isRecommended", addProduct.isRecommended, DbType.Boolean);
+
+        //        parameters.Add("@categoryName", addProduct.categoryName ?? "", DbType.String);
+        //        parameters.Add("@subCategoryName", addProduct.subCategoryName ?? "", DbType.String);
+        //        parameters.Add("@subCategoryTypeName", addProduct.subCategoryTypeName ?? "", DbType.String);
+        //        parameters.Add("@stpesName", addProduct.stpesName ?? "", DbType.String);
+        //        parameters.Add("@typeOfProductName", addProduct.typeOfProductName ?? "", DbType.String);
+        //        parameters.Add("@sizename", addProduct.sizename ?? "", DbType.String);
+        //        parameters.Add("@concernname", addProduct.concernname ?? "", DbType.String);
+        //        parameters.Add("@ingredientsname", addProduct.ingredientsname ?? "", DbType.String);
+        //        parameters.Add("@productname", addProduct.productname ?? "", DbType.String);
+
+        //        // Execute stored procedure and get result
+        //        using (var connection = _dapperContext.createConnection())
+        //        {
+        //            var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModelProduct>(
+        //                procedureName,
+        //                parameters,
+        //                commandType: CommandType.StoredProcedure
+        //            );
+
+        //            response = result ?? new ResponseViewModelProduct { statusCode = 500, message = "Error occurred" };
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.statusCode = 500;
+        //        response.message = ex.Message;
+        //    }
+
+        //    return response;
+        //}
+
+
+        //public async Task<ResponseViewModelProduct> addProduct(AddProductViewModel addProduct)
+        //{
+        //    var response = new ResponseViewModelProduct();
+        //    var procedureName = "spAddProduct";
+        //    var parameters = new DynamicParameters();
+
+        //    try
+        //    {
+        //        string imagePath = null;               
+
+        //        if (imageFile != null)
+        //        {
+        //            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+
+        //            // Define the folder path where you want to save the image
+        //            string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProductImage");
+
+        //            // Check if the directory exists, if not, create it
+        //            if (!Directory.Exists(uploadDir))
+        //            {
+        //                Directory.CreateDirectory(uploadDir);
+        //            }
+
+        //            // Full file path with unique file name
+        //            string filePath = Path.Combine(uploadDir, uniqueFileName);
+
+        //            // Write the file to the disk
+        //            using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                await imageFile.CopyToAsync(fileStream);
+        //            }
+
+        //            // Save only the file name (without folder path)
+        //            imagePath = uniqueFileName;  // Save only the file name like '1240cbb1-ae90-42c6-bbee-ece8617000f6.jpeg'
+        //        }
+
+
+
+        //        // 👉 Add all parameters (same as before, with imagePath)
+        //        parameters.Add("@categoryId", addProduct.categoryId == Guid.Empty ? (object)DBNull.Value : addProduct.categoryId, DbType.Guid);
+        //        parameters.Add("@subCategoryId", addProduct.subCategoryId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryId, DbType.Guid);
+        //        parameters.Add("@subCategoryTypeId", addProduct.subCategoryTypeId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryTypeId, DbType.Guid);
+        //        parameters.Add("@sellerId", addProduct.sellerId == Guid.Empty ? (object)DBNull.Value : addProduct.sellerId, DbType.Guid);
+        //        parameters.Add("@sizeId", addProduct.sizeId == Guid.Empty ? (object)DBNull.Value : addProduct.sizeId, DbType.Guid);
+        //        parameters.Add("@createdBy", addProduct.createdBy == Guid.Empty ? (object)DBNull.Value : addProduct.createdBy, DbType.Guid);
+        //        parameters.Add("@ConcernId", addProduct.ConcernId == Guid.Empty ? (object)DBNull.Value : addProduct.ConcernId, DbType.Guid);
+        //        parameters.Add("@IngredientId", addProduct.IngredientId == Guid.Empty ? (object)DBNull.Value : addProduct.IngredientId, DbType.Guid);
+        //        parameters.Add("@TypeofProductId", addProduct.TypeofProductId == Guid.Empty ? (object)DBNull.Value : addProduct.TypeofProductId, DbType.Guid);
+        //        parameters.Add("@StepsId", addProduct.StepsId == Guid.Empty ? (object)DBNull.Value : addProduct.StepsId, DbType.Guid);
+
+        //        parameters.Add("@title", addProduct.title ?? "", DbType.String);
+        //        parameters.Add("@subTitle", addProduct.subTitle ?? "", DbType.String);
+        //        parameters.Add("@description", addProduct.description ?? "", DbType.String);
+        //        parameters.Add("@rating", addProduct.rating, DbType.Int32);
+        //        parameters.Add("@noOfRating", addProduct.noOfRating, DbType.Int32);
+        //        parameters.Add("@stock", addProduct.stock, DbType.Int32);
+        //        parameters.Add("@price", addProduct.price, DbType.Decimal);
+        //        parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);
+
+        //        parameters.Add("@isNewArrial", addProduct.isNewArrial, DbType.Boolean);
+        //        parameters.Add("@isBestSeller", addProduct.isBestSeller, DbType.Boolean);
+        //        parameters.Add("@isRecommended", addProduct.isRecommended, DbType.Boolean);
+
+        //        parameters.Add("@categoryName", addProduct.categoryName ?? "", DbType.String);
+        //        parameters.Add("@subCategoryName", addProduct.subCategoryName ?? "", DbType.String);
+        //        parameters.Add("@subCategoryTypeName", addProduct.subCategoryTypeName ?? "", DbType.String);
+        //        parameters.Add("@stpesName", addProduct.stpesName ?? "", DbType.String);
+        //        parameters.Add("@typeOfProductName", addProduct.typeOfProductName ?? "", DbType.String);
+        //        parameters.Add("@sizename", addProduct.sizename ?? "", DbType.String);
+        //        parameters.Add("@concernname", addProduct.concernname ?? "", DbType.String);
+        //        parameters.Add("@ingredientsname", addProduct.ingredientsname ?? "", DbType.String);
+        //        parameters.Add("@productname", addProduct.productname ?? "", DbType.String);
+
+        //        parameters.Add("@image", imagePath ?? "", DbType.String);
+
+        //        using (var connection = _dapperContext.createConnection())
+        //        {
+        //            var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModelProduct>(
+        //                procedureName,
+        //                parameters,
+        //                commandType: CommandType.StoredProcedure
+        //            );
+
+        //            response = result ?? new ResponseViewModelProduct { statusCode = 500, message = "Error occurred" };
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.statusCode = 500;
+        //        response.message = ex.Message;
+        //    }
+
+        //    return response;
+        //}
+
         public async Task<ResponseViewModelProduct> addProduct(AddProductViewModel addProduct)
         {
+            var response = new ResponseViewModelProduct();
             var procedureName = Constant.spAddProduct;
             var parameters = new DynamicParameters();
 
-            parameters.Add("@categoryId", addProduct.categoryId, DbType.Guid);
-            parameters.Add("@subCategoryId", addProduct.subCategoryId, DbType.Guid);
-            parameters.Add("@subCategoryTypeId", addProduct.subCategoryTypeId, DbType.Guid);
-            parameters.Add("@sellerId", addProduct.sellerId, DbType.Guid);          
-            parameters.Add("@sizeId", addProduct.sizeId, DbType.Guid);
-            parameters.Add("@title", addProduct.title, DbType.String);
-            parameters.Add("@subTitle", addProduct.subTitle, DbType.String);
-            parameters.Add("@description", addProduct.description, DbType.String);
-            parameters.Add("@rating", addProduct.rating, DbType.Int32);
-            parameters.Add("@noOfRating", addProduct.noOfRating, DbType.Int32);
-            parameters.Add("@stock", addProduct.stock, DbType.Int32);
-            parameters.Add("@price", addProduct.price, DbType.Decimal);
-            parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);          
-            parameters.Add("@createdBy", addProduct.createdBy, DbType.Guid);
-            parameters.Add("@ConcernId", addProduct.ConcernId, DbType.Guid);
-            parameters.Add("@IngredientId", addProduct.IngredientId, DbType.Guid);
-            parameters.Add("@TypeofProductId", addProduct.TypeofProductId, DbType.Guid);
-            parameters.Add("@StepsId", addProduct.StepsId, DbType.Guid);
-            parameters.Add("@isNewArrial", addProduct.isNewArrial ? 1 : 0, DbType.Boolean);
-            parameters.Add("@isBestSeller", addProduct.isBestSeller ? 1 : 0, DbType.Boolean);
-            parameters.Add("@isRecommended", addProduct.isRecommended ? 1 : 0, DbType.Boolean);
 
-            using (var connection = _dapperContext.createConnection())
+            try
             {
-                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModelProduct>(procedureName, parameters, commandType: CommandType.StoredProcedure);
 
-                if (result.statusCode == 1)
+
+
+                // ✅ Safe Guid Handling
+                parameters.Add("@categoryId", addProduct.categoryId == Guid.Empty ? (object)DBNull.Value : addProduct.categoryId, DbType.Guid);
+                parameters.Add("@subCategoryId", addProduct.subCategoryId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryId, DbType.Guid);
+                parameters.Add("@subCategoryTypeId", addProduct.subCategoryTypeId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryTypeId, DbType.Guid);
+                parameters.Add("@sellerId", addProduct.sellerId == Guid.Empty ? (object)DBNull.Value : addProduct.sellerId, DbType.Guid);
+                parameters.Add("@sizeId", addProduct.sizeId == Guid.Empty ? (object)DBNull.Value : addProduct.sizeId, DbType.Guid);
+                parameters.Add("@createdBy", addProduct.createdBy == Guid.Empty ? (object)DBNull.Value : addProduct.createdBy, DbType.Guid);
+                parameters.Add("@ConcernId", addProduct.ConcernId == Guid.Empty ? (object)DBNull.Value : addProduct.ConcernId, DbType.Guid);
+                parameters.Add("@IngredientId", addProduct.IngredientId == Guid.Empty ? (object)DBNull.Value : addProduct.IngredientId, DbType.Guid);
+                parameters.Add("@TypeofProductId", addProduct.TypeofProductId == Guid.Empty ? (object)DBNull.Value : addProduct.TypeofProductId, DbType.Guid);
+                parameters.Add("@StepsId", addProduct.StepsId == Guid.Empty ? (object)DBNull.Value : addProduct.StepsId, DbType.Guid);
+
+                // ✅ Safe Boolean and String parameters
+                parameters.Add("@title", addProduct.title ?? string.Empty, DbType.String);
+                parameters.Add("@subTitle", addProduct.subTitle ?? string.Empty, DbType.String);
+                parameters.Add("@description", addProduct.description ?? string.Empty, DbType.String);
+                parameters.Add("@rating", addProduct.rating, DbType.Int32);
+                parameters.Add("@noOfRating", addProduct.noOfRating, DbType.Int32);
+                parameters.Add("@stock", addProduct.stock, DbType.Int32);
+                parameters.Add("@price", addProduct.price, DbType.Decimal);
+                parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);
+
+                parameters.Add("@isNewArrial", addProduct.isNewArrial ? 1 : 0, DbType.Boolean);
+                parameters.Add("@isBestSeller", addProduct.isBestSeller ? 1 : 0, DbType.Boolean);
+                parameters.Add("@isRecommended", addProduct.isRecommended ? 1 : 0, DbType.Boolean);
+
+                parameters.Add("@categoryName", addProduct.categoryName ?? string.Empty, DbType.String);
+                parameters.Add("@subCategoryName", addProduct.subCategoryName ?? string.Empty, DbType.String);
+                parameters.Add("@subCategoryTypeName", addProduct.subCategoryTypeName ?? string.Empty, DbType.String);
+                parameters.Add("@stpesName", addProduct.stpesName ?? string.Empty, DbType.String);
+                parameters.Add("@typeOfProductName", addProduct.typeOfProductName ?? string.Empty, DbType.String);
+                parameters.Add("@sizename", addProduct.sizename ?? string.Empty, DbType.String);
+                parameters.Add("@concernname", addProduct.concernname ?? string.Empty, DbType.String);
+                parameters.Add("@ingredientsname", addProduct.ingredientsname ?? string.Empty, DbType.String);
+                parameters.Add("@productname", addProduct.productname ?? string.Empty, DbType.String);
+
+                using (var connection = _dapperContext.createConnection())
                 {
-                    result.statusCode = (int)HttpStatusCode.OK;
-                    result.message = result.message;
-                    result.data = new OrderResponseData
+                    var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModelProduct>(
+                        procedureName,
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    if (result != null && result.statusCode == 1)
                     {
-                        productId = result.productId  // get from result directly
-                    };
-                }
-                else
-                {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                }
+                        result.statusCode = (int)HttpStatusCode.OK;
+                        result.message = result.message;
+                        result.data = new OrderResponseData
+                        {
+                            productId = result.productId
+                        };
+                    }
+                    else
+                    {
+                        result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    }
 
-                return result;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                // ✅ Error Catch Block
+                response.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                response.message = ex.Message;
+                response.data = null;
+
+                return response;
             }
         }
 
- 
+
+
         public class OrderResponseData
         {
             public Guid productId { get; set; }
@@ -385,6 +501,17 @@ namespace Repository
             parameters.Add("@isNewArrial", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
             parameters.Add("@isBestSeller", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
             parameters.Add("@isRecommended", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
+
+
+            parameters.Add("@categoryName", updateProduct.categoryName ?? string.Empty, DbType.String);
+            parameters.Add("@subCategoryName", updateProduct.subCategoryName ?? string.Empty, DbType.String);
+            parameters.Add("@subCategoryTypeName", updateProduct.subCategoryTypeName ?? string.Empty, DbType.String);
+            parameters.Add("@stpesName", updateProduct.stpesName ?? string.Empty, DbType.String);
+            parameters.Add("@typeOfProductName", updateProduct.typeOfProductName ?? string.Empty, DbType.String);
+            parameters.Add("@sizename", updateProduct.sizename ?? string.Empty, DbType.String);
+            parameters.Add("@concernname", updateProduct.concernname ?? string.Empty, DbType.String);
+            parameters.Add("@ingredientsname", updateProduct.ingredientsname ?? string.Empty, DbType.String);
+            parameters.Add("@productname", updateProduct.productname ?? string.Empty, DbType.String);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -671,6 +798,22 @@ namespace Repository
             }
         }
 
+
+        public async Task<ResponseViewModel> getAllActiveSteps()
+        {
+            var procedureName = Constant.spGetActiveAllSteps;
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<AllSteps>(procedureName, null, commandType: CommandType.StoredProcedure);
+                var spGetAllSteps = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return spGetAllSteps;
+            }
+        }
         public async Task<ResponseViewModel> addAllSteps(AddStepsViewModel addSteps)
         {
             var procedureName = Constant.spAddSteps;
@@ -778,6 +921,22 @@ namespace Repository
             }
         }
 
+
+        public async Task<ResponseViewModel> getAllTypeofActiveProduct()
+        {
+            var procedureName = Constant.spGetAllActiveTypeofProduct;
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<AllTypeofProduct>(procedureName, null, commandType: CommandType.StoredProcedure);
+                var spGetAllTypeofProduct = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return spGetAllTypeofProduct;
+            }
+        }
         public async Task<ResponseViewModel> addTypeOfProduct(AddTypeOfProductViewModel addTypeOfProduct)
         {
             var response = new ResponseViewModel();
@@ -906,6 +1065,48 @@ namespace Repository
             public int statusCode { get; set; }
             public string message { get; set; }
         }
+
+        public async Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData)
+        {
+            var procedureName = Constant.spGetSerchCommonData;
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                try
+                {
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add("@categoryName", searchCommonData.categoryName ?? "");
+                    param.Add("@subCategoryName", searchCommonData.subCategoryName ?? "");
+                    param.Add("@subCategoryTypeName", searchCommonData.subCategoryTypeName ?? "");
+                    param.Add("@stpesName", searchCommonData.stpesName ?? "");
+                    param.Add("@typeOfProductName", searchCommonData.typeOfProductName ?? "");
+                    param.Add("@sizename", searchCommonData.sizename ?? "");
+                    param.Add("@concernname", searchCommonData.concernname ?? "");
+                    param.Add("@ingredientsname", searchCommonData.ingredientsname ?? "");
+                    param.Add("@productname", searchCommonData.productname ?? "");
+
+                    var result = await connection.QueryAsync<SearchByPrdoct>(
+                        procedureName, param, commandType: CommandType.StoredProcedure);
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? 200 : 404,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new ResponseViewModel
+                    {
+                        statusCode = 500,
+                        message = "Error: " + ex.Message,
+                        data = null
+                    };
+                }
+            }
+        }
+
     }
 }
 

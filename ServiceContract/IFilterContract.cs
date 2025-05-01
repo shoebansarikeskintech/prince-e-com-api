@@ -15,5 +15,14 @@ namespace ServiceContract
         public Task<ResponseViewModel> deleteSkinInsightProduct(DeleteSkinInsightProductViewModel deleteSkinInsightProduct);
 
         public Task<ResponseViewModel> updateSkinInsightProduct(UpdateSkinInsightProductViewModel updateSkinInsightProduct);
+
+
+        public Task<ResponseViewModel> getAllSimilarProduct();
+        public Task<ResponseViewModel> getAllSimilarProductByProductId(Guid productId);
+
+        public Task<ResponseViewModel> addSimilarProduct(AddSimilarProductViewModel addSimilarProduct);
+        public Task<ResponseViewModel> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct);
+        public Task<ResponseViewModel> deleteSimilarProduct(DeleteSimilarProductViewModel deleteSimilarProduct);
+
     }
 }

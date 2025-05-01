@@ -55,6 +55,41 @@ namespace Repository
             }
         }
 
+        public async Task<ResponseViewModel> getAllIngredientActiveMethod()
+        {
+            var procedureName = Constant.spGetAllActiveIngredient;
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<IngredientMethod>(
+                        procedureName,
+                        null,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    var IngredientMethodList = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Ingredien Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return IngredientMethodList;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"An error occurred: {ex.Message}",
+                    data = null
+                };
+            }
+        }
         public async Task<ResponseViewModel> addIngredientMethod(AddIngredientViewModel addIngredientMethod)
         {
             var procedureName = Constant.spAddIngredient;

@@ -274,7 +274,7 @@ namespace Model
             string refundMethod, Decimal refundAmount, string refundStatus, string refundTrackingNo, DateTime refundDate, string adminRemark, DateTime createdDate, bool active);
 
         public record Shipping(
-            Int64 id, Guid shippingId, Guid orderId, string trackingNo, string carrier, DateTime estimateDelivery, string status, DateTime createdDate);
+            Int64 id,string orderNo, Guid shippingId, Guid orderId, string trackingNo, string carrier, string estimateDelivery, string status, string createdDate);
 
         public record Banner(
             Int64 id, Guid bannerId, Guid categoryId, Guid subCategoryId, Guid subCategoryTypeId, string image,
@@ -306,7 +306,21 @@ Guid skininsightproductId,
             string Status,
             bool active
         );
+        public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate,Guid createdBy, string Status, bool active);
 
+
+        public class SearchByPrdoct
+        {
+            public string? categoryName { get; set; }             
+            public string? subCategoryName { get; set; }             
+            public string? subCategoryTypeName { get; set; }             
+            public string? stpesName { get; set; }             
+            public string? typeOfProductName { get; set; }             
+            public string? sizename { get; set; }             
+            public string? concernname { get; set; }             
+            public string? ingredientsname { get; set; }             
+            public string? productname { get; set; }             
+        }
 
         public class PrdoctSearchByFilter
         {

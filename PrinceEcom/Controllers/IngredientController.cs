@@ -33,6 +33,18 @@ namespace PrinceEcom.Controllers
             return Ok(getAllIngredientMethod);
         }
 
+        [HttpGet("getAllIngredientActive")]
+        public async Task<IActionResult> getAllIngredientActive()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllIngredientActiveMethod");
+            var getAllIngredientMethod = await _serviceManager.ingredientContract.getAllIngredientActiveMethod();
+            if (getAllIngredientMethod.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Ingredient Method List");
+            }
+            return Ok(getAllIngredientMethod);
+        }
+
         [HttpPost("addIngredient")]
         [Authorize]
         public async Task<IActionResult> addIngredient(AddIngredientViewModel addIngredientViewModelMethod)

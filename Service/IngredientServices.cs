@@ -24,7 +24,13 @@ namespace Service
             //var getAllShippingMethod = await _repositoryManager.getAllIngredientMethod.getAllShippingMethod();
             return getIngredientMethod;
         }
+        public async Task<ResponseViewModel> getAllIngredientActiveMethod()
+        {
+            var getAllIngredientActiveMethod = await _repositoryManager.ingredientRepository.getAllIngredientActiveMethod();
 
+            //var getAllShippingMethod = await _repositoryManager.getAllIngredientMethod.getAllShippingMethod();
+            return getAllIngredientActiveMethod;
+        }
         public async Task<ResponseViewModel> addIngredientMethod(AddIngredientViewModel addIngredientMethod)
         {
             var add = await _repositoryManager.ingredientRepository.addIngredientMethod(addIngredientMethod);

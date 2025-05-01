@@ -55,6 +55,43 @@ namespace Repository
             }
         }
 
+
+        public async Task<ResponseViewModel> getAllConcernActiveMethod()
+        {
+            var procedureName = Constant.spGetAllActiveConcern;
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<ConcernMethod>(
+                        procedureName,
+                        null,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    var IngredientMethodList = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Concernt Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return IngredientMethodList;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"An error occurred: {ex.Message}",
+                    data = null
+                };
+            }
+        }
+
         public async Task<ResponseViewModel> addConcernMethod(AddConcernViewModel addConcernMethod)
         {
             var procedureName = Constant.spAddConcern;

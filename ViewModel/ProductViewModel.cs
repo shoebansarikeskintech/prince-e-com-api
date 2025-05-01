@@ -49,6 +49,17 @@ namespace ViewModel
         public bool isNewArrial { get; set; }
         public bool isBestSeller { get; set; }
         public bool isRecommended { get; set; }
+
+        public string? categoryName { get; set; }
+        public string? subCategoryName { get; set; }
+        public string? subCategoryTypeName { get; set; }
+        public string? stpesName { get; set; }
+        public string? typeOfProductName { get; set; }
+        public string? sizename { get; set; }
+        public string? concernname { get; set; }
+        public string? ingredientsname { get; set; }
+        public string? productname { get; set; }      
+
     }
     public class UpdateProductViewModel
     {
@@ -96,6 +107,16 @@ namespace ViewModel
         public bool isNewArrial { get; set; }
         public bool isBestSeller { get; set; }
         public bool isRecommended { get; set; }
+
+        public string? categoryName { get; set; }
+        public string? subCategoryName { get; set; }
+        public string? subCategoryTypeName { get; set; }
+        public string? stpesName { get; set; }
+        public string? typeOfProductName { get; set; }
+        public string? sizename { get; set; }
+        public string? concernname { get; set; }
+        public string? ingredientsname { get; set; }
+        public string? productname { get; set; }
     }
     public class DeleteProductViewModel
     {
@@ -185,5 +206,18 @@ namespace ViewModel
     {
         public Guid TypeofProductId { get; set; }
         public Guid updatedBy { get; set; }
+    }
+
+    public class SearchCommonDataViewModel
+    {     
+        public string? categoryName { get; set; }
+        public string? subCategoryName { get; set; }
+        public string? subCategoryTypeName { get; set; }
+        public string? stpesName { get; set; }
+        public string? typeOfProductName { get; set; }
+        public string? sizename { get; set; }
+        public string? concernname { get; set; }
+        public string? ingredientsname { get; set; }
+        public string? productname { get; set; }
     }
 }

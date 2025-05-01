@@ -27,6 +27,7 @@ namespace ServiceContract
         public Task<ResponseViewModel> getByIdImage(Guid productId);
 
         public Task<ResponseViewModel> getAllSteps();
+        public Task<ResponseViewModel> getAllActiveSteps();
 
         public Task<ResponseViewModel> addAllSteps(AddStepsViewModel addSteps);
         public Task<ResponseViewModel> updateAllSteps(UpdateStepsViewModel updateSteps);
@@ -34,9 +35,11 @@ namespace ServiceContract
 
 
         public Task<ResponseViewModel> getAllTypeofProduct();
+        public Task<ResponseViewModel> getAllTypeofActiveProduct();
 
         public Task<ResponseViewModel> addTypeOfProduct(AddTypeOfProductViewModel addTypeOfProduct);
         public Task<ResponseViewModel> updateTypeOfProduct(UpdateTypeOfProductViewModel updateTypeOfProduct);
         public Task<ResponseViewModel> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct);
+        public Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData);
     }
 }

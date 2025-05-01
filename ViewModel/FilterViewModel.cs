@@ -8,16 +8,9 @@ namespace ViewModel
 {
     public class FilterViewModel
     {
-        public string? categoryName { get; set; }
-        public string? subCategoryName { get; set; }
-        public string? subcategoryTypeName { get; set; }
-        public string? productName { get; set; }
-        public string? sellerName { get; set; }
-        public string? stepsName { get; set; }
-        public string? typeofProductName { get; set; }
-        public string? sizeName { get; set; }
-        public string? concernName { get; set; }
-        public string? ingredientName { get; set; }
+        public string? categoryId { get; set; }
+        public string? subCategoryId { get; set; }
+        public string? subcategoryTypeId { get; set; }       
     }
     public class FilterViewModelNew
     {
@@ -56,6 +49,29 @@ namespace ViewModel
     public class DeleteSkinInsightProductViewModel
     {
         public Guid skininsightproductId { get; set; }
+        public Guid updatedBy { get; set; }
+    }
+
+    public class AddSimilarProductViewModel
+    {
+        public Guid productId { get; set; }
+        public Guid subProductId { get; set; }
+        public bool active { get; set; }
+        public Guid createdBy { get; set; }
+    }
+    public class UpdateSimilarProductViewModel
+    {
+        public Guid SimilarProductId { get; set; }
+        public Guid productId { get; set; }
+        public Guid subProductId { get; set; }
+        public Guid updatedBy { get; set; }
+        public bool active { get; set; }
+
+    }
+    public class DeleteSimilarProductViewModel
+    {
+
+        public Guid SimilarProductId { get; set; }
         public Guid updatedBy { get; set; }
     }
 }

@@ -230,7 +230,17 @@ namespace PrinceEcom.Controllers
             return Ok(getAllSteps);
         }
 
-
+        [HttpGet("getAllActiveSteps")]
+        public async Task<IActionResult> getAllActiveSteps()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllActiveSteps");
+            var getAllActiveSteps = await _serviceManager.productContract.getAllActiveSteps();
+            if (getAllActiveSteps.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+            }
+            return Ok(getAllActiveSteps);
+        }
 
         [HttpPost("addAllSteps")]
         [Authorize]
@@ -271,7 +281,17 @@ namespace PrinceEcom.Controllers
             return Ok(getAllTypeofProduct);
         }
 
-
+        [HttpGet("getAllTypeofActiveProduct")]
+        public async Task<IActionResult> getAllTypeofActiveProduct()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllTypeofActiveProduct");
+            var getAllTypeofProduct = await _serviceManager.productContract.getAllTypeofActiveProduct();
+            if (getAllTypeofProduct.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+            }
+            return Ok(getAllTypeofProduct);
+        }
 
         [HttpPost("addTypeOfProduct")]
         [Authorize]
@@ -299,6 +319,13 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.productContract.deleteTypeOfProduct(deleteSTypeOfProduct);
             return Ok(delete);
         }
-
+        [HttpPost("searchProduct")]
+        [Authorize]
+        public async Task<IActionResult> searchProduct(SearchCommonDataViewModel searchCommonData)
+        {
+            _logger.logInfo($" {LoggingEvents.deleteItem} searchProduct");
+            var search = await _serviceManager.productContract.searchProduct(searchCommonData);
+            return Ok(search);
+        }
     }
 }

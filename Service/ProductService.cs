@@ -120,6 +120,11 @@ namespace Service
             return getAllSteps;
         }
 
+        public async Task<ResponseViewModel> getAllActiveSteps()
+        {
+            var getAllActiveSteps = await _repositoryManager.productRepository.getAllActiveSteps();
+            return getAllActiveSteps;
+        }
         public async Task<ResponseViewModel> addAllSteps(AddStepsViewModel addSteps)
         {
             var add = await _repositoryManager.productRepository.addAllSteps(addSteps);
@@ -143,6 +148,11 @@ namespace Service
             return getAllTypeofProduct;
         }
 
+        public async Task<ResponseViewModel> getAllTypeofActiveProduct()
+        {
+            var getAllTypeofActiveProduct = await _repositoryManager.productRepository.getAllTypeofActiveProduct();
+            return getAllTypeofActiveProduct;
+        }
         public async Task<ResponseViewModel> addTypeOfProduct(AddTypeOfProductViewModel addTypeOfProduct)
         {
             var add = await _repositoryManager.productRepository.addTypeOfProduct(addTypeOfProduct);
@@ -158,6 +168,12 @@ namespace Service
         {
             var delete = await _repositoryManager.productRepository.deleteTypeOfProduct(deleteSTypeOfProduct);
             return delete;
+        }
+
+        public async Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData)
+        {
+            var search = await _repositoryManager.productRepository.searchProduct(searchCommonData);
+            return search;
         }
     }
 }

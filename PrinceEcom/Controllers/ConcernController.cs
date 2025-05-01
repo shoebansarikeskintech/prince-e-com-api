@@ -34,6 +34,18 @@ namespace PrinceEcom.Controllers
             return Ok(getAllIngredientMethod);
         }
 
+        [HttpGet("getAllActiveConcern")]
+        public async Task<IActionResult> getAllActiveConcern()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllConcernActiveMethod");
+            var getAllIngredientMethod = await _serviceManager.concernContract.getAllConcernActiveMethod();
+            if (getAllIngredientMethod.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Concern Method List");
+            }
+            return Ok(getAllIngredientMethod);
+        }
+
         [HttpPost("addConcern")]
         [Authorize]
         public async Task<IActionResult> addConcern(AddConcernViewModel addConcernViewModel)

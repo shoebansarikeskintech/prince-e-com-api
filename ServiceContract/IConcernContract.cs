@@ -11,6 +11,7 @@ namespace ServiceContract
     public interface IConcernContract
     {
         public Task<ResponseViewModel> getAllConcernMethod();
+        public Task<ResponseViewModel> getAllConcernActiveMethod();
         public Task<ResponseViewModel> addConcernMethod(AddConcernViewModel addConcernMethod);
         public Task<ResponseViewModel> updateConcernMethod(UpdateConcernViewModel updateConcernMethod);
         public Task<ResponseViewModel> deleteConcernMethod(DeleteConcernViewModel deleteConcernMethod);

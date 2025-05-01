@@ -10,6 +10,7 @@ namespace ServiceContract
     public interface IIngredientContract
     {
         public Task<ResponseViewModel> getAllIngredientMethod();
+        public Task<ResponseViewModel> getAllIngredientActiveMethod();
         public Task<ResponseViewModel> addIngredientMethod(AddIngredientViewModel addIngredientMethod);
         public Task<ResponseViewModel> updateIngredientMethod(UpdateIngredientViewModel updateIngredientMethod);
         public Task<ResponseViewModel> deleteIngredientMethod(DeleteIngredientViewModel deleteIngredientMethod);

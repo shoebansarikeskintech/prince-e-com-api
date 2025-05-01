@@ -58,5 +58,33 @@ namespace Service
             var delete = await _repositoryManager.filterRepository.deleteSkinInsightProduct(deleteSkinInsightProduct);
             return delete;
         }
+
+        public async Task<ResponseViewModel> getAllSimilarProduct()
+        {
+            var getAllSimilarProduct = await _repositoryManager.filterRepository.getAllSimilarProduct();
+            return getAllSimilarProduct;
+        }
+        public async Task<ResponseViewModel> getAllSimilarProductByProductId(Guid productId)
+        {
+            var getAllSimilarProductByProductId = await _repositoryManager.filterRepository.getAllSimilarProductByProductId(productId);
+            return getAllSimilarProductByProductId;
+        }
+        public async Task<ResponseViewModel> addSimilarProduct(AddSimilarProductViewModel addSimilarProduct)
+        {
+            var add = await _repositoryManager.filterRepository.addSimilarProduct(addSimilarProduct);
+            return add;
+        }
+
+        public async Task<ResponseViewModel> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct)
+        {
+            var update = await _repositoryManager.filterRepository.updateSimilarProduct(updateSimilarProduct);
+            return update;
+        }
+
+        public async Task<ResponseViewModel> deleteSimilarProduct(DeleteSimilarProductViewModel deleteSimilarProduct)
+        {
+            var delete = await _repositoryManager.filterRepository.deleteSimilarProduct(deleteSimilarProduct);
+            return delete;
+        }
     }    
 }

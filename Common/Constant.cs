@@ -115,10 +115,12 @@ namespace Common
         public static string spDeleteProduct = "SpDeleteProduct";
         public static string spGetAllImageById = "SpGetAllImageById";
         public static string spGetAllSteps = "SpGetAllSteps";
+        public static string spGetActiveAllSteps = "SpGetActiveAllSteps";
         public static string spAddSteps = "SpAddSteps";
         public static string spUpdateSteps = "SpUpdateSteps";
         public static string spDeleteSteps = "SpDeleteSteps";
         public static string spGetAllTypeofProduct = "SpGetAllTypeofProduct";
+        public static string spGetAllActiveTypeofProduct = "SpGetAllActiveTypeofProduct";
         public static string spAddTypeofProduct = "SpAddTypeofProduct";
         public static string spDeleteTypeofProduct = "SpDeleteTypeofProduct";
         public static string spUpdateTypeofProduct = "SpUpdateTypeofProduct";
@@ -200,6 +202,14 @@ namespace Common
         public static string spAddSkinInsightProduct = "SpAddSkinInsightProduct";
         public static string spUpdateSkinInsightProduct = "SpUpdateSkinInsightProduct";
         public static string spDeleteSkinInsightProduct = "SpDeleteSkinInsightProduct";
+        public static string spGetSerchCommonData = "SpGetSerchCommonData";
+
+
+        public static string spGetAllSimilarProduct = "SpGetAllSimilarProduct";
+        public static string spGetAllSimilarProductByProductId = "SpGetAllSimilarProductByProductId";
+        public static string spAddSimilarProduct = "SpAddSimilarProduct";
+        public static string spUpdateSimilarProduct = "SpUpdateSimilarProduct";
+        public static string spDeleteSimilarProduct = "SpDeleteSimilarProduct";
 
         public static string spGetAllAppUser = "SpGetAllAppUser";
         public static string spGetAllOrderByUserId = "SpGetAllOrderByUserId";
@@ -226,6 +236,7 @@ namespace Common
         public static string spDeleteShippingMethod = "SpDeleteShippingMethod";
 
         public static string spGetAllIngredient = "SpGetAllIngredient";
+        public static string spGetAllActiveIngredient = "SpGetAllActiveIngredient";
         public static string spAddIngredient = "SpAddIngredient";
         public static string spUpdateIngredientId = "SpUpdateIngredientId";
         public static string spDeleteIngredient = "SpDeleteIngredient";
@@ -235,6 +246,7 @@ namespace Common
         public static string spGetAllCity = "SpGetAllCity";
 
         public static string spGetAllConcern = "SpGetAllConcern";
+        public static string spGetAllActiveConcern = "SpGetAllActiveConcern";
         public static string spAddConcern = "SpAddConcern";
         public static string spUpdateConcern = "SpUpdateConcernId";
         public static string spDeleteConcern = "SpDeleteConcern";

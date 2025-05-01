@@ -45,19 +45,17 @@ namespace PrinceEcom.Controllers
             return Ok(getAllFilter);
         }
 
-        //[HttpPost("getProductSearchByFilter")]
-        //public async Task<IActionResult> getProductSearchByFilter(FilterViewModel model)
-        //[HttpPost("getProductSearchByFilter")]
-        //public async Task<IActionResult> getProductSearchByFilter([FromBody] FilterViewModel model)
-        //{
-        //    _logger.logInfo($" {LoggingEvents.getAllItem} getPrductSearchByFilter");
-        //    var getProductSearchByFilter = await _serviceManager.filterContract.getProductSearchByFilter(model);
-        //    if (getProductSearchByFilter.statusCode == (int)HttpStatusCode.NotFound)
-        //    {
-        //        _logger.logWarn($"{LoggingEvents.getItemNotFound},No Sort By Found");
-        //    }
-        //    return Ok(getProductSearchByFilter);
-        //}
+        [HttpPost("getProductSearchByFilterNew")]
+        public async Task<IActionResult> getProductSearchByFilterNew([FromBody] FilterViewModel model)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getPrductSearchByFilter");
+            var getProductSearchByFilter = await _serviceManager.filterContract.getProductSearchByFilter(model);
+            if (getProductSearchByFilter.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Sort By Found");
+            }
+            return Ok(getProductSearchByFilter);
+        }
 
         [HttpPost("getProductSearchByFilter")]
         public async Task<IActionResult> getProductSearchByFilter([FromBody] FilterViewModelNew model)
@@ -83,7 +81,7 @@ namespace PrinceEcom.Controllers
             return Ok(getAllSortBy);
         }
 
-        //------
+   
         [HttpPost("addSkinInsightProduct")]
         public async Task<IActionResult> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
         {
@@ -105,6 +103,56 @@ namespace PrinceEcom.Controllers
         {
             _logger.logInfo($" {LoggingEvents.deleteItem} deleteShipping");
             var delete = await _serviceManager.filterContract.deleteSkinInsightProduct(deleteSkinInsightProduct);
+            return Ok(delete);
+        }
+
+
+        [HttpGet("getAllSimilarProduct")]
+        public async Task<IActionResult> getAllSimilarProduct()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllSimilarProduct");
+            var getAllSimilarProduct = await _serviceManager.filterContract.getAllSimilarProduct();
+            if (getAllSimilarProduct.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Sort By Found");
+            }
+            return Ok(getAllSimilarProduct);
+        }
+
+
+        [HttpGet("getAllSimilarProductByProductId")]
+        public async Task<IActionResult> getAllSimilarProductByProductId(Guid productId)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllSimilarProductByProductId");
+            var getAllSortBy = await _serviceManager.filterContract.getAllSimilarProductByProductId(productId);
+            if (getAllSortBy.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Sort By Found");
+            }
+            return Ok(getAllSortBy);
+        }
+
+        [HttpPost("addSimilarProduct")]
+        public async Task<IActionResult> addSimilarProduct(AddSimilarProductViewModel addSimilarProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} addSimilarProduct");
+            var add = await _serviceManager.filterContract.addSimilarProduct(addSimilarProduct);
+            return Ok(add);
+        }
+
+        [HttpPost("updateSimilarProduct")]
+        public async Task<IActionResult> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} updateSimilarProduct");
+            var update = await _serviceManager.filterContract.updateSimilarProduct(updateSimilarProduct);
+            return Ok(update);
+        }
+
+        [HttpPost("deleteSimilarProduct")]
+        public async Task<IActionResult> deleteSimilarProduct(DeleteSimilarProductViewModel deleteSimilarProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.deleteItem} deleteSimilarProduct");
+            var delete = await _serviceManager.filterContract.deleteSimilarProduct(deleteSimilarProduct);
             return Ok(delete);
         }
     }

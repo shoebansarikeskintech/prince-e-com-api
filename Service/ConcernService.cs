@@ -23,7 +23,11 @@ namespace Service
             var getConcernMethod = await _repositoryManager.concernReposotory.getAllConcernMethod();
             return getConcernMethod;
         }
-
+        public async Task<ResponseViewModel> getAllConcernActiveMethod()
+        {
+            var getAllConcernActiveMethod = await _repositoryManager.concernReposotory.getAllConcernActiveMethod();
+            return getAllConcernActiveMethod;
+        }
         public async Task<ResponseViewModel> addConcernMethod(AddConcernViewModel addConcernMethod)
         {
             var add = await _repositoryManager.concernReposotory.addConcernMethod(addConcernMethod);
