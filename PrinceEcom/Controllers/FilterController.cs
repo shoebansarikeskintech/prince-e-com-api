@@ -155,5 +155,13 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.filterContract.deleteSimilarProduct(deleteSimilarProduct);
             return Ok(delete);
         }
+
+        [HttpPost("SearchAllSkinInsightProduct")]
+        public async Task<IActionResult> SearchAllSkinInsightProduct(SearchSkinInsightProductViewModelNew searchSkinInsightProduct)
+        {
+            _logger.logInfo($" {LoggingEvents.deleteItem} SearchAllSkinInsightProduct");
+            var delete = await _serviceManager.filterContract.SearchAllSkinInsightProduct(searchSkinInsightProduct);
+            return Ok(delete);
+        }
     }
 }

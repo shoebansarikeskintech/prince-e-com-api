@@ -108,6 +108,7 @@ namespace Common
         public static string spGetBestSeller = "spGetBestSeller";
         public static string spGetisRecommended = "SpGetisRecommended";
         public static string spGetIsNewArrial = "SpGetIsNewArrial";
+        public static string spSearchByCommonType = "SpSearchByCommonType";
         public static string spGetAllProductForUser = "SpGetAllProductForUser";
         public static string spGetAllProductDetails = "SpGetAllProductDetails";
         public static string spAddProduct = "SpAddProduct";
@@ -203,6 +204,7 @@ namespace Common
         public static string spUpdateSkinInsightProduct = "SpUpdateSkinInsightProduct";
         public static string spDeleteSkinInsightProduct = "SpDeleteSkinInsightProduct";
         public static string spGetSerchCommonData = "SpGetSerchCommonData";
+        public static string spSearchAllSkinInsightProduct = "SpSearchAllSkinInsightProduct";
 
 
         public static string spGetAllSimilarProduct = "SpGetAllSimilarProduct";

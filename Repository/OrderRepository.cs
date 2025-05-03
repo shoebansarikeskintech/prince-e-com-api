@@ -46,23 +46,39 @@ namespace Repository
                 };
             }
         }
-
         public async Task<ResponseViewModel> getAllOrderlist()
         {
             var procedureName = Constant.spGetAllOrderlist;
             var parameters = new DynamicParameters();
-            using (var connection = _dapperContext.createConnection())
+
+            try
             {
-                var result = await connection.QueryAsync<Order>(procedureName, commandType: CommandType.StoredProcedure);
-                var getAllOrder = new ResponseViewModel
+                using (var connection = _dapperContext.createConnection())
                 {
-                    statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
-                    message = result.Any() ? "Data Found" : "Data Not Found",
-                    data = result
+                    var result = await connection.QueryAsync<AllOrder>(procedureName, commandType: CommandType.StoredProcedure);
+
+                    var getAllOrder = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllOrder;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error if needed
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error occurred: {ex.Message}",
+                    data = null
                 };
-                return getAllOrder;
             }
         }
+
         public async Task<ResponseViewModel> getAllPendingOrder(Guid adminUserId)
         {
             var procedureName = Constant.spGetAllPendingOrder;

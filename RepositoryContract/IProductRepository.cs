@@ -40,6 +40,7 @@ namespace RepositoryContract
         public Task<ResponseViewModel> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct);
 
         public Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData);
+        public Task<ResponseViewModel> searchProductNew(string commonTypeSearch);
 
     }
 }

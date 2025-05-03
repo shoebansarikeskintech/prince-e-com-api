@@ -151,6 +151,10 @@ namespace Model
 
         public record AllTypeofProduct(
             Int64 id, Guid TypeofProductId, string name, string description, DateTime createdDate, string status, bool active);
+
+        public record searchProductNew(
+      Guid commonId, string typeName, string commonProduct, int Ids, string createdDate, Guid createdBy, string status, bool active);
+
         public class Productdetaisl
         {
             public Int64 Id { get; set; }
@@ -199,7 +203,7 @@ namespace Model
         public record ProductDetails(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
             Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid sizeId, string sizeName, string sizeCode, string productName,
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-            DateTime createdDate, DateTime updatedDate, String status, bool active, string image, string concernName, string ingredientName,Guid stepsId,string stepsName,Guid typeOfProductId,string typeOfProductName);
+            DateTime createdDate, DateTime updatedDate, String status, bool active, string image, string concernName, string ingredientName, Guid stepsId, string stepsName, Guid typeOfProductId, string typeOfProductName);
         public record ProductImage(Int64 id, Guid productImageId, Guid productId, string title, string imageUrl, DateTime createdDate);
         public record Discount(Int64 id, Guid discountId, Guid productId, string code, string discountType, Decimal discount,
             Decimal productAmount, DateTime validDate, DateTime expireDate, DateTime createdDate, string Status);
@@ -226,12 +230,87 @@ namespace Model
                                     decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
                                     decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
                                     string Status, string CreatedDate, string orderNo, Guid couponId, string couponCode, decimal couponAmount, string FullAddress);
-        public record Order(
-       long Id, Guid OrderId, Guid UserId, string Username, string FirstName, string MiddleName,
-       string LastName, string PhoneNumber, string Email, Guid AddressId, Guid PaymentId, string ShippedDate,
-       decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
-       decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
-       string Status, string CreatedDate, string orderNo, Guid couponId);
+        // public record Order(
+        //long Id, string orderNo, Guid OrderId, Guid UserId, string Username, string FirstName, string MiddleName,
+        //string LastName, string PhoneNumber, string Email, Guid AddressId, Guid PaymentId, string ShippedDate,
+        //decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
+        //decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
+        //string Status, string CreatedDate, Guid couponId, string couponCode, decimal amount, string FullAddress);
+        public class Order
+        {
+            public long Id { get; set; }
+            public string? OrderNo { get; set; }
+            public Guid OrderId { get; set; }
+            public Guid UserId { get; set; }
+            public string? Username { get; set; }
+            public string? FirstName { get; set; }
+            public string? MiddleName { get; set; }
+            public string? LastName { get; set; }
+            public string? PhoneNumber { get; set; }
+            public string? Email { get; set; }
+            public Guid AddressId { get; set; }
+            public Guid PaymentId { get; set; }
+            public string? ShippedDate { get; set; }
+            public decimal Price { get; set; }
+            public decimal DiscountPrice { get; set; }
+            public decimal DeliveryCharge { get; set; }
+            public decimal GstCharge { get; set; }
+            public decimal ExtraCharge { get; set; }
+            public decimal TotalAmount { get; set; }
+            public string? PaymentMethod { get; set; }
+            public string? TransactionId { get; set; }
+            public string? TrackingNo { get; set; }
+            public string? Note { get; set; }
+            public string? Status { get; set; }
+            public string? CreatedDate { get; set; }
+            public Guid CouponId { get; set; }
+            public string? CouponCode { get; set; }
+            public decimal Amount { get; set; }
+            public string? FullAddress { get; set; }
+        }
+
+        public class AllOrder
+        {
+            public long Id { get; set; }
+            public string? OrderNo { get; set; }
+            public Guid OrderId { get; set; }
+            public Guid UserId { get; set; }
+            public string? Username { get; set; }
+            public string? FirstName { get; set; }
+            public string? MiddleName { get; set; }
+            public string? LastName { get; set; }
+            public string? PhoneNumber { get; set; }
+            public string? Email { get; set; }
+            public Guid AddressId { get; set; }
+            public Guid PaymentId { get; set; }
+            public string? ShippedDate { get; set; }
+            public decimal Price { get; set; }
+            public decimal DiscountPrice { get; set; }
+            public decimal DeliveryCharge { get; set; }
+            public decimal GstCharge { get; set; }
+            public decimal ExtraCharge { get; set; }
+            public decimal TotalAmount { get; set; }
+            public string? PaymentMethod { get; set; }
+            public string? TransactionId { get; set; }
+            public string? TrackingNo { get; set; }
+            public string? Note { get; set; }
+            public string? Status { get; set; }
+            public string? CreatedDate { get; set; }
+            public Guid CouponId { get; set; }
+            public string? CouponCode { get; set; }
+            public decimal? CouponAmount { get; set; }
+            public string? FullAddress { get; set; }
+        }
+
+
+
+        // public record AllOrder(
+        //long Id, string orderNo, Guid OrderId, Guid UserId, string Username, string FirstName, string MiddleName,
+        //string LastName, string PhoneNumber, string Email, Guid AddressId, Guid PaymentId, string ShippedDate,
+        //decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
+        //decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
+        //string Status, string CreatedDate, Guid couponId,string couponCode,decimal couponAmount,string FullAddress);
+
         public class OrderDetailsById
         {
             public long Id { get; set; }
@@ -263,18 +342,31 @@ namespace Model
         string trackingNo, string note, string status, DateTime createdDate);
 
         public record CancelOrder(
-            Int64 id, Guid orderId, Guid userId, string username,
+            Int64 id, string orderNo, Guid orderId, Guid userId, string username,
         string firstName, string middleName, string lastName, string phoneNumber, string email, Guid addressId,
        Guid paymentId, string cancelOrderDate, decimal price, decimal discountPrice, decimal deliveryCharge,
        decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId, string trackingNo,
-       string note, string status, DateTime createdDate);
+       string note, string status, string createdDate);
 
         public record AllRefundOrder(
             Int64 id, Guid returnId, Guid orderId, Guid userId, int quantity, string reason, string returnStatus,
             string refundMethod, Decimal refundAmount, string refundStatus, string refundTrackingNo, DateTime refundDate, string adminRemark, DateTime createdDate, bool active);
+        public class Shipping
+        {
+            public long Id { get; set; }
+            public string? OrderNo { get; set; }
+            public Guid ShippingId { get; set; }
+            public Guid OrderId { get; set; }
+            public string? TrackingNo { get; set; }
+            public string? Carrier { get; set; }
+            public string? EstimateDelivery { get; set; }
+            public string? Status { get; set; }
+            public string? CreatedDate { get; set; }
+            public string? username { get; set; }
+        }
 
-        public record Shipping(
-            Int64 id,string orderNo, Guid shippingId, Guid orderId, string trackingNo, string carrier, string estimateDelivery, string status, string createdDate);
+        //public record Shipping(
+        //    Int64 id, string orderNo, Guid shippingId, Guid orderId, string trackingNo, string carrier, string estimateDelivery, string status, string createdDate);
 
         public record Banner(
             Int64 id, Guid bannerId, Guid categoryId, Guid subCategoryId, Guid subCategoryTypeId, string image,
@@ -306,21 +398,67 @@ Guid skininsightproductId,
             string Status,
             bool active
         );
-        public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate,Guid createdBy, string Status, bool active);
+        public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active);
 
 
         public class SearchByPrdoct
         {
-            public string? categoryName { get; set; }             
-            public string? subCategoryName { get; set; }             
-            public string? subCategoryTypeName { get; set; }             
-            public string? stpesName { get; set; }             
-            public string? typeOfProductName { get; set; }             
-            public string? sizename { get; set; }             
-            public string? concernname { get; set; }             
-            public string? ingredientsname { get; set; }             
-            public string? productname { get; set; }             
+            public int id { get; set; }
+            public string? categoryName { get; set; }
+            public string? subCategoryName { get; set; }
+            public string? subCategoryTypeName { get; set; }
+            public string? stepsName { get; set; }
+            public string? typeOfProductName { get; set; }
+            public string? sizename { get; set; }
+            public string? concernname { get; set; }
+            public string? ingredientName { get; set; }
+            public string? productname { get; set; }
+
+            public int ProductId { get; set; }
+            public int categoryId { get; set; }
+            public int SubcategoryId { get; set; }
+            public int SubCategoryType { get; set; }
+            public int stepsId { get; set; }
+            public int typeOfProductId { get; set; }
+            public int sizeId { get; set; }
+            public int concernId { get; set; }
+            public int IngredientId { get; set; }
         }
+
+        public class SkinInsightProduct
+        {
+            public string? age { get; set; }
+            public string? Gender { get; set; }
+            public string? skinType { get; set; }
+            public string? SkinSensitive { get; set; }
+            public string? categoryName { get; set; }
+            public string? subCategoryName { get; set; }
+            public string? stepsName { get; set; }
+            public string? typeOfProductName { get; set; }
+            public string? sizeName { get; set; }
+            public string? concernName { get; set; }
+            public string? ingredientName { get; set; }
+            public string? productName { get; set; }
+            public decimal rating { get; set; }
+            public string? description { get; set; }
+            public string? tittle { get; set; }
+            public decimal discountPrice { get; set; }
+            public decimal price { get; set; }
+            public int noOfRating { get; set; }
+            public string? Image { get; set; }
+
+            public int productId { get; set; }
+            public int categoryId { get; set; }
+            public int subCategoryId { get; set; }
+            public int subCategoryTypeId { get; set; }
+            public int sellerId { get; set; }
+            public int stepsId { get; set; }
+            public int typeOfId { get; set; }
+            public int sizeId { get; set; }
+            public int concernId { get; set; }
+            public int ingredientId { get; set; }
+        }
+
 
         public class PrdoctSearchByFilter
         {
@@ -328,6 +466,7 @@ Guid skininsightproductId,
             public int subcategoryId { get; set; }
             public int subcategoryTypeId { get; set; }
             public int productId { get; set; }
+            public Guid GproductId { get; set; }
             public int sellerId { get; set; }
             public int stepsId { get; set; }
             public int typeofProductId { get; set; }
@@ -379,13 +518,46 @@ Guid skininsightproductId,
         }
         public record AppUser(Int64 id, Guid userId, Guid appRoleId, string username, string firstName, string middleName, string lastName,
          string email, string phoneNumber, string createdDate, string Status, bool active);
-        public record AllOrderByUserId(
-    Int64 id, string shippedDate, decimal price, decimal discountPrice, decimal deliveryCharge,
-    decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
-    string trackingNo, string note, string status, DateTime createdDate, string orderNo, string firstName,
-    string middleName, string lastName, string email, string phoneNumber,
-    string addressName, string addressMobile, string addressEmail, string streetAddress,
-    string state, string city, string pincode, string country);
+        public class AllOrderByUserId
+        {
+            public Int64 Id { get; set; }
+            public string? ShippedDate { get; set; }
+            public decimal Price { get; set; }
+            public decimal DiscountPrice { get; set; }
+            public decimal DeliveryCharge { get; set; }
+            public decimal GstCharge { get; set; }
+            public decimal ExtraCharge { get; set; }
+            public decimal TotalAmount { get; set; }
+            public string? PaymentMethod { get; set; }
+            public string? TransactionId { get; set; }
+            public string? TrackingNo { get; set; }
+            public string? Note { get; set; }
+            public string? Status { get; set; }
+            public DateTime CreatedDate { get; set; }
+            public string? OrderNo { get; set; }
+            public string? FirstName { get; set; }
+            public string? MiddleName { get; set; }
+            public string? LastName { get; set; }
+            public string? Email { get; set; }
+            public string? PhoneNumber { get; set; }
+            public string? AddressName { get; set; }
+            public string? AddressMobile { get; set; }
+            public string? AddressEmail { get; set; }
+            public string? StreetAddress { get; set; }
+            public string? State { get; set; }
+            public string? City { get; set; }
+            public string? Pincode { get; set; }
+            public string? Country { get; set; }
+        }
+
+
+        //    public record AllOrderByUserId(
+        //Int64 id, string shippedDate, decimal price, decimal discountPrice, decimal deliveryCharge,
+        //decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
+        //string trackingNo, string note, string status, DateTime createdDate, string orderNo, string firstName,
+        //string middleName, string lastName, string email, string phoneNumber,
+        //string addressName, string addressMobile, string addressEmail, string streetAddress,
+        //string state, string city, string pincode, string country);
 
         public record UserProfile(
             Guid userId, string username, string firstName, string middleName, string lastName, string email, string phoneNumber, DateTime createdDate);
@@ -427,8 +599,8 @@ Guid skininsightproductId,
 
         public record RatingRiview(long id, string username, string description, int like, int dislike, DateTime createdDate, DateTime updatedDate, bool active, string title);
 
-        public record RatingRiviewByProductId(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate,string Status, bool active,string faqType);
-        public record Faq(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active,string faqType);
+        public record RatingRiviewByProductId(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active, string faqType);
+        public record Faq(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active, string faqType);
 
         public record ProductSpecification(long id, Guid ProductSpecificationid, Guid productId, string producttype, string netquantity, string shelfLife, string countryOfOrigin, string SKUcode, Guid ManufacturedBy, string ConsumerCareAddress, Guid CreatedBy, string CreatedDate, Guid updatedBy, string updatedDate, string status, bool active);
 

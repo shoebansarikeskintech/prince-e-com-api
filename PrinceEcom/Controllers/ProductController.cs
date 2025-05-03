@@ -320,12 +320,23 @@ namespace PrinceEcom.Controllers
             return Ok(delete);
         }
         [HttpPost("searchProduct")]
-        [Authorize]
         public async Task<IActionResult> searchProduct(SearchCommonDataViewModel searchCommonData)
         {
             _logger.logInfo($" {LoggingEvents.deleteItem} searchProduct");
             var search = await _serviceManager.productContract.searchProduct(searchCommonData);
             return Ok(search);
+        }
+
+        [HttpGet("searchProductNew/{commonTypeSearch}")]     
+        public async Task<IActionResult> searchProductNew(string commonTypeSearch)
+        {
+            _logger.logInfo($" {LoggingEvents.getByIdItem} getByIdProduct productId ${commonTypeSearch}");
+            var searchProductNew = await _serviceManager.productContract.searchProductNew(commonTypeSearch);
+            if (searchProductNew.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+            }
+            return Ok(searchProductNew);
         }
     }
 }

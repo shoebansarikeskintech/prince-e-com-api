@@ -41,5 +41,7 @@ namespace ServiceContract
         public Task<ResponseViewModel> updateTypeOfProduct(UpdateTypeOfProductViewModel updateTypeOfProduct);
         public Task<ResponseViewModel> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct);
         public Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData);
+
+        public Task<ResponseViewModel> searchProductNew(string commonTypeSearch);
     }
 }

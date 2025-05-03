@@ -24,5 +24,7 @@ namespace RepositoryContract
         public Task<ResponseViewModel> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct);
         public Task<ResponseViewModel> deleteSimilarProduct(DeleteSimilarProductViewModel deleteSimilarProduct);
 
+        public Task<ResponseViewModel> SearchAllSkinInsightProduct(SearchSkinInsightProductViewModelNew searchSkinInsightProduct);
+
     }
 }

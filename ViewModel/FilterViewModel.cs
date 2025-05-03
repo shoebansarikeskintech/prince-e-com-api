@@ -51,14 +51,21 @@ namespace ViewModel
         public Guid skininsightproductId { get; set; }
         public Guid updatedBy { get; set; }
     }
-
     public class AddSimilarProductViewModel
     {
-        public Guid productId { get; set; }
-        public Guid subProductId { get; set; }
-        public bool active { get; set; }
-        public Guid createdBy { get; set; }
+        public Guid ProductId { get; set; }
+        public List<Guid> SubProductIds { get; set; }  // array/list of sub-products
+        public bool Active { get; set; }
+        public Guid CreatedBy { get; set; }
     }
+
+    //public class AddSimilarProductViewModel
+    //{
+    //    public Guid productId { get; set; }
+    //    public Guid subProductId { get; set; }
+    //    public bool active { get; set; }
+    //    public Guid createdBy { get; set; }
+    //}
     public class UpdateSimilarProductViewModel
     {
         public Guid SimilarProductId { get; set; }
@@ -73,5 +80,13 @@ namespace ViewModel
 
         public Guid SimilarProductId { get; set; }
         public Guid updatedBy { get; set; }
+    }
+
+    public class SearchSkinInsightProductViewModelNew
+    {
+        public string? age { get; set; }
+        public string? gender { get; set; }
+        public string? skintype { get; set; }
+        public string? skinSensitive { get; set; }       
     }
 }

@@ -175,5 +175,12 @@ namespace Service
             var search = await _repositoryManager.productRepository.searchProduct(searchCommonData);
             return search;
         }
+
+        public async Task<ResponseViewModel> searchProductNew(string commonTypeSearch)
+        {
+            var searchProductNew = await _repositoryManager.productRepository.searchProductNew(commonTypeSearch);
+            return searchProductNew;
+        }
+
     }
 }

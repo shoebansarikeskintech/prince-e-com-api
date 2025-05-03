@@ -404,7 +404,7 @@ namespace Repository
                 parameters.Add("@ConcernId", addProduct.ConcernId == Guid.Empty ? (object)DBNull.Value : addProduct.ConcernId, DbType.Guid);
                 parameters.Add("@IngredientId", addProduct.IngredientId == Guid.Empty ? (object)DBNull.Value : addProduct.IngredientId, DbType.Guid);
                 parameters.Add("@TypeofProductId", addProduct.TypeofProductId == Guid.Empty ? (object)DBNull.Value : addProduct.TypeofProductId, DbType.Guid);
-                parameters.Add("@StepsId", addProduct.StepsId == Guid.Empty ? (object)DBNull.Value : addProduct.StepsId, DbType.Guid);
+                parameters.Add("@stepsId", addProduct.stepsId == Guid.Empty ? (object)DBNull.Value : addProduct.stepsId, DbType.Guid);
 
                 // ✅ Safe Boolean and String parameters
                 parameters.Add("@title", addProduct.title ?? string.Empty, DbType.String);
@@ -423,11 +423,11 @@ namespace Repository
                 parameters.Add("@categoryName", addProduct.categoryName ?? string.Empty, DbType.String);
                 parameters.Add("@subCategoryName", addProduct.subCategoryName ?? string.Empty, DbType.String);
                 parameters.Add("@subCategoryTypeName", addProduct.subCategoryTypeName ?? string.Empty, DbType.String);
-                parameters.Add("@stpesName", addProduct.stpesName ?? string.Empty, DbType.String);
+                parameters.Add("@stepsName", addProduct.stepsName ?? string.Empty, DbType.String);
                 parameters.Add("@typeOfProductName", addProduct.typeOfProductName ?? string.Empty, DbType.String);
                 parameters.Add("@sizename", addProduct.sizename ?? string.Empty, DbType.String);
                 parameters.Add("@concernname", addProduct.concernname ?? string.Empty, DbType.String);
-                parameters.Add("@ingredientsname", addProduct.ingredientsname ?? string.Empty, DbType.String);
+                parameters.Add("@ingredientName", addProduct.ingredientName ?? string.Empty, DbType.String);
                 parameters.Add("@productname", addProduct.productname ?? string.Empty, DbType.String);
 
                 using (var connection = _dapperContext.createConnection())
@@ -506,11 +506,11 @@ namespace Repository
             parameters.Add("@categoryName", updateProduct.categoryName ?? string.Empty, DbType.String);
             parameters.Add("@subCategoryName", updateProduct.subCategoryName ?? string.Empty, DbType.String);
             parameters.Add("@subCategoryTypeName", updateProduct.subCategoryTypeName ?? string.Empty, DbType.String);
-            parameters.Add("@stpesName", updateProduct.stpesName ?? string.Empty, DbType.String);
+            parameters.Add("@stepsName", updateProduct.stepsName ?? string.Empty, DbType.String);
             parameters.Add("@typeOfProductName", updateProduct.typeOfProductName ?? string.Empty, DbType.String);
             parameters.Add("@sizename", updateProduct.sizename ?? string.Empty, DbType.String);
             parameters.Add("@concernname", updateProduct.concernname ?? string.Empty, DbType.String);
-            parameters.Add("@ingredientsname", updateProduct.ingredientsname ?? string.Empty, DbType.String);
+            parameters.Add("@ingredientName", updateProduct.ingredientName ?? string.Empty, DbType.String);
             parameters.Add("@productname", updateProduct.productname ?? string.Empty, DbType.String);
 
             using (var connection = _dapperContext.createConnection())
@@ -1078,11 +1078,11 @@ namespace Repository
                     param.Add("@categoryName", searchCommonData.categoryName ?? "");
                     param.Add("@subCategoryName", searchCommonData.subCategoryName ?? "");
                     param.Add("@subCategoryTypeName", searchCommonData.subCategoryTypeName ?? "");
-                    param.Add("@stpesName", searchCommonData.stpesName ?? "");
+                    param.Add("@stepsName", searchCommonData.stepsName ?? "");
                     param.Add("@typeOfProductName", searchCommonData.typeOfProductName ?? "");
                     param.Add("@sizename", searchCommonData.sizename ?? "");
                     param.Add("@concernname", searchCommonData.concernname ?? "");
-                    param.Add("@ingredientsname", searchCommonData.ingredientsname ?? "");
+                    param.Add("@ingredientName", searchCommonData.ingredientName ?? "");
                     param.Add("@productname", searchCommonData.productname ?? "");
 
                     var result = await connection.QueryAsync<SearchByPrdoct>(
@@ -1104,6 +1104,24 @@ namespace Repository
                         data = null
                     };
                 }
+            }
+        }
+
+        public async Task<ResponseViewModel> searchProductNew(string commonTypeSearch)
+        {
+            var procedureName = Constant.spSearchByCommonType;
+            using (var connection = _dapperContext.createConnection())
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@commonTypeSearch", commonTypeSearch);
+                var result = await connection.QueryAsync<searchProductNew>(procedureName, param, null, commandType: CommandType.StoredProcedure);
+                var getAllProduct = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+                    data = result
+                };
+                return getAllProduct;
             }
         }
 

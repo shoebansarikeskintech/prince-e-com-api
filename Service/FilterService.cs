@@ -86,5 +86,12 @@ namespace Service
             var delete = await _repositoryManager.filterRepository.deleteSimilarProduct(deleteSimilarProduct);
             return delete;
         }
-    }    
+
+        public async Task<ResponseViewModel> SearchAllSkinInsightProduct(SearchSkinInsightProductViewModelNew searchSkinInsightProduct)
+        {
+            var SearchAllSkinInsightProduct = await _repositoryManager.filterRepository.SearchAllSkinInsightProduct(searchSkinInsightProduct);
+            return SearchAllSkinInsightProduct;
+        }
+
+    }
 }

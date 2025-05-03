@@ -103,39 +103,7 @@ namespace Repository
         }
 
 
-        //public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
-        //{
-        //    var procedureName = Constant.spGetProductSearchByFilter;
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        try
-        //        {
-        //            DynamicParameters param = new DynamicParameters();
-        //            param.Add("@categoryId", model.categoryId ?? "");
-        //            param.Add("@subCategoryId", model.subCategoryId ?? "");
-        //            param.Add("@subcategoryTypeId", model.subcategoryTypeId ?? "");                  
-        //            var result = await connection.QueryAsync<PrdoctSearchByFilter>(
-        //                procedureName, param, commandType: CommandType.StoredProcedure);
-
-        //            return new ResponseViewModel
-        //            {
-        //                statusCode = result.Any() ? 200 : 404,
-        //                message = result.Any() ? "Data Found" : "Data Not Found",
-        //                data = result
-        //            };
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return new ResponseViewModel
-        //            {
-        //                statusCode = 500,
-        //                message = "Error: " + ex.Message,
-        //                data = null
-        //            };
-        //        }
-        //    }
-        //}
+   
         public async Task<ResponseViewModel> getProductSearchByFilterNew(FilterViewModelNew model)
         {
             var procedureName = Constant.spGetProductSearchByFilterNew;
@@ -410,35 +378,64 @@ namespace Repository
                 };
             }
         }
-
         public async Task<ResponseViewModel> addSimilarProduct(AddSimilarProductViewModel addSimilarProduct)
         {
             var procedureName = Constant.spAddSimilarProduct;
-            var parameters = new DynamicParameters();
-            parameters.Add("@productId", addSimilarProduct.productId, DbType.Guid);
-            parameters.Add("@subProductId", addSimilarProduct.subProductId, DbType.Guid);          
-            parameters.Add("@createdBy", addSimilarProduct.createdBy, DbType.Guid);
+            var response = new ResponseViewModel();
+
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                if (result.statusCode == 1)
+                foreach (var subProductId in addSimilarProduct.SubProductIds)
                 {
-                    result.statusCode = (int)HttpStatusCode.OK;
-                    result.message = result.message;
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@productId", addSimilarProduct.ProductId, DbType.Guid);
+                    parameters.Add("@subProductId", subProductId, DbType.Guid);
+                    parameters.Add("@createdBy", addSimilarProduct.CreatedBy, DbType.Guid);
+
+                    var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    if (result.statusCode != 1)
+                    {
+                        response.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                        response.message = $"Failed to insert sub-product ID: {subProductId}";
+                        return response;
+                    }
                 }
-                else if (result.statusCode == 0)
-                {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
-                }
-                else
-                {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
-                }
-                return result;
+
+                response.statusCode = (int)HttpStatusCode.OK;
+                response.message = "All sub-products added successfully.";
+                return response;
             }
         }
+
+        //public async Task<ResponseViewModel> addSimilarProduct(AddSimilarProductViewModel addSimilarProduct)
+        //{
+        //    var procedureName = Constant.spAddSimilarProduct;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@productId", addSimilarProduct.ProductId, DbType.Guid);
+        //    parameters.Add("@subProductId", addSimilarProduct.subProductId, DbType.Guid);          
+        //    parameters.Add("@createdBy", addSimilarProduct.createdBy, DbType.Guid);
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        if (result.statusCode == 1)
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.OK;
+        //            result.message = result.message;
+        //        }
+        //        else if (result.statusCode == 0)
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //            result.message = result.message;
+        //        }
+        //        else
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //            result.message = result.message;
+        //        }
+        //        return result;
+        //    }
+        //}
 
         public async Task<ResponseViewModel> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct)
         {
@@ -506,6 +503,43 @@ namespace Repository
             }
 
             return response;
+        }
+
+        public async Task<ResponseViewModel> SearchAllSkinInsightProduct(SearchSkinInsightProductViewModelNew searchSkinInsightProduct)
+        {
+            var procedureName = Constant.spSearchAllSkinInsightProduct;
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                try
+                {
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add("@age", searchSkinInsightProduct.age ?? "");
+                    param.Add("@gender", searchSkinInsightProduct.gender ?? "");
+                    param.Add("@skintype", searchSkinInsightProduct.skinSensitive ?? "");
+                    param.Add("@skinSensitive", searchSkinInsightProduct.skinSensitive ?? "");
+                   
+
+                    var result = await connection.QueryAsync<SkinInsightProduct>(
+                        procedureName, param, commandType: CommandType.StoredProcedure);
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? 200 : 404,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new ResponseViewModel
+                    {
+                        statusCode = 500,
+                        message = "Error: " + ex.Message,
+                        data = null
+                    };
+                }
+            }
         }
     }
 }
