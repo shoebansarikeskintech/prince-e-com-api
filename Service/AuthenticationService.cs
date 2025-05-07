@@ -33,11 +33,21 @@ namespace Service
 
         public async Task<ResponseViewModel> addAppUser(AddAppUserViewModel addAppUser)
         {
-            return await _repositoryManager.authenticationRepository.addAppUser(addAppUser); ;
+            return await _repositoryManager.authenticationRepository.addAppUser(addAppUser);
         }
         public async Task<ResponseViewModel> updateAppUser(UpdateAppUserViewModel updateAppUser)
         {
-            return await _repositoryManager.authenticationRepository.updateAppUser(updateAppUser); ;
+            return await _repositoryManager.authenticationRepository.updateAppUser(updateAppUser);
+        }
+
+        public async Task<ResponseViewModel> addSkinInsightUser(AddSkinInsightUserViewModel addSkinInsightUser)
+        {
+            return await _repositoryManager.authenticationRepository.addSkinInsightUser(addSkinInsightUser); 
+        }
+
+        public async Task<ResponseViewModel> updateSkinInsightUser(updateSkinInsightUserViewModel updateSkinInsightUser)
+        {
+            return await _repositoryManager.authenticationRepository.updateSkinInsightUser(updateSkinInsightUser);
         }
     }
 }

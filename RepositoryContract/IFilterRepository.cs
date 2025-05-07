@@ -26,5 +26,8 @@ namespace RepositoryContract
 
         public Task<ResponseViewModel> SearchAllSkinInsightProduct(SearchSkinInsightProductViewModelNew searchSkinInsightProduct);
 
+        public Task<ResponseViewModel> getAllSkinInsightProductProductId(Guid productId);
+
+
     }
 }

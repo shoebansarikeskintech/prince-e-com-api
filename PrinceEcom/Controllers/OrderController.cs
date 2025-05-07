@@ -23,20 +23,10 @@ namespace PrinceEcom.Controllers
             _logger = logger;
         }
 
-        [HttpGet("getAllOrderlist")]
-        public async Task<IActionResult> getAllOrderlist()
-        {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllOrderlist");
-            var getAllOrder = await _serviceManager.orderContract.getAllOrderlist();
-            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Found");
-            }
-            return Ok(getAllOrder);
-        }
+       
 
-        [HttpGet("getAllOrder")]
-        public async Task<IActionResult> getAllOrder(Guid userId)
+        [HttpGet("getAllOrderByUserId")]
+        public async Task<IActionResult> getAllOrderByUserId(Guid userId)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllOrder");
             var getAllOrder = await _serviceManager.orderContract.getAllOrder(userId);
@@ -46,55 +36,17 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllOrder);
         }
-      
-        [HttpGet("getAllPendingOrder")]
-        public async Task<IActionResult> getAllPendingOrder(Guid adminUserId)
+
+        [HttpPost("updateOrderStatusUser")]
+        [Authorize]
+        public async Task<IActionResult> updateOrderStatusUser(UpdateStausViewModel updateStausViewModel)
         {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllPendingOrder");
-            var getAllPendingOrder = await _serviceManager.orderContract.getAllPendingOrder(adminUserId);
-            if (getAllPendingOrder.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Pending Order Found");
-            }
-            return Ok(getAllPendingOrder);
+            _logger.logInfo($" {LoggingEvents.addItem} updateOrderStatus");
+            var add = await _serviceManager.orderContract.updateOrderStatus(updateStausViewModel);
+            return Ok(add);
         }
 
-        [HttpGet("getAllProcessingOrder")]
-        public async Task<IActionResult> getAllProcessingOrder(Guid adminUserId)
-        {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllProcessingOrder");
-            var getAllProcessingOrder = await _serviceManager.orderContract.getAllProcessingOrder(adminUserId);
-            if (getAllProcessingOrder.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Processing Order Found");
-            }
-            return Ok(getAllProcessingOrder);
-        }
 
-        [HttpGet("getAllCompletedOrder")]
-        public async Task<IActionResult> getAllCompletedOrder(Guid adminUserId)
-        {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllCompletedOrder");
-            var getAllProcessingOrder = await _serviceManager.orderContract.getAllCompletedOrder(adminUserId);
-            if (getAllProcessingOrder.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Completed Order Found");
-            }
-            return Ok(getAllProcessingOrder);
-        }
-
-        [HttpGet("getAllCancelOrder")]
-        public async Task<IActionResult> getAllCancelOrder(Guid adminUserId)
-        {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllCancelOrder");
-            var getAllCancelOrder = await _serviceManager.orderContract.getAllCancelOrder(adminUserId);
-            if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Cancel Order Found");
-            }
-            return Ok(getAllCancelOrder);
-        }
-        
         [HttpPost("addOrderWithDetails")]
         [Authorize]
         public async Task<IActionResult> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderWithDetails)
@@ -104,39 +56,20 @@ namespace PrinceEcom.Controllers
             return Ok(add);
         }
 
-        [HttpGet("getAllOrderByOrderIdOrOrderNo")]
-        public async Task<IActionResult> getAllOrderByOrderIdOrOrderNo(string orderId)
+        [HttpGet("getOrdersBySearchAdmin")]
+        public async Task<IActionResult> getOrdersBySearchAdmin(string searchValue)
         {
-            _logger.logInfo($" {LoggingEvents.getAllItem} SpGetAllOrderByOrderId");
-            var getAllOrder = await _serviceManager.orderContract.getAllOrderByOrderId(orderId);
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllOrder");
+            var getAllOrder = await _serviceManager.orderContract.getOrdersBySearch(searchValue);
             if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
             {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Details Found");
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Found");
             }
             return Ok(getAllOrder);
         }
 
-        [HttpGet("getAllOrderByNameorEmail")]
-        public async Task<IActionResult> getAllOrderByNameorEmail(String userNameorEmail)
-        {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllOrderByNameorEmail");
-            var getAllOrder = await _serviceManager.orderContract.getAllOrderByNameorEmail(userNameorEmail);
-            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Details Found");
-            }
-            return Ok(getAllOrder);
-        }
-
-        [HttpPost("updateOrderStatus")]
-        [Authorize]
-        public async Task<IActionResult> updateOrderStatus(UpdateStausViewModel updateStausViewModel)
-        {
-            _logger.logInfo($" {LoggingEvents.addItem} updateOrderStatus");
-            var add = await _serviceManager.orderContract.updateOrderStatus(updateStausViewModel);
-            return Ok(add);
-        }
-
+        
+       
         [HttpGet("OrderWithItems")]
         public async Task<IActionResult> OrderWithItems(string orderId)
         {
@@ -147,6 +80,96 @@ namespace PrinceEcom.Controllers
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Found");
             }
             return Ok(getAllOrder);
+        }
+
+        //update st
+        [HttpPost("updateOrderStatusAdmin")]
+        [Authorize]
+        public async Task<IActionResult> updateOrderStatusAdmin(UpdateStausViewModel updateStausViewModel)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} updateOrderStatus");
+            var add = await _serviceManager.orderContract.updateOrderStatus(updateStausViewModel);
+            return Ok(add);
+        }
+
+        //yaha user ke sare order ayenge
+        [HttpGet("getAllOrderListAdmin")]
+        public async Task<IActionResult> getAllOrderListAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllOrderlist");
+            var getAllOrder = await _serviceManager.orderContract.getAllOrderlist();
+            if (getAllOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Found");
+            }
+            return Ok(getAllOrder);
+        }
+
+        //order shipped pack ho raha h
+        //pending me order shipped aa raha hai 
+        [HttpGet("getSuccessfullOrderAdmin")]
+        public async Task<IActionResult> getAllSuccessfullOrderAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllPendingOrder");
+            var getAllPendingOrder = await _serviceManager.orderContract.getAllPendingOrder();
+            if (getAllPendingOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Pending Order Found");
+            }
+            return Ok(getAllPendingOrder);
+        }
+
+        //delivery seuccessfully poch gaya 
+        [HttpGet("getAllCompletedOrderAdmin")]
+        public async Task<IActionResult> getAllCompletedOrderAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllCompletedOrder");
+            var getAllProcessingOrder = await _serviceManager.orderContract.getAllCompletedOrder();
+            if (getAllProcessingOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Completed Order Found");
+            }
+            return Ok(getAllProcessingOrder);
+        }
+
+        //order cancel ho gaya hai 
+        [HttpGet("getAllCancelOrderAdmin")]
+        public async Task<IActionResult> getAllCancelOrderAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllCancelOrder");
+            var getAllCancelOrder = await _serviceManager.orderContract.getAllCancelOrder();
+            if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Cancel Order Found");
+            }
+            return Ok(getAllCancelOrder);
+        }
+
+        //order return ho gaya hai 
+        [HttpGet("getAllReturnOrderlistAdmin")]
+        public async Task<IActionResult> getAllReturnOrderlistAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllReturnOrderlist");
+            var getAllCancelOrder = await _serviceManager.orderContract.getAllReturnOrderlist();
+            if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Cancel Order Found");
+            }
+            return Ok(getAllCancelOrder);
+        }
+
+
+        //order shipped ho gaya hai 
+        [HttpGet("getAllShippingOrderlistAdmin")]
+        public async Task<IActionResult> getAllShippingOrderlistAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllShippingOrderlist");
+            var getAllCancelOrder = await _serviceManager.orderContract.getAllShippingOrderlist();
+            if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Cancel Order Found");
+            }
+            return Ok(getAllCancelOrder);
         }
     }
 }

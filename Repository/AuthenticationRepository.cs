@@ -1,5 +1,6 @@
 ﻿using Common;
 using Dapper;
+using Microsoft.AspNetCore.Http;
 using RepositoryContract;
 using System.Data;
 using System.Net;
@@ -309,6 +310,101 @@ namespace Repository
 
             return returnData;
         }
+        public async Task<ResponseViewModel> addSkinInsightUser(AddSkinInsightUserViewModel addSkinInsightUser)
+        {
+            var response = new ResponseViewModel();
+            var procedureName = "SpAddSkinInsightUser";
+            var parameters = new DynamicParameters();
 
+            try
+            {
+                string imagePath = null;
+
+                if (addSkinInsightUser.imageFile != null)
+                {
+                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(addSkinInsightUser.imageFile.FileName);
+                    string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProductImage");
+
+                    if (!Directory.Exists(uploadDir))
+                        Directory.CreateDirectory(uploadDir);
+
+                    string filePath = Path.Combine(uploadDir, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await addSkinInsightUser.imageFile.CopyToAsync(fileStream);
+                    }
+
+                    imagePath = uniqueFileName;
+                }
+
+                parameters.Add("@userId", addSkinInsightUser.userId, DbType.Guid);
+                parameters.Add("@age", addSkinInsightUser.age ?? "", DbType.String);
+                parameters.Add("@gender", addSkinInsightUser.gender ?? "", DbType.String);
+                parameters.Add("@skintype", addSkinInsightUser.skintype ?? "", DbType.String);
+                parameters.Add("@skinSensitive", addSkinInsightUser.skinSensitive ?? "", DbType.String);
+                parameters.Add("@image", imagePath ?? "", DbType.String);
+                parameters.Add("@createdBy", addSkinInsightUser.createdBy, DbType.Guid);
+                parameters.Add("@active", true, DbType.Boolean);
+                parameters.Add("@name", addSkinInsightUser.name, DbType.String);
+
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                        procedureName,
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    // Check if result is null and set the response accordingly
+                    response = result ?? new ResponseViewModel { statusCode = 500, message = "Error occurred" };
+                }
+            }
+            catch (Exception ex)
+            {
+                // If an error occurs, set status code and message in the response
+                response.statusCode = 500;
+                response.message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseViewModel> updateSkinInsightUser(updateSkinInsightUserViewModel updateSkinInsightUser)
+        {
+            var response = new ResponseViewModel();
+            var procedureName = "SpUpdateSkinInsightUser";
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                parameters.Add("@skinInsightUserId", updateSkinInsightUser.userId, DbType.Guid);
+                parameters.Add("@userId", updateSkinInsightUser.userId, DbType.Guid);                
+                parameters.Add("@updatedBy", updateSkinInsightUser.updatedBy, DbType.Guid);
+                parameters.Add("@active", updateSkinInsightUser.active ? 1 : 0, DbType.Boolean);
+                parameters.Add("@name", updateSkinInsightUser.name, DbType.String);
+
+
+
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                        procedureName,
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    // Check if result is null and set the response accordingly
+                    response = result ?? new ResponseViewModel { statusCode = 500, message = "Error occurred" };
+                }
+            }
+            catch (Exception ex)
+            {
+                // If an error occurs, set status code and message in the response
+                response.statusCode = 500;
+                response.message = ex.Message;
+            }
+            return response;
+        }
     }
 }

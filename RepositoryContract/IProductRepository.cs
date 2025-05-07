@@ -5,7 +5,9 @@ namespace RepositoryContract
 {
    public interface IProductRepository
     {
-        public Task<ResponseViewModel> getByIdProduct(Guid productId);
+        //public Task<ResponseViewModel> getByIdProduct(Guid productId);
+        public Task<ResponseViewModel> getByIdProduct(getAllProductByIdViewModel getAllProductById);
+
         public Task<ResponseViewModel> getAllProduct();
         public Task<ResponseViewModel> getBestSeller();
         public Task<ResponseViewModel> getIsRecommended();
@@ -39,8 +41,9 @@ namespace RepositoryContract
         public Task<ResponseViewModel> updateTypeOfProduct(UpdateTypeOfProductViewModel updateTypeOfProduct);
         public Task<ResponseViewModel> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct);
 
-        public Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData);
         public Task<ResponseViewModel> searchProductNew(string commonTypeSearch);
+
+
 
     }
 }

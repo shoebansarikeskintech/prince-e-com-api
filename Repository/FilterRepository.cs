@@ -182,6 +182,37 @@ namespace Repository
             }
         }
 
+        //public async Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
+        //{
+        //    var procedureName = Constant.spAddSkinInsightProduct;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@productId", addSkinInsightProduct.productId, DbType.Guid);
+        //    parameters.Add("@Age", addSkinInsightProduct.Age, DbType.String);
+        //    parameters.Add("@Gender", addSkinInsightProduct.Gender, DbType.String);
+        //    parameters.Add("@Skintype", addSkinInsightProduct.Skintype, DbType.String);
+        //    parameters.Add("@SkinSensitive", addSkinInsightProduct.SkinSensitive, DbType.String);            
+        //    parameters.Add("@createdBy", addSkinInsightProduct.createdBy, DbType.Guid);
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        if (result.statusCode == 1)
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.OK;
+        //            result.message = result.message;
+        //        }
+        //        else if (result.statusCode == 0)
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //            result.message = result.message;
+        //        }
+        //        else
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //            result.message = result.message;
+        //        }
+        //        return result;
+        //    }
+        //}
         public async Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
         {
             var procedureName = Constant.spAddSkinInsightProduct;
@@ -190,26 +221,31 @@ namespace Repository
             parameters.Add("@Age", addSkinInsightProduct.Age, DbType.String);
             parameters.Add("@Gender", addSkinInsightProduct.Gender, DbType.String);
             parameters.Add("@Skintype", addSkinInsightProduct.Skintype, DbType.String);
-            parameters.Add("@SkinSensitive", addSkinInsightProduct.SkinSensitive, DbType.String);            
+            parameters.Add("@SkinSensitive", addSkinInsightProduct.SkinSensitive, DbType.String);
             parameters.Add("@createdBy", addSkinInsightProduct.createdBy, DbType.Guid);
+
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                if (result.statusCode == 1)
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                    procedureName, parameters, commandType: CommandType.StoredProcedure
+                );
+
+                // Default error message in case stored proc returns null
+                if (result == null)
                 {
-                    result.statusCode = (int)HttpStatusCode.OK;
-                    result.message = result.message;
+                    return new ResponseViewModel
+                    {
+                        statusCode = (int)HttpStatusCode.ExpectationFailed,
+                        message = "Server error. No response from stored procedure.",
+                        data = null
+                    };
                 }
-                else if (result.statusCode == 0)
-                {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
-                }
-                else
-                {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
-                }
+
+                // Set response code and return inserted data
+                result.statusCode = result.statusCode == 1 ? (int)HttpStatusCode.OK : (int)HttpStatusCode.ExpectationFailed;
+                result.message = result.message ?? "Insert operation completed.";
+                result.data = addSkinInsightProduct; // 👈 inserted data ko response me set karo
+
                 return result;
             }
         }
@@ -516,7 +552,7 @@ namespace Repository
                     DynamicParameters param = new DynamicParameters();
                     param.Add("@age", searchSkinInsightProduct.age ?? "");
                     param.Add("@gender", searchSkinInsightProduct.gender ?? "");
-                    param.Add("@skintype", searchSkinInsightProduct.skinSensitive ?? "");
+                    param.Add("@skintype", searchSkinInsightProduct.skintype ?? "");
                     param.Add("@skinSensitive", searchSkinInsightProduct.skinSensitive ?? "");
                    
 
@@ -539,6 +575,40 @@ namespace Repository
                         data = null
                     };
                 }
+            }
+        }
+
+        public async Task<ResponseViewModel> getAllSkinInsightProductProductId(Guid productId)
+        {
+            var procedureName = Constant.spGetAllSkinInsightProductProductId;
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add("@productId", productId);
+                    var result = await connection.QueryAsync<SkinInsightProductModel>(procedureName, param, null, commandType: CommandType.StoredProcedure);
+
+                    var getAllSortBy = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllSortBy;
+                }
+            }
+            catch (Exception ex)
+            {
+                // (Optional) Log the error here if needed
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "An error occurred while fetching Skin Insight Products: " + ex.Message,
+                    data = null
+                };
             }
         }
     }

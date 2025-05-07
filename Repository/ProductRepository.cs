@@ -17,15 +17,42 @@ namespace Repository
         public ProductRepository(DapperContext dapperContext) =>
             _dapperContext = dapperContext;
 
-        public async Task<ResponseViewModel> getByIdProduct(Guid productId)
+        public async Task<ResponseViewModel> getByIdProduct(getAllProductByIdViewModel getAllProductById)
         {
+            Guid productId;
+
+            // Try to parse getAllProductById.id as GUID
+            bool isGuid = Guid.TryParse(getAllProductById.id, out productId);
+
+            // Agar GUID nahi hai, toh assume karo int-type ID hai (1, 2, 3 etc.)
+            if (!isGuid)
+            {
+                var procedureProductById = Constant.spGetAllProductById;
+                var parametersId = new DynamicParameters();
+                parametersId.Add("@id", getAllProductById.id.ToString(), DbType.String);
+
+                using (var connection = _dapperContext.createConnection())
+                {
+                    productId = connection.QueryFirstOrDefault<Guid>(
+                        procedureProductById,
+                        parametersId,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+            }
+
+            // Ab productId ready hai (chahe pehle se GUID ho ya query karke mila ho)
+       
             var procedureName = Constant.spGetByIdProduct;
             var procedureFAQ = Constant.spGetAllProductFAQbyProductId;
-            var procedureSpecification = Constant.spGetAllProductSpecificationByPacakageId;
             var SkinInsight = Constant.spGetAllSkinInsightByProductId;
+            var Ingredient = Constant.spGetAllProductFAQIngredientbyProductId;
+            var FaqWithProduct = Constant.spGetAllProductFAQWithProductbyProductId;
+            var AllSimilarProduct = Constant.spGetAllSimilarProductByProductId;
 
             var parameters = new DynamicParameters();
             parameters.Add("@productId", productId, DbType.Guid);
+            //parameters.Add("@productId", productId, DbType.Guid);
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -39,14 +66,28 @@ namespace Repository
                     .QueryAsync<Faq>(procedureFAQ, parameters, commandType: CommandType.StoredProcedure))
                     .ToList();
 
+                //// 3) Fetch Specifications
+                //var specList = (await connection
+                //    .QueryAsync<ProductSpecification>(procedureSpecification, parameters, commandType: CommandType.StoredProcedure))
+                //    .ToList();
+
                 // 3) Fetch Specifications
-                var specList = (await connection
-                    .QueryAsync<ProductSpecification>(procedureSpecification, parameters, commandType: CommandType.StoredProcedure))
+                var Ingre = (await connection
+                    .QueryAsync<FaqIngredient>(Ingredient, parameters, commandType: CommandType.StoredProcedure))
                     .ToList();
+
+                var FaqProduct = (await connection
+                  .QueryAsync<FaqWithProduct>(FaqWithProduct, parameters, commandType: CommandType.StoredProcedure))
+                  .ToList();
+
+                var SimilarP = (await connection
+               .QueryAsync<SimilarProduct>(AllSimilarProduct, parameters, commandType: CommandType.StoredProcedure))
+               .ToList();
 
                 // 4) Prepare the three separate sections
                 var product = result
-                    .Select(p => new {
+                    .Select(p => new
+                    {
                         id = p.Id,
                         productId = p.ProductId.ToString(),
                         categoryId = p.CategoryId.ToString(),
@@ -97,8 +138,12 @@ namespace Repository
                                  {
                                      productDetail = product,   // ← singular name
                                      FAQ = faqList,   // ← array
-                                     Specification = specList,   // ← array
-                                     skin = skin   // ← array
+                                     //Specification = specList,   // ← array
+                                     // ← array
+                                     FaqIngredient = Ingre,   // ← Ingre
+                                     FaqWithProduct = FaqProduct,   // ← Ingre
+                                     SimilarProduct = SimilarP,   // ← Ingre
+                                     skin = skin
                                  }
                                  : null
                 };
@@ -107,7 +152,7 @@ namespace Repository
             }
         }
 
-    
+
 
         public async Task<ResponseViewModel> getAllProduct()
         {
@@ -1066,50 +1111,11 @@ namespace Repository
             public string message { get; set; }
         }
 
-        public async Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData)
-        {
-            var procedureName = Constant.spGetSerchCommonData;
 
-            using (var connection = _dapperContext.createConnection())
-            {
-                try
-                {
-                    DynamicParameters param = new DynamicParameters();
-                    param.Add("@categoryName", searchCommonData.categoryName ?? "");
-                    param.Add("@subCategoryName", searchCommonData.subCategoryName ?? "");
-                    param.Add("@subCategoryTypeName", searchCommonData.subCategoryTypeName ?? "");
-                    param.Add("@stepsName", searchCommonData.stepsName ?? "");
-                    param.Add("@typeOfProductName", searchCommonData.typeOfProductName ?? "");
-                    param.Add("@sizename", searchCommonData.sizename ?? "");
-                    param.Add("@concernname", searchCommonData.concernname ?? "");
-                    param.Add("@ingredientName", searchCommonData.ingredientName ?? "");
-                    param.Add("@productname", searchCommonData.productname ?? "");
-
-                    var result = await connection.QueryAsync<SearchByPrdoct>(
-                        procedureName, param, commandType: CommandType.StoredProcedure);
-
-                    return new ResponseViewModel
-                    {
-                        statusCode = result.Any() ? 200 : 404,
-                        message = result.Any() ? "Data Found" : "Data Not Found",
-                        data = result
-                    };
-                }
-                catch (Exception ex)
-                {
-                    return new ResponseViewModel
-                    {
-                        statusCode = 500,
-                        message = "Error: " + ex.Message,
-                        data = null
-                    };
-                }
-            }
-        }
 
         public async Task<ResponseViewModel> searchProductNew(string commonTypeSearch)
         {
-            var procedureName = Constant.spSearchByCommonType;
+            var procedureName = Constant.spSearchByProduct;
             using (var connection = _dapperContext.createConnection())
             {
                 DynamicParameters param = new DynamicParameters();
@@ -1124,7 +1130,7 @@ namespace Repository
                 return getAllProduct;
             }
         }
-
+     
     }
 }
 

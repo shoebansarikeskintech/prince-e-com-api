@@ -5,7 +5,7 @@ namespace ServiceContract
 {
   public interface IProductContract
     {
-        public Task<ResponseViewModel> getByIdProduct(Guid productId);
+        public Task<ResponseViewModel> getByIdProduct(getAllProductByIdViewModel getAllProductById);
         public Task<ResponseViewModel> getAllProduct();
         public Task<ResponseViewModel> getBestSeller();
         public Task<ResponseViewModel> getIsRecommended();
@@ -40,8 +40,8 @@ namespace ServiceContract
         public Task<ResponseViewModel> addTypeOfProduct(AddTypeOfProductViewModel addTypeOfProduct);
         public Task<ResponseViewModel> updateTypeOfProduct(UpdateTypeOfProductViewModel updateTypeOfProduct);
         public Task<ResponseViewModel> deleteTypeOfProduct(DeleteSTypeOfProductMdoel deleteSTypeOfProduct);
-        public Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData);
 
         public Task<ResponseViewModel> searchProductNew(string commonTypeSearch);
+
     }
 }

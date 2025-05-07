@@ -92,6 +92,10 @@ namespace Service
             var SearchAllSkinInsightProduct = await _repositoryManager.filterRepository.SearchAllSkinInsightProduct(searchSkinInsightProduct);
             return SearchAllSkinInsightProduct;
         }
-
+        public async Task<ResponseViewModel> getAllSkinInsightProductProductId(Guid productId)
+        {
+            var getAllSkinInsightProductProductId = await _repositoryManager.filterRepository.getAllSkinInsightProductProductId(productId);
+            return getAllSkinInsightProductProductId;
+        }
     }
 }

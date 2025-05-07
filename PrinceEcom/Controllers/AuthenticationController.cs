@@ -144,5 +144,29 @@ namespace PrinceEcom.Controllers
             var returnData = await _serviceManager.authenticationContract.updateAppUser(updateAppUser);
             return Ok(returnData);
         }
+
+        [HttpPost("addSkinInsightUser")]
+        public async Task<IActionResult> addSkinInsightUser(AddSkinInsightUserViewModel addSkinInsightUser)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} addSkinInsightUser");
+            var returnData = await _serviceManager.authenticationContract.addSkinInsightUser(addSkinInsightUser);
+            return Ok(returnData);
+        }
+
+
+        //[HttpPost("addSkinInsightUser")]
+        //public async Task<IActionResult> addSkinInsightUser(AddSkinInsightUserViewModel addSkinInsightUser)
+        //{
+        //    _logger.logInfo($" {LoggingEvents.updateItem} addSkinInsightUser");
+        //    var returnData = await _serviceManager.authenticationContract.addSkinInsightUser(addSkinInsightUser);
+        //    return Ok(returnData);
+        //}
+        [HttpPost("updateSkinInsightUser")]
+        public async Task<IActionResult> updateSkinInsightUser(updateSkinInsightUserViewModel updateSkinInsightUser)
+        {
+            _logger.logInfo($" {LoggingEvents.updateItem} updateSkinInsightUser");
+            var returnData = await _serviceManager.authenticationContract.updateSkinInsightUser(updateSkinInsightUser);
+            return Ok(returnData);
+        }
     }
 }

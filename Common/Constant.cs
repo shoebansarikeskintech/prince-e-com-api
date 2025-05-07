@@ -102,13 +102,16 @@ namespace Common
         public static string spGetAllProductFAQbyProductId = "SpGetAllProductFAQbyProductId";
         public static string spGetAllProductSpecificationByPacakageId = "SpGetAllProductSpecificationByPacakageId";
         public static string spGetAllSkinInsightByProductId = "SpGetAllSkinInsightByProductId";
+        public static string spGetAllProductFAQIngredientbyProductId = "SpGetAllProductFAQIngredientbyProductId";
+        public static string spGetAllProductFAQWithProductbyProductId = "SpGetAllProductFAQWithProductbyProductId";
 
+        public static string spGetAllProductById = "SpGetAllProductById";
         public static string spGetByIdProduct = "SpGetByIdProduct";
         public static string spGetAllProduct = "SpGetAllProduct";
         public static string spGetBestSeller = "spGetBestSeller";
         public static string spGetisRecommended = "SpGetisRecommended";
         public static string spGetIsNewArrial = "SpGetIsNewArrial";
-        public static string spSearchByCommonType = "SpSearchByCommonType";
+        public static string spSearchByProduct = "SpSearchByProduct";
         public static string spGetAllProductForUser = "SpGetAllProductForUser";
         public static string spGetAllProductDetails = "SpGetAllProductDetails";
         public static string spAddProduct = "SpAddProduct";
@@ -160,15 +163,22 @@ namespace Common
 
         public static string spGetAllOrder = "SpGetAllOrderList";
         public static string spGetAllOrderlist = "SpGetAllOrder";
+        public static string spGetAllReturnOrder = "SpGetAllReturnOrder";
         public static string spGetAllPendingOrder = "SpGetAllPeningOrder";
         public static string spGetAllProcessingOrder = "SpGetAllProcessingOrder";
         public static string spGetAllCompletedOrder = "SpGetAllCompletedOrder";
         public static string spGetAllCancelOrder = "SpGetAllCancelOrder";
         public static string spUpdateOrderStatus = "SpUpdateOrderStatus";
         public static string getOrderWithItems = "GetOrderWithItems";
+        public static string spupdateShipped = "SpupdateShipped";
+        public static string spupdateDelivery = "SpupdateDelivery";
+        public static string spcancelOrder = "SpcancelOrder";
+        public static string spreturnOrder = "SpreturnOrder";
+        public static string spreturnOrderCompleted = "SpreturnOrderCompleted";
 
         public static string spGetAllOrderByOrderIdorOrderNo = "SpGetAllOrderByOrderIdorOrderNo";
         public static string spGetAllOrderByUserNameorEmail = "SpGetAllOrderByUserNameorEmail";
+        public static string spGetAllOrderDetailSearch = "SpGetAllOrderDetails";
 
 
         public static string spGetAllOrderDetails = "SpGetAllOrderListDetails";
@@ -209,6 +219,7 @@ namespace Common
 
         public static string spGetAllSimilarProduct = "SpGetAllSimilarProduct";
         public static string spGetAllSimilarProductByProductId = "SpGetAllSimilarProductByProductId";
+        public static string spGetAllSkinInsightProductProductId = "SpGetAllSkinInsightProductProductId";
         public static string spAddSimilarProduct = "SpAddSimilarProduct";
         public static string spUpdateSimilarProduct = "SpUpdateSimilarProduct";
         public static string spDeleteSimilarProduct = "SpDeleteSimilarProduct";

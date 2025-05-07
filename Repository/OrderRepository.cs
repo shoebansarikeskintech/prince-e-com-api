@@ -24,7 +24,7 @@ namespace Repository
             {
                 using (var connection = _dapperContext.createConnection())
                 {
-                    var result = await connection.QueryAsync<Orderbyuserid>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                    var result = await connection.QueryAsync<OrderByUserIds>(procedureName, parameters, commandType: CommandType.StoredProcedure);
 
                     return new ResponseViewModel
                     {
@@ -79,14 +79,78 @@ namespace Repository
             }
         }
 
-        public async Task<ResponseViewModel> getAllPendingOrder(Guid adminUserId)
+
+        public async Task<ResponseViewModel> getAllReturnOrderlist()
+        {
+            var procedureName = Constant.spGetAllReturnOrder;
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<AllOrder>(procedureName, commandType: CommandType.StoredProcedure);
+
+                    var getAllOrder = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllOrder;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error if needed
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error occurred: {ex.Message}",
+                    data = null
+                };
+            }
+        }
+
+        public async Task<ResponseViewModel> getAllShippingOrderlist()
+        {
+            var procedureName = Constant.spGetAllShipping;
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<AllOrder>(procedureName, commandType: CommandType.StoredProcedure);
+
+                    var getAllOrder = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllOrder;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error if needed
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error occurred: {ex.Message}",
+                    data = null
+                };
+            }
+        }
+        public async Task<ResponseViewModel> getAllPendingOrder()
         {
             var procedureName = Constant.spGetAllPendingOrder;
-            var parameters = new DynamicParameters();
-            parameters.Add("@adminUserId", adminUserId, DbType.Guid);
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryAsync<Order>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryAsync<Order>(procedureName, commandType: CommandType.StoredProcedure);
                 var getAllPendngOrder = new ResponseViewModel
                 {
                     statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
@@ -113,14 +177,12 @@ namespace Repository
                 return getAllPendngOrder;
             }
         }
-        public async Task<ResponseViewModel> getAllCompletedOrder(Guid adminUserId)
+        public async Task<ResponseViewModel> getAllCompletedOrder()
         {
-            var procedureName = Constant.spGetAllCompletedOrder;
-            var parameters = new DynamicParameters();
-            parameters.Add("@adminUserId", adminUserId, DbType.Guid);
+            var procedureName = Constant.spGetAllCompletedOrder;           
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryAsync<Order>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryAsync<Order>(procedureName, commandType: CommandType.StoredProcedure);
                 var getAllPendngOrder = new ResponseViewModel
                 {
                     statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
@@ -130,14 +192,12 @@ namespace Repository
                 return getAllPendngOrder;
             }
         }
-        public async Task<ResponseViewModel> getAllCancelOrder(Guid adminUserId)
+        public async Task<ResponseViewModel> getAllCancelOrder()
         {
-            var procedureName = Constant.spGetAllCancelOrder;
-            var parameters = new DynamicParameters();
-            parameters.Add("@adminUserId", adminUserId, DbType.Guid);
+            var procedureName = Constant.spGetAllCancelOrder;          
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryAsync<CancelOrder>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryAsync<CancelOrder>(procedureName, commandType: CommandType.StoredProcedure);
                 var getAllPendngOrder = new ResponseViewModel
                 {
                     statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
@@ -185,7 +245,6 @@ namespace Repository
             parameters.Add("@transactionId", addOrderDetails.transactionId, DbType.String);
             parameters.Add("@trackingNo", addOrderDetails.trackingNo, DbType.String);
             parameters.Add("@note", addOrderDetails.note, DbType.String);
-            parameters.Add("@status", addOrderDetails.status, DbType.String);
             parameters.Add("@createdBy", addOrderDetails.createdBy, DbType.Guid);
             
             string orderNo = "ORD" + Guid.NewGuid().ToString("N").Substring(0, 8); // Example: ORD9fcac100
@@ -289,26 +348,58 @@ namespace Repository
                 };
                 return GetAllOrderByName;
             }
-        }        
-
+        }
         public async Task<ResponseViewModel> updateOrderStatus(UpdateStausViewModel updateStausViewModel)
         {
             var procedureName = Constant.spUpdateOrderStatus;
-            var parameters = new DynamicParameters();
-            parameters.Add("@orderId", updateStausViewModel.orderId, DbType.Guid);
-            parameters.Add("@status", updateStausViewModel.status, DbType.String);
+            var response = new ResponseViewModel();
+            var updatedOrders = new List<Guid>();
+
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                var updateOrderStatus = new ResponseViewModel
+                foreach (var orderId in updateStausViewModel.orderIds)
                 {
-                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-                    message = result.Count() == 0 ? "Server Error pls try again" : "Update Status Succesfully",
-                    data = result
-                };
-                return updateOrderStatus;
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@orderId", orderId, DbType.Guid);
+                    parameters.Add("@status", updateStausViewModel.status, DbType.String);
+
+                    var result = await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    if (result <= 0)
+                    {
+                        response.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                        response.message = $"Failed to update order ID: {orderId}";
+                        return response;
+                    }
+
+                    updatedOrders.Add(orderId);
+                }
+
+                response.statusCode = (int)HttpStatusCode.OK;
+                response.message = "All orders updated successfully.";
+                response.data = updatedOrders;
+                return response;
             }
-         }
+        }
+
+        //public async Task<ResponseViewModel> updateOrderStatus(UpdateStausViewModel updateStausViewModel)
+        //{
+        //    var procedureName = Constant.spUpdateOrderStatus;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@orderId", updateStausViewModel.orderId, DbType.Guid);
+        //    parameters.Add("@status", updateStausViewModel.status, DbType.String);
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        var updateOrderStatus = new ResponseViewModel
+        //        {
+        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+        //            message = result.Count() == 0 ? "Server Error pls try again" : "Update Status Succesfully",
+        //            data = result
+        //        };
+        //        return updateOrderStatus;
+        //    }
+        // }
 
         public async Task<ResponseViewModel> getOrderWithItems(string orderIdOrOrderNo)
         {
@@ -349,6 +440,155 @@ namespace Repository
 
             return response;
         }
+     
+        public async Task<ResponseViewModel> updateShipped(updateShippedViewModel updateShipped)
+        {
+            var procedureName = Constant.spupdateShipped;
+            var response = new ResponseViewModel();
+            var failedOrders = new List<string>();
 
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    foreach (var orderId in updateShipped.orderIds)
+                    {
+                        var parameters = new DynamicParameters();
+                        parameters.Add("@orderId", orderId, DbType.Guid);
+                        parameters.Add("@shippedBy", updateShipped.shippedBy, DbType.String);
+
+                        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                            procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                        if (result == null || result.statusCode != 1)
+                        {
+                            failedOrders.Add(orderId.ToString());
+                        }
+                    }
+
+                    if (failedOrders.Any())
+                    {
+                        response.statusCode = (int)HttpStatusCode.PartialContent;
+                        response.message = "Some orders failed to update.";
+                        response.data = new
+                        {
+                            failedOrderIds = failedOrders
+                        };
+                    }
+                    else
+                    {
+                        response.statusCode = (int)HttpStatusCode.OK;
+                        response.message = "All orders shipped successfully.";
+                    }
+
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.statusCode = (int)HttpStatusCode.InternalServerError;
+                response.message = "An error occurred: " + ex.Message;
+                return response;
+            }
+        }
+
+        public async Task<ResponseViewModel> updateDelivery(updateDelCanRetCompViewModel updateDelCanRetCompViewModel)
+        {
+            var procedureName = Constant.spupdateDelivery;
+            var parameters = new DynamicParameters();
+            parameters.Add("@orderId", updateDelCanRetCompViewModel.orderId, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var updateOrderStatus = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Server Error pls try again" : "Update Succesfully",
+                    data = result
+                };
+                return updateOrderStatus;
+            }
+        }
+
+        public async Task<ResponseViewModel> cancelOrder(updateDelCanRetCompViewModel updateDelCanRetCompViewModel)
+        {
+            var procedureName = Constant.spcancelOrder;
+            var parameters = new DynamicParameters();
+            parameters.Add("@orderId", updateDelCanRetCompViewModel.orderId, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var updateOrderStatus = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Server Error pls try again" : "Update Succesfully",
+                    data = result
+                };
+                return updateOrderStatus;
+            }
+        }
+
+        public async Task<ResponseViewModel> returnOrder(updateDelCanRetCompViewModel updateDelCanRetCompViewModel)
+        {
+            var procedureName = Constant.spreturnOrder;
+            var parameters = new DynamicParameters();
+            parameters.Add("@orderId", updateDelCanRetCompViewModel.orderId, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var updateOrderStatus = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Server Error pls try again" : "Update Succesfully",
+                    data = result
+                };
+                return updateOrderStatus;
+            }
+        }
+
+        public async Task<ResponseViewModel> returnOrderCompleted(updateDelCanRetCompViewModel updateDelCanRetCompViewModel)
+        {
+            var procedureName = Constant.spreturnOrderCompleted;
+            var parameters = new DynamicParameters();
+            parameters.Add("@orderId", updateDelCanRetCompViewModel.orderId, DbType.Guid);
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                var updateOrderStatus = new ResponseViewModel
+                {
+                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+                    message = result.Count() == 0 ? "Server Error pls try again" : "Update Succesfully",
+                    data = result
+                };
+                return updateOrderStatus;
+            }
+        }
+        public async Task<ResponseViewModel> getOrdersBySearch(string searchValue)
+        {
+            var procedureName = Constant.spGetAllOrderDetailSearch;
+            var parameters = new DynamicParameters();
+            parameters.Add("@searchValue", searchValue, DbType.String);
+
+            var response = new ResponseViewModel();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<AllSearchOrder>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    response.statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK;
+                    response.message = result.Count() == 0 ? "Data Not Found" : "Data Found";
+                    response.data = result;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.statusCode = (int)HttpStatusCode.InternalServerError;
+                response.message = "An error occurred while fetching the order details.";
+            }
+
+            return response;
+        }
     }
 }

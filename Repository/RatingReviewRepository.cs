@@ -237,8 +237,8 @@ namespace Repository
             parameters.Add("@ProductFaqid", updateFAQ.ProductFaqid, DbType.Guid);
             parameters.Add("productId", updateFAQ.productId, DbType.Guid);
             parameters.Add("@Title", updateFAQ.Title, DbType.String);
-            parameters.Add("@Description", updateFAQ.Description, DbType.String);         
-            parameters.Add("@active", updateFAQ.active, DbType.Boolean);         
+            parameters.Add("@Description", updateFAQ.Description, DbType.String);
+            parameters.Add("@active", updateFAQ.active ? 1 : 0, DbType.Boolean);
             parameters.Add("@updatedBy", updateFAQ.updatedBy, DbType.Guid);
             parameters.Add("@faqType", updateFAQ.faqType, DbType.String);
             using (var connection = _dapperContext.createConnection())

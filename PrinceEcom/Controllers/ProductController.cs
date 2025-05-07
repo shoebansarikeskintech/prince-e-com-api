@@ -21,12 +21,11 @@ namespace PrinceEcom.Controllers
             _logger = logger;
         }
 
-        [HttpGet("getByIdProduct/{productId}")]
-        [Authorize]
-        public async Task<IActionResult> getByIdProduct(Guid productId)
+        [HttpPost("getByIdProduct")]      
+        public async Task<IActionResult> getByIdProduct(getAllProductByIdViewModel getAllProductById)
         {
-            _logger.logInfo($" {LoggingEvents.getByIdItem} getByIdProduct productId ${productId}");
-            var getByIdProduct = await _serviceManager.productContract.getByIdProduct(productId);
+            _logger.logInfo($" {LoggingEvents.getByIdItem} getByIdProduct productId ${getAllProductById}");
+            var getByIdProduct = await _serviceManager.productContract.getByIdProduct(getAllProductById);
             if (getByIdProduct.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
@@ -47,45 +46,45 @@ namespace PrinceEcom.Controllers
             return Ok(getAllProduct);
         }
 
-        [HttpGet("getIsBestSellerProduct")]
-        [Authorize]
-        public async Task<IActionResult> getIsBestSellerProduct()
-        {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
-            var getAllProduct = await _serviceManager.productContract.getBestSeller();
-            if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
-            }
-            return Ok(getAllProduct);
-        }
+        //[HttpGet("getIsBestSellerProduct")]
+        //[Authorize]
+        //public async Task<IActionResult> getIsBestSellerProduct()
+        //{
+        //    _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
+        //    var getAllProduct = await _serviceManager.productContract.getBestSeller();
+        //    if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
+        //    {
+        //        _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+        //    }
+        //    return Ok(getAllProduct);
+        //}
 
 
-        [HttpGet("getAllIsRecommendedProduct")]
-        [Authorize]
-        public async Task<IActionResult> getAllIsRecommendedProduct()
-        {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
-            var getAllProduct = await _serviceManager.productContract.getIsRecommended();
-            if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
-            }
-            return Ok(getAllProduct);
-        }
+        //[HttpGet("getAllIsRecommendedProduct")]
+        //[Authorize]
+        //public async Task<IActionResult> getAllIsRecommendedProduct()
+        //{
+        //    _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
+        //    var getAllProduct = await _serviceManager.productContract.getIsRecommended();
+        //    if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
+        //    {
+        //        _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+        //    }
+        //    return Ok(getAllProduct);
+        //}
 
-        [HttpGet("getAllIsNewArrialProduct")]
-        [Authorize]
-        public async Task<IActionResult> getAllIsNewArrialProduct()
-        {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllIsNewArrialProduct");
-            var getAllProduct = await _serviceManager.productContract.getIsNewArrial();
-            if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
-            {
-                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
-            }
-            return Ok(getAllProduct);
-        }
+        //[HttpGet("getAllIsNewArrialProduct")]
+        //[Authorize]
+        //public async Task<IActionResult> getAllIsNewArrialProduct()
+        //{
+        //    _logger.logInfo($" {LoggingEvents.getAllItem} getAllIsNewArrialProduct");
+        //    var getAllProduct = await _serviceManager.productContract.getIsNewArrial();
+        //    if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
+        //    {
+        //        _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
+        //    }
+        //    return Ok(getAllProduct);
+        //}
 
 
         [HttpGet("getAllProductForUser")]
@@ -319,16 +318,9 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.productContract.deleteTypeOfProduct(deleteSTypeOfProduct);
             return Ok(delete);
         }
-        [HttpPost("searchProduct")]
-        public async Task<IActionResult> searchProduct(SearchCommonDataViewModel searchCommonData)
-        {
-            _logger.logInfo($" {LoggingEvents.deleteItem} searchProduct");
-            var search = await _serviceManager.productContract.searchProduct(searchCommonData);
-            return Ok(search);
-        }
 
-        [HttpGet("searchProductNew/{commonTypeSearch}")]     
-        public async Task<IActionResult> searchProductNew(string commonTypeSearch)
+        [HttpGet("searchProduct/{commonTypeSearch}")]     
+        public async Task<IActionResult> searchProduct(string commonTypeSearch)
         {
             _logger.logInfo($" {LoggingEvents.getByIdItem} getByIdProduct productId ${commonTypeSearch}");
             var searchProductNew = await _serviceManager.productContract.searchProductNew(commonTypeSearch);
@@ -337,6 +329,6 @@ namespace PrinceEcom.Controllers
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
             }
             return Ok(searchProductNew);
-        }
+        }     
     }
 }

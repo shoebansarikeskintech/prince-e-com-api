@@ -10,6 +10,9 @@ namespace RepositoryContract
         public Task<ResponseViewModel> forgotPassword(ForgotPasswordViewModel forgotPassword);
         public Task<ResponseViewModel> addAppUser(AddAppUserViewModel addAppUser);
         public Task<ResponseViewModel> updateAppUser(UpdateAppUserViewModel updateAppUser);
+        public Task<ResponseViewModel> addSkinInsightUser(AddSkinInsightUserViewModel addSkinInsightUser);
+        public Task<ResponseViewModel> updateSkinInsightUser(updateSkinInsightUserViewModel updateSkinInsightUser);
+
 
     }
 }

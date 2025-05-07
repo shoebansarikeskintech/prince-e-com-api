@@ -163,5 +163,17 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.filterContract.SearchAllSkinInsightProduct(searchSkinInsightProduct);
             return Ok(delete);
         }
+
+        [HttpGet("getAllSkinInsightProductbyProductId")]
+        public async Task<IActionResult> getAllSkinInsightProductbyProductId(Guid productId)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllSkinInsightProductProductId");
+            var getAllSortBy = await _serviceManager.filterContract.getAllSkinInsightProductProductId(productId);
+            if (getAllSortBy.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Sort By Found");
+            }
+            return Ok(getAllSortBy);
+        }
     }
 }

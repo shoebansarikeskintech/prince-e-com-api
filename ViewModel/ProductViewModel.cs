@@ -220,4 +220,10 @@ namespace ViewModel
         public string? ingredientName { get; set; }
         public string? productname { get; set; }
     }
+
+    public class getAllProductByIdViewModel
+    {     
+        public string? id { get; set; }
+    }
+
 }

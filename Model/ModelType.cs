@@ -47,7 +47,7 @@ namespace Model
             string subMenuName, string roleName, int displayOrder);
 
         public record AdminUserDetails(Guid adminUserId, Guid appRoleId, string username, string firstName, string middleName,
-            string lastName, string email, string phoneNumber);
+            string lastName, string email, string phoneNumber,string password);
 
         public record AdminAllUserDetails(Guid adminUserId, Guid appRoleId, string username, string firstName, string middleName,
         string lastName, string password, string email, string phoneNumber, DateTime createdDate, Guid createdBy, DateTime updatedDate, Guid updatedBy, bool active, int otp, string activeStatus);
@@ -222,6 +222,38 @@ namespace Model
             public string? status { get; set; }
             public bool active { get; set; }
         }
+        public class OrderByUserIds
+        {
+            public long Id { get; set; }
+            public Guid OrderId { get; set; }
+            public Guid UserId { get; set; }
+            public string Username { get; set; }
+            public string FirstName { get; set; }
+            public string MiddleName { get; set; }
+            public string LastName { get; set; }
+            public string PhoneNumber { get; set; }
+            public string Email { get; set; }
+            public Guid AddressId { get; set; }
+            public Guid PaymentId { get; set; }
+            public string ShippedDate { get; set; }
+            public decimal Price { get; set; }
+            public decimal DiscountPrice { get; set; }
+            public decimal DeliveryCharge { get; set; }
+            public decimal GstCharge { get; set; }
+            public decimal ExtraCharge { get; set; }
+            public decimal TotalAmount { get; set; }
+            public string PaymentMethod { get; set; }
+            public string TransactionId { get; set; }
+            public string TrackingNo { get; set; }
+            public string Note { get; set; }
+            public string Status { get; set; }
+            public string CreatedDate { get; set; }
+            public string OrderNo { get; set; }
+            public Guid CouponId { get; set; }
+            public string CouponCode { get; set; }
+            public decimal CouponAmount { get; set; }
+            public string FullAddress { get; set; }
+        }
 
 
         public record Orderbyuserid(
@@ -230,12 +262,7 @@ namespace Model
                                     decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
                                     decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
                                     string Status, string CreatedDate, string orderNo, Guid couponId, string couponCode, decimal couponAmount, string FullAddress);
-        // public record Order(
-        //long Id, string orderNo, Guid OrderId, Guid UserId, string Username, string FirstName, string MiddleName,
-        //string LastName, string PhoneNumber, string Email, Guid AddressId, Guid PaymentId, string ShippedDate,
-        //decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
-        //decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
-        //string Status, string CreatedDate, Guid couponId, string couponCode, decimal amount, string FullAddress);
+
         public class Order
         {
             public long Id { get; set; }
@@ -300,6 +327,31 @@ namespace Model
             public string? CouponCode { get; set; }
             public decimal? CouponAmount { get; set; }
             public string? FullAddress { get; set; }
+        }
+
+        public class AllSearchOrder
+        {
+            public int id { get; set; }
+            public string shippedDate { get; set; }
+            public string transactionId { get; set; }
+            public string status { get; set; }
+            public string orderNo { get; set; }
+            public int quantity { get; set; }
+            public decimal price { get; set; }
+            public decimal discountPrice { get; set; }
+            public decimal totalAmount { get; set; }
+            public Guid orderId { get; set; }
+            public string username { get; set; }
+            public string name { get; set; }
+            public string Image { get; set; }
+            public string productName { get; set; }
+            public Guid couponId { get; set; }
+            public string BillingAddress { get; set; }
+            public string sellerName { get; set; }
+            public string sellerAddress { get; set; }
+
+            // Parameterless constructor required by Dapper
+            public AllSearchOrder() { }
         }
 
 
@@ -398,7 +450,23 @@ Guid skininsightproductId,
             string Status,
             bool active
         );
-        public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active);
+        public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active,
+            string productName,string description,decimal discountPrice,decimal price,int rating,string image);
+
+        public class SkinInsightProductModel
+        {
+            public int id { get; set; }
+            public Guid skininsightproductId { get; set; }
+            public Guid productId { get; set; }
+            public string? Age { get; set; }
+            public string? Gender { get; set; }
+            public string? Skintype { get; set; }
+            public string? SkinSensitive { get; set; }
+            public string? createdDate { get; set; }     // Because of FORMAT in SQL
+            public Guid createdBy { get; set; }
+            public string? Status { get; set; }          // "Active" / "Inactive"
+            public bool active { get; set; }
+        }
 
 
         public class SearchByPrdoct
@@ -603,6 +671,8 @@ Guid skininsightproductId,
         public record Faq(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active, string faqType);
 
         public record ProductSpecification(long id, Guid ProductSpecificationid, Guid productId, string producttype, string netquantity, string shelfLife, string countryOfOrigin, string SKUcode, Guid ManufacturedBy, string ConsumerCareAddress, Guid CreatedBy, string CreatedDate, Guid updatedBy, string updatedDate, string status, bool active);
+        public record FaqIngredient(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active, string faqType);
+        public record FaqWithProduct(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active, string faqType);
 
 
         public class RatingRiviewStar

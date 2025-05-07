@@ -69,6 +69,7 @@ namespace PrinceEcom.Controllers
 
         [HttpPost("addProductFAQ")]
         [Authorize]
+        [Authorize]
         public async Task<IActionResult> addFAQ(AddFAQViewModel addFAQ)
         {
             _logger.logInfo($" {LoggingEvents.addItem} AddRatingReview");
@@ -77,6 +78,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpGet("getAllFAQByProductId")]
+        [Authorize]
         public async Task<IActionResult> getAllFAQByProductId(Guid productId)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllFAQByProductId");
@@ -89,6 +91,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpGet("getAllProductFAQ")]
+        [Authorize]
         public async Task<IActionResult> getAllFAQ()
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllFAQ");
@@ -111,7 +114,8 @@ namespace PrinceEcom.Controllers
 
         }
 
-        [HttpGet("deleteProductFAQ")]
+        [HttpPost("deleteProductFAQ")]
+        [Authorize]
         public async Task<IActionResult> deleteFAQ(DeleteFAQViewModel deleteFAQ)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllRatingReviewbyId");
@@ -132,6 +136,7 @@ namespace PrinceEcom.Controllers
 
 
         [HttpGet("getProductSpecification")]
+        [Authorize]
         public async Task<IActionResult> getProductSpecification()
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getProductSpecification");
@@ -155,6 +160,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpGet("deleteProductSpecification")]
+        [Authorize]
         public async Task<IActionResult> deleteProductSpecification(DeleteProductSpecificationViewModel deleteProductSpecification)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} deleteProductSpecification");

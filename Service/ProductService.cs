@@ -12,9 +12,9 @@ namespace Service
             _repositoryManager = repositoryManager;
         }
 
-        public async Task<ResponseViewModel> getByIdProduct(Guid productId)
+        public async Task<ResponseViewModel> getByIdProduct(getAllProductByIdViewModel getAllProductById)
         {
-            var getByIdProduct = await _repositoryManager.productRepository.getByIdProduct(productId);
+            var getByIdProduct = await _repositoryManager.productRepository.getByIdProduct(getAllProductById);
             return getByIdProduct;
         }
 
@@ -170,11 +170,7 @@ namespace Service
             return delete;
         }
 
-        public async Task<ResponseViewModel> searchProduct(SearchCommonDataViewModel searchCommonData)
-        {
-            var search = await _repositoryManager.productRepository.searchProduct(searchCommonData);
-            return search;
-        }
+
 
         public async Task<ResponseViewModel> searchProductNew(string commonTypeSearch)
         {
