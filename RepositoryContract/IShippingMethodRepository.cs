@@ -18,6 +18,8 @@ namespace RepositoryContract
         public Task<ResponseViewModel> addPinCodeshippingMethod(AddPinCodeShippingViewModel addPinCodeshipping);
         public Task<ResponseViewModel> updatePinCodeShippingMethod(UpdatePinCodeShippingViewModel UpdatePinCodeshippingMethod);
         public Task<ResponseViewModel> deletePinCodeShippingMethod(DeletePinCodeShippingViewModel DeletePinCodeshippingMethod);
+        public Task<ResponseViewModel> getAllPinCode(int pinCode);
+
 
     }
 }

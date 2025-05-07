@@ -58,5 +58,11 @@ namespace Service
             var delete = await _repositoryManager.shippingMethodRepository.deletePinCodeShippingMethod(deletePinCodeShippingMethod);
             return delete;
         }
+
+        public async Task<ResponseViewModel> getAllPinCode(int pinCode)
+        {
+            var getAllPinCode = await _repositoryManager.shippingMethodRepository.getAllPinCode(pinCode);
+            return getAllPinCode;
+        }
     }
 }

@@ -66,11 +66,6 @@ namespace Repository
                     .QueryAsync<Faq>(procedureFAQ, parameters, commandType: CommandType.StoredProcedure))
                     .ToList();
 
-                //// 3) Fetch Specifications
-                //var specList = (await connection
-                //    .QueryAsync<ProductSpecification>(procedureSpecification, parameters, commandType: CommandType.StoredProcedure))
-                //    .ToList();
-
                 // 3) Fetch Specifications
                 var Ingre = (await connection
                     .QueryAsync<FaqIngredient>(Ingredient, parameters, commandType: CommandType.StoredProcedure))
@@ -136,13 +131,11 @@ namespace Repository
                     data = product != null
                                  ? new
                                  {
-                                     productDetail = product,   // ← singular name
-                                     FAQ = faqList,   // ← array
-                                     //Specification = specList,   // ← array
-                                     // ← array
-                                     FaqIngredient = Ingre,   // ← Ingre
-                                     FaqWithProduct = FaqProduct,   // ← Ingre
-                                     SimilarProduct = SimilarP,   // ← Ingre
+                                     productDetail = product,  
+                                     FAQ = faqList,                              
+                                     FaqIngredient = Ingre,   
+                                     FaqWithProduct = FaqProduct,   
+                                     SimilarProduct = SimilarP,   
                                      skin = skin
                                  }
                                  : null
@@ -264,169 +257,6 @@ namespace Repository
             }
         }
 
-
-
-        //public async Task<ResponseViewModelProduct> addProduct(AddProductViewModel addProduct)
-        //{
-        //    var response = new ResponseViewModelProduct();
-        //    var procedureName = "spAddProduct";
-        //    var parameters = new DynamicParameters();
-
-        //    try
-        //    {
-
-        //        // Add parameters for the stored procedure call
-        //        parameters.Add("@categoryId", addProduct.categoryId == Guid.Empty ? (object)DBNull.Value : addProduct.categoryId, DbType.Guid);
-        //        parameters.Add("@subCategoryId", addProduct.subCategoryId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryId, DbType.Guid);
-        //        parameters.Add("@subCategoryTypeId", addProduct.subCategoryTypeId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryTypeId, DbType.Guid);
-        //        parameters.Add("@sellerId", addProduct.sellerId == Guid.Empty ? (object)DBNull.Value : addProduct.sellerId, DbType.Guid);
-        //        parameters.Add("@sizeId", addProduct.sizeId == Guid.Empty ? (object)DBNull.Value : addProduct.sizeId, DbType.Guid);
-        //        parameters.Add("@createdBy", addProduct.createdBy == Guid.Empty ? (object)DBNull.Value : addProduct.createdBy, DbType.Guid);
-        //        parameters.Add("@ConcernId", addProduct.ConcernId == Guid.Empty ? (object)DBNull.Value : addProduct.ConcernId, DbType.Guid);
-        //        parameters.Add("@IngredientId", addProduct.IngredientId == Guid.Empty ? (object)DBNull.Value : addProduct.IngredientId, DbType.Guid);
-        //        parameters.Add("@TypeofProductId", addProduct.TypeofProductId == Guid.Empty ? (object)DBNull.Value : addProduct.TypeofProductId, DbType.Guid);
-        //        parameters.Add("@StepsId", addProduct.StepsId == Guid.Empty ? (object)DBNull.Value : addProduct.StepsId, DbType.Guid);
-
-        //        parameters.Add("@title", addProduct.title ?? "", DbType.String);
-        //        parameters.Add("@subTitle", addProduct.subTitle ?? "", DbType.String);
-        //        parameters.Add("@description", addProduct.description ?? "", DbType.String);
-        //        parameters.Add("@rating", addProduct.rating, DbType.Int32);
-        //        parameters.Add("@noOfRating", addProduct.noOfRating, DbType.Int32);
-        //        parameters.Add("@stock", addProduct.stock, DbType.Int32);
-        //        parameters.Add("@price", addProduct.price, DbType.Decimal);
-        //        parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);
-
-        //        parameters.Add("@isNewArrial", addProduct.isNewArrial, DbType.Boolean);
-        //        parameters.Add("@isBestSeller", addProduct.isBestSeller, DbType.Boolean);
-        //        parameters.Add("@isRecommended", addProduct.isRecommended, DbType.Boolean);
-
-        //        parameters.Add("@categoryName", addProduct.categoryName ?? "", DbType.String);
-        //        parameters.Add("@subCategoryName", addProduct.subCategoryName ?? "", DbType.String);
-        //        parameters.Add("@subCategoryTypeName", addProduct.subCategoryTypeName ?? "", DbType.String);
-        //        parameters.Add("@stpesName", addProduct.stpesName ?? "", DbType.String);
-        //        parameters.Add("@typeOfProductName", addProduct.typeOfProductName ?? "", DbType.String);
-        //        parameters.Add("@sizename", addProduct.sizename ?? "", DbType.String);
-        //        parameters.Add("@concernname", addProduct.concernname ?? "", DbType.String);
-        //        parameters.Add("@ingredientsname", addProduct.ingredientsname ?? "", DbType.String);
-        //        parameters.Add("@productname", addProduct.productname ?? "", DbType.String);
-
-        //        // Execute stored procedure and get result
-        //        using (var connection = _dapperContext.createConnection())
-        //        {
-        //            var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModelProduct>(
-        //                procedureName,
-        //                parameters,
-        //                commandType: CommandType.StoredProcedure
-        //            );
-
-        //            response = result ?? new ResponseViewModelProduct { statusCode = 500, message = "Error occurred" };
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.statusCode = 500;
-        //        response.message = ex.Message;
-        //    }
-
-        //    return response;
-        //}
-
-
-        //public async Task<ResponseViewModelProduct> addProduct(AddProductViewModel addProduct)
-        //{
-        //    var response = new ResponseViewModelProduct();
-        //    var procedureName = "spAddProduct";
-        //    var parameters = new DynamicParameters();
-
-        //    try
-        //    {
-        //        string imagePath = null;               
-
-        //        if (imageFile != null)
-        //        {
-        //            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-
-        //            // Define the folder path where you want to save the image
-        //            string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProductImage");
-
-        //            // Check if the directory exists, if not, create it
-        //            if (!Directory.Exists(uploadDir))
-        //            {
-        //                Directory.CreateDirectory(uploadDir);
-        //            }
-
-        //            // Full file path with unique file name
-        //            string filePath = Path.Combine(uploadDir, uniqueFileName);
-
-        //            // Write the file to the disk
-        //            using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //            {
-        //                await imageFile.CopyToAsync(fileStream);
-        //            }
-
-        //            // Save only the file name (without folder path)
-        //            imagePath = uniqueFileName;  // Save only the file name like '1240cbb1-ae90-42c6-bbee-ece8617000f6.jpeg'
-        //        }
-
-
-
-        //        // 👉 Add all parameters (same as before, with imagePath)
-        //        parameters.Add("@categoryId", addProduct.categoryId == Guid.Empty ? (object)DBNull.Value : addProduct.categoryId, DbType.Guid);
-        //        parameters.Add("@subCategoryId", addProduct.subCategoryId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryId, DbType.Guid);
-        //        parameters.Add("@subCategoryTypeId", addProduct.subCategoryTypeId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryTypeId, DbType.Guid);
-        //        parameters.Add("@sellerId", addProduct.sellerId == Guid.Empty ? (object)DBNull.Value : addProduct.sellerId, DbType.Guid);
-        //        parameters.Add("@sizeId", addProduct.sizeId == Guid.Empty ? (object)DBNull.Value : addProduct.sizeId, DbType.Guid);
-        //        parameters.Add("@createdBy", addProduct.createdBy == Guid.Empty ? (object)DBNull.Value : addProduct.createdBy, DbType.Guid);
-        //        parameters.Add("@ConcernId", addProduct.ConcernId == Guid.Empty ? (object)DBNull.Value : addProduct.ConcernId, DbType.Guid);
-        //        parameters.Add("@IngredientId", addProduct.IngredientId == Guid.Empty ? (object)DBNull.Value : addProduct.IngredientId, DbType.Guid);
-        //        parameters.Add("@TypeofProductId", addProduct.TypeofProductId == Guid.Empty ? (object)DBNull.Value : addProduct.TypeofProductId, DbType.Guid);
-        //        parameters.Add("@StepsId", addProduct.StepsId == Guid.Empty ? (object)DBNull.Value : addProduct.StepsId, DbType.Guid);
-
-        //        parameters.Add("@title", addProduct.title ?? "", DbType.String);
-        //        parameters.Add("@subTitle", addProduct.subTitle ?? "", DbType.String);
-        //        parameters.Add("@description", addProduct.description ?? "", DbType.String);
-        //        parameters.Add("@rating", addProduct.rating, DbType.Int32);
-        //        parameters.Add("@noOfRating", addProduct.noOfRating, DbType.Int32);
-        //        parameters.Add("@stock", addProduct.stock, DbType.Int32);
-        //        parameters.Add("@price", addProduct.price, DbType.Decimal);
-        //        parameters.Add("@discountPrice", addProduct.discountPrice, DbType.Decimal);
-
-        //        parameters.Add("@isNewArrial", addProduct.isNewArrial, DbType.Boolean);
-        //        parameters.Add("@isBestSeller", addProduct.isBestSeller, DbType.Boolean);
-        //        parameters.Add("@isRecommended", addProduct.isRecommended, DbType.Boolean);
-
-        //        parameters.Add("@categoryName", addProduct.categoryName ?? "", DbType.String);
-        //        parameters.Add("@subCategoryName", addProduct.subCategoryName ?? "", DbType.String);
-        //        parameters.Add("@subCategoryTypeName", addProduct.subCategoryTypeName ?? "", DbType.String);
-        //        parameters.Add("@stpesName", addProduct.stpesName ?? "", DbType.String);
-        //        parameters.Add("@typeOfProductName", addProduct.typeOfProductName ?? "", DbType.String);
-        //        parameters.Add("@sizename", addProduct.sizename ?? "", DbType.String);
-        //        parameters.Add("@concernname", addProduct.concernname ?? "", DbType.String);
-        //        parameters.Add("@ingredientsname", addProduct.ingredientsname ?? "", DbType.String);
-        //        parameters.Add("@productname", addProduct.productname ?? "", DbType.String);
-
-        //        parameters.Add("@image", imagePath ?? "", DbType.String);
-
-        //        using (var connection = _dapperContext.createConnection())
-        //        {
-        //            var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModelProduct>(
-        //                procedureName,
-        //                parameters,
-        //                commandType: CommandType.StoredProcedure
-        //            );
-
-        //            response = result ?? new ResponseViewModelProduct { statusCode = 500, message = "Error occurred" };
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.statusCode = 500;
-        //        response.message = ex.Message;
-        //    }
-
-        //    return response;
-        //}
-
         public async Task<ResponseViewModelProduct> addProduct(AddProductViewModel addProduct)
         {
             var response = new ResponseViewModelProduct();
@@ -437,9 +267,7 @@ namespace Repository
             try
             {
 
-
-
-                // ✅ Safe Guid Handling
+                // Guid Parameters
                 parameters.Add("@categoryId", addProduct.categoryId == Guid.Empty ? (object)DBNull.Value : addProduct.categoryId, DbType.Guid);
                 parameters.Add("@subCategoryId", addProduct.subCategoryId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryId, DbType.Guid);
                 parameters.Add("@subCategoryTypeId", addProduct.subCategoryTypeId == Guid.Empty ? (object)DBNull.Value : addProduct.subCategoryTypeId, DbType.Guid);
@@ -451,7 +279,7 @@ namespace Repository
                 parameters.Add("@TypeofProductId", addProduct.TypeofProductId == Guid.Empty ? (object)DBNull.Value : addProduct.TypeofProductId, DbType.Guid);
                 parameters.Add("@stepsId", addProduct.stepsId == Guid.Empty ? (object)DBNull.Value : addProduct.stepsId, DbType.Guid);
 
-                // ✅ Safe Boolean and String parameters
+                //  Boolean and String parameters
                 parameters.Add("@title", addProduct.title ?? string.Empty, DbType.String);
                 parameters.Add("@subTitle", addProduct.subTitle ?? string.Empty, DbType.String);
                 parameters.Add("@description", addProduct.description ?? string.Empty, DbType.String);
@@ -502,7 +330,7 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                // ✅ Error Catch Block
+                //  Error Catch Block
                 response.statusCode = (int)HttpStatusCode.ExpectationFailed;
                 response.message = ex.Message;
                 response.data = null;
@@ -1103,15 +931,11 @@ namespace Repository
         }
 
 
-
-        // Minimal response model for SP
         private class SPResponseModel
         {
             public int statusCode { get; set; }
             public string message { get; set; }
         }
-
-
 
         public async Task<ResponseViewModel> searchProductNew(string commonTypeSearch)
         {

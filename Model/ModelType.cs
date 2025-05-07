@@ -27,27 +27,15 @@ namespace Model
         public record SubMenu(Guid subMenuId, Guid menuId, string subMenuName, string subMenuPageName, string menuName, string pageName);
         public record GetAllSubMenu(int id, Guid subMenuId, Guid menuId, string subMenuName, string subMenuPageName, string menuName, string pageName, string status, bool active);
 
-
-        public record SubMenubyid(
-        int id,
-        Guid subMenuId,
-        Guid menuId,
-        string subMenuName,
-        string subMenuPageName,
-        int displayOrder,
-        string createdDate,
-        Guid createdBy,
-
-        string Status,
-             bool active
-    );
+        public record SubMenubyid(int id, Guid subMenuId, Guid menuId, string subMenuName, string subMenuPageName, int displayOrder, string createdDate,
+        Guid createdBy, string Status, bool active);
 
 
         public record RoleMenu(int id, Guid roleMenuId, Guid menuId, Guid appRoleId, Guid subMenuId, string menuName,
             string subMenuName, string roleName, int displayOrder);
 
         public record AdminUserDetails(Guid adminUserId, Guid appRoleId, string username, string firstName, string middleName,
-            string lastName, string email, string phoneNumber,string password);
+            string lastName, string email, string phoneNumber, string password);
 
         public record AdminAllUserDetails(Guid adminUserId, Guid appRoleId, string username, string firstName, string middleName,
         string lastName, string password, string email, string phoneNumber, DateTime createdDate, Guid createdBy, DateTime updatedDate, Guid updatedBy, bool active, int otp, string activeStatus);
@@ -95,57 +83,19 @@ namespace Model
             Int64 id, Guid sizeId, string name, string code, DateTime createdDate, string status, bool active);
 
         public record Product(
-            Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
-            Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid stepsId, string stepsName,
-            Guid typeOfProductId, string typeOfProductIdName, Guid sizeId, string sizeName, string sizeCode, string productName,
-            string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-            DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId);
-        public record AllProduct(
-    Int64 id,
-    Guid productId,
-    Guid categoryId,
-    string categoryName,
-    Guid subCategoryId,
-    string subCategoryName,
-    Guid subCategoryTypeId,
-    string subCategoryTypeName,
-    Guid sellerId,
-    string sellerName,
-    Guid sizeId,
-    string sizeName,
-    string sizeCode,
-    string productName,
-    string subName,
-    string description,
-    Int32 rating,
-    Int32 noOfRating,
-    Int32 stock,
-    Decimal price,
-    Decimal discountPrice,
-    DateTime createdDate,
-    DateTime updatedDate,
-    string status,
-    bool active,
-    string imageUrl,
-    string concernName,
-    string ingredientName,
-    Guid concernId,
-    Guid ingredientId,
-    bool isNewArrial,
-    bool isBestSeller,
-    bool isRecommended,
-    Guid stepsId,
-    string stepsName,
-    Guid typeOfProductId,
-    string typeOfProductName
-);
+                        Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
+                        Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid stepsId, string stepsName,
+                        Guid typeOfProductId, string typeOfProductIdName, Guid sizeId, string sizeName, string sizeCode, string productName,
+                        string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
+                        DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId);
 
-        //    public record AllProduct(
-        //Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
-        //Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName,Guid sizeId, string sizeName, string sizeCode, string productName,
-        //string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-        //DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId, Guid TypeofProductId, Guid StepsId, bool isNewArrial, bool isBestSeller, bool isRecommended,
-        //Guid stepsId,string stepsName,Guid typeOfProductId,string typeOfProductName);
+        public record AllProduct(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
+                        Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid sizeId, string sizeName, string sizeCode,
+                        string productName, string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
+                        DateTime createdDate, DateTime updatedDate, string status, bool active, string imageUrl, string concernName, string ingredientName,
+                        Guid concernId, Guid ingredientId, bool isNewArrial, bool isBestSeller, bool isRecommended, Guid stepsId, string stepsName,
+                        Guid typeOfProductId, string typeOfProductName);
+
         public record AllSteps(
             Int64 id, Guid StepsId, string name, string description, DateTime createdDate, string status, bool active);
 
@@ -209,8 +159,7 @@ namespace Model
             Decimal productAmount, DateTime validDate, DateTime expireDate, DateTime createdDate, string Status);
         public record Coupon(long Id, Guid CouponId, string Code, string Details, string AmountType, decimal Amount, Guid CreatedBy, DateTime CreatedDate, string Status, bool active, Guid UpdatedBy, DateTime UpdatedDate);
 
-        public record GiftCard(
-            Int64 id, Guid giftCardId, Guid appUserId, string cardNumber, Decimal balance, string status, DateTime issueDate,
+        public record GiftCard(Int64 id, Guid giftCardId, Guid appUserId, string cardNumber, Decimal balance, string status, DateTime issueDate,
             DateTime expireDate, DateTime createdDate, string Status);
         public class Notification
         {
@@ -257,11 +206,11 @@ namespace Model
 
 
         public record Orderbyuserid(
-                                    long Id, Guid OrderId, Guid UserId, string Username, string FirstName, string MiddleName,
-                                    string LastName, string PhoneNumber, string Email, Guid AddressId, Guid PaymentId, string ShippedDate,
-                                    decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
-                                    decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
-                                    string Status, string CreatedDate, string orderNo, Guid couponId, string couponCode, decimal couponAmount, string FullAddress);
+                            long Id, Guid OrderId, Guid UserId, string Username, string FirstName, string MiddleName,
+                            string LastName, string PhoneNumber, string Email, Guid AddressId, Guid PaymentId, string ShippedDate,
+                            decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
+                            decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
+                            string Status, string CreatedDate, string orderNo, Guid couponId, string couponCode, decimal couponAmount, string FullAddress);
 
         public class Order
         {
@@ -354,15 +303,6 @@ namespace Model
             public AllSearchOrder() { }
         }
 
-
-
-        // public record AllOrder(
-        //long Id, string orderNo, Guid OrderId, Guid UserId, string Username, string FirstName, string MiddleName,
-        //string LastName, string PhoneNumber, string Email, Guid AddressId, Guid PaymentId, string ShippedDate,
-        //decimal Price, decimal DiscountPrice, decimal DeliveryCharge, decimal GstCharge, decimal ExtraCharge,
-        //decimal TotalAmount, string PaymentMethod, string TransactionId, string TrackingNo, string Note,
-        //string Status, string CreatedDate, Guid couponId,string couponCode,decimal couponAmount,string FullAddress);
-
         public class OrderDetailsById
         {
             public long Id { get; set; }
@@ -384,9 +324,8 @@ namespace Model
             public string? SellerAddress { get; set; }
         }
 
-        public record OrderDetailsByName(
-   long Id, string ShippedDate, string TransactionId, string Status, int Quantity, decimal Price,
-   decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName);
+        public record OrderDetailsByName(long Id, string ShippedDate, string TransactionId, string Status, int Quantity, decimal Price,
+                              decimal DiscountPrice, decimal TotalAmount, string Username, string Name, string Image, string ProductName);
 
         public record OrderDetails(
             Int64 id, Guid orderId, Guid userId, string username, string firstName, string middleName, string lastName, string phoneNumber, string email, Guid addressId, Guid paymentId, string shippedDate, decimal price,
@@ -394,15 +333,17 @@ namespace Model
         string trackingNo, string note, string status, DateTime createdDate);
 
         public record CancelOrder(
-            Int64 id, string orderNo, Guid orderId, Guid userId, string username,
-        string firstName, string middleName, string lastName, string phoneNumber, string email, Guid addressId,
-       Guid paymentId, string cancelOrderDate, decimal price, decimal discountPrice, decimal deliveryCharge,
-       decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId, string trackingNo,
-       string note, string status, string createdDate);
+                    Int64 id, string orderNo, Guid orderId, Guid userId, string username,
+                    string firstName, string middleName, string lastName, string phoneNumber, string email, Guid addressId,
+                    Guid paymentId, string cancelOrderDate, decimal price, decimal discountPrice, decimal deliveryCharge,
+                    decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId, string trackingNo,
+                    string note, string status, string createdDate);
 
         public record AllRefundOrder(
             Int64 id, Guid returnId, Guid orderId, Guid userId, int quantity, string reason, string returnStatus,
             string refundMethod, Decimal refundAmount, string refundStatus, string refundTrackingNo, DateTime refundDate, string adminRemark, DateTime createdDate, bool active);
+
+        public record PinCodeActive(int pinCode, int noOfDays);
         public class Shipping
         {
             public long Id { get; set; }
@@ -416,9 +357,6 @@ namespace Model
             public string? CreatedDate { get; set; }
             public string? username { get; set; }
         }
-
-        //public record Shipping(
-        //    Int64 id, string orderNo, Guid shippingId, Guid orderId, string trackingNo, string carrier, string estimateDelivery, string status, string createdDate);
 
         public record Banner(
             Int64 id, Guid bannerId, Guid categoryId, Guid subCategoryId, Guid subCategoryTypeId, string image,
@@ -436,22 +374,11 @@ namespace Model
             decimal discountPrice, decimal deliveryCharge, decimal gstCharge, decimal extraCharge, decimal totalAmount);
 
         public record SortBy(Int64 id, Guid sortById, string sortByName, DateTime createdDate, string status, bool active);
-        //public record AllSkinInsightProduct(int id, Guid skininsightproductId,Guid productId, string Age,string Gender,string Skintype,string SkinSensitive, DateTime createdDate,Guid createdBy, string status, bool active);
-        public record AllSkinInsightProduct(
-long id,
-Guid skininsightproductId,
-            Guid productId,
-            string Age,
-            string Gender,
-            string Skintype,
-            string SkinSensitive,
-            DateTime createdDate,
-            Guid createdBy,
-            string Status,
-            bool active
+        public record AllSkinInsightProduct(long id, Guid skininsightproductId, Guid productId, string Age, string Gender, string Skintype,
+            string SkinSensitive, DateTime createdDate, Guid createdBy, string Status, bool active
         );
         public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active,
-            string productName,string description,decimal discountPrice,decimal price,int rating,string image);
+            string productName, string description, decimal discountPrice, decimal price, int rating, string image);
 
         public class SkinInsightProductModel
         {
@@ -462,12 +389,11 @@ Guid skininsightproductId,
             public string? Gender { get; set; }
             public string? Skintype { get; set; }
             public string? SkinSensitive { get; set; }
-            public string? createdDate { get; set; }     // Because of FORMAT in SQL
+            public string? createdDate { get; set; }
             public Guid createdBy { get; set; }
-            public string? Status { get; set; }          // "Active" / "Inactive"
+            public string? Status { get; set; }
             public bool active { get; set; }
         }
-
 
         public class SearchByPrdoct
         {
@@ -527,7 +453,6 @@ Guid skininsightproductId,
             public int ingredientId { get; set; }
         }
 
-
         public class PrdoctSearchByFilter
         {
             public int categoryId { get; set; }
@@ -560,7 +485,6 @@ Guid skininsightproductId,
             public string? ingredientName { get; set; }
         }
 
-
         public class PinCodeshippingMethod
         {
             public long Id { get; set; }
@@ -570,6 +494,7 @@ Guid skininsightproductId,
             public DateTime CreatedDate { get; set; }
             public string Status { get; set; }
             public bool Active { get; set; }
+            public bool noOfDays { get; set; }
 
             public PinCodeshippingMethod() { }
 
@@ -618,14 +543,6 @@ Guid skininsightproductId,
             public string? Country { get; set; }
         }
 
-
-        //    public record AllOrderByUserId(
-        //Int64 id, string shippedDate, decimal price, decimal discountPrice, decimal deliveryCharge,
-        //decimal gstCharge, decimal extraCharge, decimal totalAmount, string paymentMethod, string transactionId,
-        //string trackingNo, string note, string status, DateTime createdDate, string orderNo, string firstName,
-        //string middleName, string lastName, string email, string phoneNumber,
-        //string addressName, string addressMobile, string addressEmail, string streetAddress,
-        //string state, string city, string pincode, string country);
 
         public record UserProfile(
             Guid userId, string username, string firstName, string middleName, string lastName, string email, string phoneNumber, DateTime createdDate);

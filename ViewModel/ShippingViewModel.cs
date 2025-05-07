@@ -106,6 +106,7 @@ namespace ViewModel
 
         [Required]
         public Guid? createdBy { get; set; }
+        public int noOfDays { get; set; }
     }
 
     public class UpdatePinCodeShippingViewModel
@@ -119,6 +120,7 @@ namespace ViewModel
         [Required]
         public Guid updatedBy { get; set; }
         public bool active { get; set; }
+        public int noOfDays { get; set; }
 
     }
     public class DeletePinCodeShippingViewModel

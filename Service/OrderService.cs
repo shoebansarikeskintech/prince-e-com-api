@@ -16,7 +16,6 @@ namespace Service
             var getAllOrder = await _repositoryManager.orderRepository.getAllOrder(userId);
             return getAllOrder;
         }
-
         public async Task<ResponseViewModel> getAllOrderlist()
         {
             var getAllOrderlist = await _repositoryManager.orderRepository.getAllOrderlist();
@@ -60,17 +59,6 @@ namespace Service
             return add;
         }
 
-        public async Task<ResponseViewModel> getAllOrderByOrderId(string orderId)
-        {
-            var GetAllOrderByOrderId = await _repositoryManager.orderRepository.getAllOrderByOrderId(orderId);
-            return GetAllOrderByOrderId;
-        }
-        public async Task<ResponseViewModel> getAllOrderByNameorEmail(String userNameorEmail)
-        {
-            var getAllOrderByNameorEmail = await _repositoryManager.orderRepository.getAllOrderByNameorEmail(userNameorEmail);
-            return getAllOrderByNameorEmail;
-        }
-
         public async Task<ResponseViewModel> updateOrderStatus(UpdateStausViewModel aUpdateStausDetails)
         {
             var add = await _repositoryManager.orderRepository.updateOrderStatus(aUpdateStausDetails);
@@ -83,40 +71,21 @@ namespace Service
             return getOrderWithItems;
         }
 
-        public async Task<ResponseViewModel> updateShipped(updateShippedViewModel updateShipped)
-        {
-            var update = await _repositoryManager.orderRepository.updateShipped(updateShipped);
-            return update;
-        }
-
-        public async Task<ResponseViewModel> updateDelivery(updateDelCanRetCompViewModel updateDelCanRetCompViewModel)
-        {
-            var update = await _repositoryManager.orderRepository.updateDelivery(updateDelCanRetCompViewModel);
-            return update;
-        }
-
-        public async Task<ResponseViewModel> cancelOrder(updateDelCanRetCompViewModel updateDelCanRetCompViewModel)
-        {
-            var update = await _repositoryManager.orderRepository.cancelOrder(updateDelCanRetCompViewModel);
-            return update;
-        }
-
-        public async Task<ResponseViewModel> returnOrder(updateDelCanRetCompViewModel updateDelCanRetCompViewModel)
-        {
-            var update = await _repositoryManager.orderRepository.returnOrder(updateDelCanRetCompViewModel);
-            return update;
-        }
-
-        public async Task<ResponseViewModel> returnOrderCompleted(updateDelCanRetCompViewModel updateDelCanRetCompViewModel)
-        {
-            var update = await _repositoryManager.orderRepository.returnOrderCompleted(updateDelCanRetCompViewModel);
-            return update;
-        }
-
         public async Task<ResponseViewModel> getOrdersBySearch(string searchValue)
         {
             var getOrdersBySearch = await _repositoryManager.orderRepository.getOrdersBySearch(searchValue);
             return getOrdersBySearch;
+        }
+
+        public async Task<ResponseViewModel> getAllReturnOrderCompleted()
+        {
+            var getAllReturnOrderCompleted = await _repositoryManager.orderRepository.getAllReturnOrderCompleted();
+            return getAllReturnOrderCompleted;
+        }
+        public async Task<ResponseViewModel> getAllReturnOrderAccepted()
+        {
+            var getAllReturnOrderAccepted = await _repositoryManager.orderRepository.getAllReturnOrderAccepted();
+            return getAllReturnOrderAccepted;
         }
     }
 }

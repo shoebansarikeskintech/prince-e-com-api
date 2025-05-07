@@ -163,6 +163,8 @@ namespace Common
 
         public static string spGetAllOrder = "SpGetAllOrderList";
         public static string spGetAllOrderlist = "SpGetAllOrder";
+        public static string spReturnOrderCompleted = "SpReturnOrderCompleted";
+        public static string spReturnOrderAccepted = "SpReturnOrderAccepted";
         public static string spGetAllReturnOrder = "SpGetAllReturnOrder";
         public static string spGetAllPendingOrder = "SpGetAllPeningOrder";
         public static string spGetAllProcessingOrder = "SpGetAllProcessingOrder";
@@ -170,14 +172,7 @@ namespace Common
         public static string spGetAllCancelOrder = "SpGetAllCancelOrder";
         public static string spUpdateOrderStatus = "SpUpdateOrderStatus";
         public static string getOrderWithItems = "GetOrderWithItems";
-        public static string spupdateShipped = "SpupdateShipped";
-        public static string spupdateDelivery = "SpupdateDelivery";
-        public static string spcancelOrder = "SpcancelOrder";
-        public static string spreturnOrder = "SpreturnOrder";
-        public static string spreturnOrderCompleted = "SpreturnOrderCompleted";
 
-        public static string spGetAllOrderByOrderIdorOrderNo = "SpGetAllOrderByOrderIdorOrderNo";
-        public static string spGetAllOrderByUserNameorEmail = "SpGetAllOrderByUserNameorEmail";
         public static string spGetAllOrderDetailSearch = "SpGetAllOrderDetails";
 
 
@@ -194,6 +189,7 @@ namespace Common
         public static string spDeletePaymentMode = "SpDeletePaymentMode";
 
         public static string spGetByIdShipping = "SpGetByIdShipping";
+        public static string spgetAllPinCodeActive = "SpgetAllPinCodeActive";
         public static string spGetAllShipping = "SpGetAllShipping";
         public static string spAddShipping = "SpAddShipping";
         public static string spUpdateShipping = "SpUpdateShipping";

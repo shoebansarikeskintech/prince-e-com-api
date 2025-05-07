@@ -97,5 +97,17 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.shippingMethodContract.deletePinCodeShippingMethod(deletePinCodeShippingMethod);
             return Ok(delete);
         }
+
+        [HttpGet("getAllPinCode")]
+        public async Task<IActionResult> getAllPinCode(int pinCode)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} SpGetAllShippingMethod");
+            var getAllPinCode = await _serviceManager.shippingMethodContract.getAllPinCode(pinCode);
+            if (getAllPinCode.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Shipping Method List");
+            }
+            return Ok(getAllPinCode);
+        }
     }
 }

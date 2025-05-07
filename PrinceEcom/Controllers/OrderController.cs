@@ -68,8 +68,7 @@ namespace PrinceEcom.Controllers
             return Ok(getAllOrder);
         }
 
-        
-       
+               
         [HttpGet("OrderWithItems")]
         public async Task<IActionResult> OrderWithItems(string orderId)
         {
@@ -131,10 +130,25 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllProcessingOrder);
         }
+             
+
+        //order shipped ho gaya hai 
+        [HttpGet("getAllShippingOrderlistAdmin")]
+        public async Task<IActionResult> getAllShippingOrderlistAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllShippingOrderlist");
+            var getAllCancelOrder = await _serviceManager.orderContract.getAllShippingOrderlist();
+            if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Cancel Order Found");
+            }
+            return Ok(getAllCancelOrder);
+        }
+
 
         //order cancel ho gaya hai 
-        [HttpGet("getAllCancelOrderAdmin")]
-        public async Task<IActionResult> getAllCancelOrderAdmin()
+        [HttpGet("CancelOrderlistAdmin")]
+        public async Task<IActionResult> cancelOrderlistAdmin()
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllCancelOrder");
             var getAllCancelOrder = await _serviceManager.orderContract.getAllCancelOrder();
@@ -146,8 +160,8 @@ namespace PrinceEcom.Controllers
         }
 
         //order return ho gaya hai 
-        [HttpGet("getAllReturnOrderlistAdmin")]
-        public async Task<IActionResult> getAllReturnOrderlistAdmin()
+        [HttpGet("returnOrderlistAdmin")]
+        public async Task<IActionResult> returnOrderlistAdmin()
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllReturnOrderlist");
             var getAllCancelOrder = await _serviceManager.orderContract.getAllReturnOrderlist();
@@ -158,16 +172,28 @@ namespace PrinceEcom.Controllers
             return Ok(getAllCancelOrder);
         }
 
-
-        //order shipped ho gaya hai 
-        [HttpGet("getAllShippingOrderlistAdmin")]
-        public async Task<IActionResult> getAllShippingOrderlistAdmin()
+        //order return ho gaya hai 
+        [HttpGet("returnOrderAcceptedAdmin")]
+        public async Task<IActionResult> returnOrderAcceptedAdmin()
         {
-            _logger.logInfo($" {LoggingEvents.getAllItem} getAllShippingOrderlist");
-            var getAllCancelOrder = await _serviceManager.orderContract.getAllShippingOrderlist();
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllReturnOrderAccepted");
+            var getAllCancelOrder = await _serviceManager.orderContract.getAllReturnOrderAccepted();
             if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Cancel Order Found");
+            }
+            return Ok(getAllCancelOrder);
+        }
+
+        //return order completed ho gaya 
+        [HttpGet("returnOrderCompletedAdmin")]
+        public async Task<IActionResult> returnOrderCompletedAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllReturnOrderCompleted");
+            var getAllCancelOrder = await _serviceManager.orderContract.getAllReturnOrderCompleted();
+            if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All return Order Found");
             }
             return Ok(getAllCancelOrder);
         }

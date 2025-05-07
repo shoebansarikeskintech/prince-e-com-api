@@ -192,6 +192,7 @@ namespace Repository
             parameters.Add("@pinCode", addPinCodeshippingMethod.pincode, DbType.Int64);
             parameters.Add("@shippingMethodId", addPinCodeshippingMethod.shippingMethodId, DbType.Guid); ;
             parameters.Add("@createdBy", addPinCodeshippingMethod.createdBy, DbType.Guid);
+            parameters.Add("@noOfDays", addPinCodeshippingMethod.noOfDays, DbType.Int64);
             using (var connection = _dapperContext.createConnection())
             {
                 var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
@@ -222,6 +223,8 @@ namespace Repository
             parameters.Add("@pinCode", updatePinCodeShippingMethod.pincode, DbType.String);
             parameters.Add("@updatedBy", updatePinCodeShippingMethod.updatedBy, DbType.Guid);
             parameters.Add("@active", updatePinCodeShippingMethod.active ? 1 : 0, DbType.Boolean);
+            parameters.Add("@noOfDays", updatePinCodeShippingMethod.noOfDays, DbType.Int64);
+
 
             try
             {
@@ -282,5 +285,55 @@ namespace Repository
                 return result;
             }
         }
+        public async Task<ResponseViewModel> getAllPinCode(int pinCode)
+        {
+            var procedureName = Constant.spgetAllPinCodeActive;
+            var parameters = new DynamicParameters();
+            parameters.Add("@pinCode", pinCode, DbType.Int64);
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<PinCodeActive>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    var getAllPinCode = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllPinCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "An error occurred: " + ex.Message,
+                    data = null
+                };
+            }
+        }
+
+        //public async Task<ResponseViewModel> getAllPinCode(int pinCode)
+        //{
+        //    var procedureName = Constant.spGetByIdShipping;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@pinCode", pinCode, DbType.Int64);
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryAsync<PinCodeActive>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        var getAllPinCode = new ResponseViewModel
+        //        {
+        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+        //            message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+        //            data = result
+        //        };
+        //        return getAllPinCode;
+        //    }
+        //}
     }
 }
