@@ -131,7 +131,6 @@ namespace PrinceEcom.Controllers
             return Ok(getAllProcessingOrder);
         }
              
-
         //order shipped ho gaya hai 
         [HttpGet("getAllShippingOrderlistAdmin")]
         public async Task<IActionResult> getAllShippingOrderlistAdmin()
