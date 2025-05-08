@@ -165,6 +165,8 @@ namespace Common
         public static string spGetAllOrderlist = "SpGetAllOrder";
         public static string spReturnOrderCompleted = "SpReturnOrderCompleted";
         public static string spReturnOrderAccepted = "SpReturnOrderAccepted";
+        public static string spGetAllcancelAccepted = "SpGetAllcancelAccepted";
+        public static string spGetAllcancelAcceptedCompleted = "SpGetAllcancelAcceptedCompleted";
         public static string spGetAllReturnOrder = "SpGetAllReturnOrder";
         public static string spGetAllPendingOrder = "SpGetAllPeningOrder";
         public static string spGetAllProcessingOrder = "SpGetAllProcessingOrder";
@@ -215,6 +217,7 @@ namespace Common
 
         public static string spGetAllSimilarProduct = "SpGetAllSimilarProduct";
         public static string spGetAllSimilarProductByProductId = "SpGetAllSimilarProductByProductId";
+        public static string spGetAllSimilarProductByProductIdImage = "SpGetAllSimilarProductByProductIdImage";
         public static string spGetAllSkinInsightProductProductId = "SpGetAllSkinInsightProductProductId";
         public static string spAddSimilarProduct = "SpAddSimilarProduct";
         public static string spUpdateSimilarProduct = "SpUpdateSimilarProduct";

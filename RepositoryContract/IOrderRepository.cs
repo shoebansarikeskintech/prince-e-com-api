@@ -21,6 +21,10 @@ namespace RepositoryContract
         public Task<ResponseViewModel> getAllShippingOrderlist();
         public Task<ResponseViewModel> getAllReturnOrderCompleted();
         public Task<ResponseViewModel> getAllReturnOrderAccepted();
+        public Task<ResponseViewModel> getAllCancelOrderAccepted();
+        public Task<ResponseViewModel> getAllCancelOrderAcceptedCompleted();
+
+
 
 
     }

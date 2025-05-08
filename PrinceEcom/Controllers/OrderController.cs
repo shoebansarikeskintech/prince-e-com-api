@@ -158,6 +158,33 @@ namespace PrinceEcom.Controllers
             return Ok(getAllCancelOrder);
         }
 
+        //order cancel accept ho gay aadin site 
+        [HttpGet("CancelOrderAcceptedAdmin")]
+        public async Task<IActionResult> CancelOrderAcceptedAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllCancelOrderAccepted");
+            var getAllCancelOrder = await _serviceManager.orderContract.getAllCancelOrderAccepted();
+            if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Cancel Order Found");
+            }
+            return Ok(getAllCancelOrder);
+        }
+
+
+        //order cancel accept Competed means mil gaya  ho gay aadin site 
+        [HttpGet("CancelOrderAcceptedCompletedAdmin")]
+        public async Task<IActionResult> CancelOrderAcceptedCompletedAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllCancelOrderAcceptedCompleted");
+            var getAllCancelOrder = await _serviceManager.orderContract.getAllCancelOrderAcceptedCompleted();
+            if (getAllCancelOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Cancel Order Found");
+            }
+            return Ok(getAllCancelOrder);
+        }
+
         //order return ho gaya hai 
         [HttpGet("returnOrderlistAdmin")]
         public async Task<IActionResult> returnOrderlistAdmin()

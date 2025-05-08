@@ -458,5 +458,69 @@ namespace Repository
                 };
             }
         }
+
+        public async Task<ResponseViewModel> getAllCancelOrderAccepted()
+        {
+            var procedureName = Constant.spGetAllcancelAccepted;
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<AllOrder>(procedureName, commandType: CommandType.StoredProcedure);
+
+                    var getAllOrder = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllOrder;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error occurred: {ex.Message}",
+                    data = null
+                };
+            }
+        }
+
+        public async Task<ResponseViewModel> getAllCancelOrderAcceptedCompleted()
+        {
+            var procedureName = Constant.spGetAllcancelAcceptedCompleted;
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<AllOrder>(procedureName, commandType: CommandType.StoredProcedure);
+
+                    var getAllOrder = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllOrder;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error occurred: {ex.Message}",
+                    data = null
+                };
+            }
+        }
     }
 }

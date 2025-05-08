@@ -377,9 +377,40 @@ namespace Model
         public record AllSkinInsightProduct(long id, Guid skininsightproductId, Guid productId, string Age, string Gender, string Skintype,
             string SkinSensitive, DateTime createdDate, Guid createdBy, string Status, bool active
         );
-        public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active,
-            string productName, string description, decimal discountPrice, decimal price, int rating, string image);
+        public class SimilarProduct
+        {
+            public int id { get; set; }
+            public Guid SimilarProductId { get; set; }
+            public Guid productId { get; set; }
+            public Guid subProductId { get; set; }
+            public string? createdDate { get; set; }
+            public Guid createdBy { get; set; }
+            public string? Status { get; set; }
+            public bool active { get; set; }
+            public string? productName { get; set; }
+            public string? description { get; set; }
+            public decimal discountPrice { get; set; }
+            public decimal price { get; set; }
+            public int rating { get; set; }
 
+            // ✅ Add this property to hold image URLs
+            public List<string>? image { get; set; } = new List<string>();
+        }
+
+
+        public class SimilarProductImage
+        {
+            public string? image { get; set; }
+        }
+
+
+
+        //public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active,
+        //    string productName, string description, decimal discountPrice, decimal price, int rating, string image);
+        //public class SimilarProductImage
+        //{
+        //    public string? imgae { get; set; }
+        //}
         public class SkinInsightProductModel
         {
             public int id { get; set; }
@@ -494,7 +525,7 @@ namespace Model
             public DateTime CreatedDate { get; set; }
             public string Status { get; set; }
             public bool Active { get; set; }
-            public bool noOfDays { get; set; }
+            public int noOfDays { get; set; }
 
             public PinCodeshippingMethod() { }
 

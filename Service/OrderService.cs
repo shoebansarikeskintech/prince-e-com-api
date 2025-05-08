@@ -87,5 +87,17 @@ namespace Service
             var getAllReturnOrderAccepted = await _repositoryManager.orderRepository.getAllReturnOrderAccepted();
             return getAllReturnOrderAccepted;
         }
+
+        public async Task<ResponseViewModel> getAllCancelOrderAccepted()
+        {
+            var getAllCancelOrderAccepted = await _repositoryManager.orderRepository.getAllCancelOrderAccepted();
+            return getAllCancelOrderAccepted;
+        }
+
+        public async Task<ResponseViewModel> getAllCancelOrderAcceptedCompleted()
+        {
+            var getAllCancelOrderAcceptedCompleted = await _repositoryManager.orderRepository.getAllCancelOrderAcceptedCompleted();
+            return getAllCancelOrderAcceptedCompleted;
+        }
     }
 }

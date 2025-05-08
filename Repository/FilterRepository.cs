@@ -103,7 +103,7 @@ namespace Repository
         }
 
 
-   
+
         public async Task<ResponseViewModel> getProductSearchByFilterNew(FilterViewModelNew model)
         {
             var procedureName = Constant.spGetProductSearchByFilterNew;
@@ -258,7 +258,7 @@ namespace Repository
             parameters.Add("@Age", updateSkinInsightProduct.Age, DbType.String);
             parameters.Add("@Gender", updateSkinInsightProduct.Gender, DbType.String);
             parameters.Add("@Skintype", updateSkinInsightProduct.Skintype, DbType.String);
-            parameters.Add("@SkinSensitive", updateSkinInsightProduct.SkinSensitive, DbType.String);                 
+            parameters.Add("@SkinSensitive", updateSkinInsightProduct.SkinSensitive, DbType.String);
             parameters.Add("@updatedBy", updateSkinInsightProduct.updatedBy, DbType.Guid);
             parameters.Add("@active", updateSkinInsightProduct.active ? 1 : 0, DbType.Boolean);
 
@@ -349,7 +349,7 @@ namespace Repository
     })
     .ToList();
 
-                  
+
                     var response = new ResponseViewModel
                     {
                         statusCode = groupedResult.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
@@ -381,9 +381,44 @@ namespace Repository
             public List<Guid> subProductIds { get; set; }
         }
 
+        //public async Task<ResponseViewModel> getAllSimilarProductByProductId(Guid productId)
+        //{
+        //    var procedureName = Constant.spGetAllSimilarProductByProductId;
+
+        //    try
+        //    {
+        //        using (var connection = _dapperContext.createConnection())
+        //        {
+        //            DynamicParameters param = new DynamicParameters();
+        //            param.Add("@productId", productId);
+        //            var result = await connection.QueryAsync<SimilarProduct>(procedureName,param,null,commandType: CommandType.StoredProcedure);
+
+        //            var getAllSortBy = new ResponseViewModel
+        //            {
+        //                statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+        //                message = result.Any() ? "Data Found" : "Data Not Found",
+        //                data = result
+        //            };
+
+        //            return getAllSortBy;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // (Optional) Log the error here if needed
+        //        return new ResponseViewModel
+        //        {
+        //            statusCode = (int)HttpStatusCode.InternalServerError,
+        //            message = "An error occurred while fetching Skin Insight Products: " + ex.Message,
+        //            data = null
+        //        };
+        //    }
+        //}
+
         public async Task<ResponseViewModel> getAllSimilarProductByProductId(Guid productId)
         {
             var procedureName = Constant.spGetAllSimilarProductByProductId;
+            var procedureImage = Constant.spGetAllSimilarProductByProductIdImage;
 
             try
             {
@@ -391,29 +426,42 @@ namespace Repository
                 {
                     DynamicParameters param = new DynamicParameters();
                     param.Add("@productId", productId);
-                    var result = await connection.QueryAsync<SimilarProduct>(procedureName,param,null,commandType: CommandType.StoredProcedure);
 
-                    var getAllSortBy = new ResponseViewModel
+                    var productList = (await connection.QueryAsync<SimilarProduct>(procedureName, param, null, commandType: CommandType.StoredProcedure)).ToList();
+                    var imageList = (await connection.QueryAsync<SimilarProductImage>(procedureImage, param, null, commandType: CommandType.StoredProcedure)).ToList();
+
+                    // ✅ Assign same image list to all products (assuming all images belong to same productId)
+                    var images = imageList
+                        .Where(x => !string.IsNullOrEmpty(x.image))
+                        .Select(x => x.image!)
+                        .ToList();
+
+                    foreach (var product in productList)
                     {
-                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
-                        message = result.Any() ? "Data Found" : "Data Not Found",
-                        data = result
-                    };
+                        product.image = images;
+                    }
 
-                    return getAllSortBy;
+                    return new ResponseViewModel
+                    {
+                        statusCode = productList.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = productList.Any() ? "Data Found" : "Data Not Found",
+                        data = productList
+                    };
                 }
             }
             catch (Exception ex)
             {
-                // (Optional) Log the error here if needed
                 return new ResponseViewModel
                 {
                     statusCode = (int)HttpStatusCode.InternalServerError,
-                    message = "An error occurred while fetching Skin Insight Products: " + ex.Message,
+                    message = "An error occurred while fetching Similar Products: " + ex.Message,
                     data = null
                 };
             }
         }
+
+
+
         public async Task<ResponseViewModel> addSimilarProduct(AddSimilarProductViewModel addSimilarProduct)
         {
             var procedureName = Constant.spAddSimilarProduct;
@@ -554,7 +602,7 @@ namespace Repository
                     param.Add("@gender", searchSkinInsightProduct.gender ?? "");
                     param.Add("@skintype", searchSkinInsightProduct.skintype ?? "");
                     param.Add("@skinSensitive", searchSkinInsightProduct.skinSensitive ?? "");
-                   
+
 
                     var result = await connection.QueryAsync<SkinInsightProduct>(
                         procedureName, param, commandType: CommandType.StoredProcedure);
