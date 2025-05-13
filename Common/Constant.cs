@@ -216,8 +216,10 @@ namespace Common
 
 
         public static string spGetAllSimilarProduct = "SpGetAllSimilarProduct";
-        public static string spGetAllSimilarProductByProductId = "SpGetAllSimilarProductByProductId";
-        public static string spGetAllSimilarProductByProductIdImage = "SpGetAllSimilarProductByProductIdImage";
+        public static string spGetAllSimilarProductByProductId = "SpGetAllSimilarProductByProductIdObject";
+        //public static string spGetAllSimilarProductByProductId = "SpGetAllSimilarProductByProductId";
+        public static string spGetAllSimilarProductByProductIdImage = "SpGetAllProductImageByProductId";
+        public static string spGetProductSearchByFilterImages = "SpGetProductSearchByFilterImages";
         public static string spGetAllSkinInsightProductProductId = "SpGetAllSkinInsightProductProductId";
         public static string spAddSimilarProduct = "SpAddSimilarProduct";
         public static string spUpdateSimilarProduct = "SpUpdateSimilarProduct";

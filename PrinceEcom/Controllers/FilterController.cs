@@ -58,6 +58,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("getProductSearchByFilter")]
+                                         
         public async Task<IActionResult> getProductSearchByFilter([FromBody] FilterViewModelNew model)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getPrductSearchByFilter");

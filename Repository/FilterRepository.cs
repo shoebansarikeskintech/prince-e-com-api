@@ -67,9 +67,46 @@ namespace Repository
                 return response;
             }
         }
+        //public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
+        //{
+        //    var procedureName = Constant.spGetProductSearchByFilter;
+
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        try
+        //        {
+        //            DynamicParameters param = new DynamicParameters();
+        //            param.Add("@categoryId", model.categoryId);
+        //            param.Add("@subCategoryId", model.subCategoryId);
+        //            param.Add("@subcategoryTypeId", model.subcategoryTypeId);
+
+        //            var result = await connection.QueryAsync<PrdoctSearchByFilter>(
+        //                procedureName, param, commandType: CommandType.StoredProcedure);
+
+        //            return new ResponseViewModel
+        //            {
+        //                statusCode = result.Any() ? 200 : 404,
+        //                message = result.Any() ? "Data Found" : "Data Not Found",
+        //                data = result
+        //            };
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return new ResponseViewModel
+        //            {
+        //                statusCode = 500,
+        //                message = "Error: " + ex.Message,
+        //                data = null
+        //            };
+        //        }
+        //    }
+        //}
+
+
         public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
         {
             var procedureName = Constant.spGetProductSearchByFilter;
+            var procedureImage = Constant.spGetProductSearchByFilterImages;
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -80,8 +117,21 @@ namespace Repository
                     param.Add("@subCategoryId", model.subCategoryId);
                     param.Add("@subcategoryTypeId", model.subcategoryTypeId);
 
-                    var result = await connection.QueryAsync<PrdoctSearchByFilter>(
-                        procedureName, param, commandType: CommandType.StoredProcedure);
+                    // Step 1: Get all product records
+                    var result = (await connection.QueryAsync<PrdoctSearchByFilter>(
+                        procedureName, param, commandType: CommandType.StoredProcedure)).ToList();
+
+                    // Step 2: For each product, get image list
+                    foreach (var product in result)
+                    {
+                        DynamicParameters imgParam = new DynamicParameters();
+                        imgParam.Add("@productid", product.GproductId);  // <-- Use correct product ID
+
+                        var images = await connection.QueryAsync<string>(
+                            procedureImage, imgParam, commandType: CommandType.StoredProcedure);
+
+                        product.images = images.ToList();
+                    }
 
                     return new ResponseViewModel
                     {
@@ -102,6 +152,54 @@ namespace Repository
             }
         }
 
+
+
+        //public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
+        //{
+        //    var procedureImage = Constant.spGetProductSearchByFilterImages;
+        //    var procedureName = Constant.spGetProductSearchByFilter;
+
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        try
+        //        {
+        //            DynamicParameters param = new DynamicParameters();
+        //            param.Add("@categoryId", model.categoryId);
+        //            param.Add("@subCategoryId", model.subCategoryId);
+        //            param.Add("@subcategoryTypeId", model.subcategoryTypeId);
+
+        //            var result = (await connection.QueryAsync<PrdoctSearchByFilter>(
+        //                procedureName, param, commandType: CommandType.StoredProcedure)).ToList();
+
+        //            // Get list of images for that product
+        //            var imageList = (await connection.QueryAsync<SimilarProductImagesimilor>(
+        //                procedureImage, param, null, commandType: CommandType.StoredProcedure)).ToList();
+
+        //            return new ResponseViewModel
+        //            {
+        //                statusCode = result.Any() ? 200 : 404,
+        //                message = result.Any() ? "Data Found" : "Data Not Found",
+        //                data = new
+        //                {
+        //                    productList = result,
+        //                    Productsimages = imageList
+        //                        .Where(x => !string.IsNullOrEmpty(x.image))
+        //                        .Select(x => x.image!)
+        //                        .ToList()
+        //                }
+        //            };
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return new ResponseViewModel
+        //            {
+        //                statusCode = 500,
+        //                message = "Error: " + ex.Message,
+        //                data = null
+        //            };
+        //        }
+        //    }
+        //}
 
 
         public async Task<ResponseViewModel> getProductSearchByFilterNew(FilterViewModelNew model)
@@ -182,37 +280,6 @@ namespace Repository
             }
         }
 
-        //public async Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
-        //{
-        //    var procedureName = Constant.spAddSkinInsightProduct;
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("@productId", addSkinInsightProduct.productId, DbType.Guid);
-        //    parameters.Add("@Age", addSkinInsightProduct.Age, DbType.String);
-        //    parameters.Add("@Gender", addSkinInsightProduct.Gender, DbType.String);
-        //    parameters.Add("@Skintype", addSkinInsightProduct.Skintype, DbType.String);
-        //    parameters.Add("@SkinSensitive", addSkinInsightProduct.SkinSensitive, DbType.String);            
-        //    parameters.Add("@createdBy", addSkinInsightProduct.createdBy, DbType.Guid);
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-        //        if (result.statusCode == 1)
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.OK;
-        //            result.message = result.message;
-        //        }
-        //        else if (result.statusCode == 0)
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //            result.message = result.message;
-        //        }
-        //        else
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //            result.message = result.message;
-        //        }
-        //        return result;
-        //    }
-        //}
         public async Task<ResponseViewModel> addSkinInsightProduct(AddSkinInsightProductViewModel addSkinInsightProduct)
         {
             var procedureName = Constant.spAddSkinInsightProduct;
@@ -328,7 +395,7 @@ namespace Repository
             {
                 using (var connection = _dapperContext.createConnection())
                 {
-                    var result = (await connection.QueryAsync<SimilarProduct>(
+                    var result = (await connection.QueryAsync<SimilarProductNew>(
                         procedureName,
                         null,
                         commandType: CommandType.StoredProcedure
@@ -381,9 +448,58 @@ namespace Repository
             public List<Guid> subProductIds { get; set; }
         }
 
+
+
+        public async Task<ResponseViewModel> getAllSimilarProductByProductId(Guid productId)
+        {
+            var procedureName = Constant.spGetAllSimilarProductByProductId;
+            var procedureImage = Constant.spGetAllSimilarProductByProductIdImage;
+            using (var connection = _dapperContext.createConnection())
+            {
+                try
+                {
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add("@productId", productId);
+                    // Step 1: Get all product records
+                    var result = (await connection.QueryAsync<SimilarProductDTO>(
+                        procedureName, param, commandType: CommandType.StoredProcedure)).ToList();
+
+                    // Step 2: For each product, get image list
+                    foreach (var product in result)
+                    {
+                        DynamicParameters imgParam = new DynamicParameters();
+                        imgParam.Add("@productid", product.subProductId);  // <-- Use correct product ID
+
+                        var images = await connection.QueryAsync<string>(
+                            procedureImage, imgParam, commandType: CommandType.StoredProcedure);
+
+                        product.images = images.ToList();
+                    }
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? 200 : 404,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new ResponseViewModel
+                    {
+                        statusCode = 500,
+                        message = "Error: " + ex.Message,
+                        data = null
+                    };
+                }
+            }
+        }
+
+
         //public async Task<ResponseViewModel> getAllSimilarProductByProductId(Guid productId)
         //{
         //    var procedureName = Constant.spGetAllSimilarProductByProductId;
+        //    var procedureImage = Constant.spGetAllSimilarProductByProductIdImage;
 
         //    try
         //    {
@@ -391,74 +507,63 @@ namespace Repository
         //        {
         //            DynamicParameters param = new DynamicParameters();
         //            param.Add("@productId", productId);
-        //            var result = await connection.QueryAsync<SimilarProduct>(procedureName,param,null,commandType: CommandType.StoredProcedure);
 
-        //            var getAllSortBy = new ResponseViewModel
+        //            // Step 1: Get single product record
+        //            var productDto = (await connection.QueryFirstOrDefaultAsync<SimilarProductDTO>(procedureName, param, null, commandType: CommandType.StoredProcedure));
+                     
+        //            // Step 2: Get list of images for that product
+        //            var imageList = (await connection.QueryAsync<SimilarProductImage>(procedureImage, param, null, commandType: CommandType.StoredProcedure)).ToList();
+
+        //            // Step 3: Map data
+        //            if (productDto != null)
         //            {
-        //                statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
-        //                message = result.Any() ? "Data Found" : "Data Not Found",
-        //                data = result
-        //            };
+        //                var product = new SimilarProduct
+        //                {
+        //                    id = productDto.id,
+        //                    SimilarProductId = productDto.SimilarProductId,
+        //                    productId = productDto.productId,
+        //                    subProductId = productDto.subProductId,
+        //                    createdDate = productDto.createdDate,
+        //                    createdBy = productDto.createdBy,
+        //                    Status = productDto.Status,
+        //                    active = productDto.active,
+        //                    productName = productDto.productName,
+        //                    description = productDto.description,
+        //                    discountPrice = productDto.discountPrice,
+        //                    price = productDto.price,
+        //                    rating = productDto.rating,
+        //                    image = imageList
+        //                        .Where(x => !string.IsNullOrEmpty(x.image))
+        //                        .Select(x => x.image!)
+        //                        .ToList()
+        //                };
 
-        //            return getAllSortBy;
+        //                return new ResponseViewModel
+        //                {
+        //                    statusCode = (int)HttpStatusCode.OK,
+        //                    message = "Data Found",
+        //                    data = new List<SimilarProduct> { product }
+        //                };
+        //            }
+
+        //            return new ResponseViewModel
+        //            {
+        //                statusCode = (int)HttpStatusCode.NotFound,
+        //                message = "Data Not Found",
+        //                data = null
+        //            };
         //        }
         //    }
         //    catch (Exception ex)
         //    {
-        //        // (Optional) Log the error here if needed
         //        return new ResponseViewModel
         //        {
         //            statusCode = (int)HttpStatusCode.InternalServerError,
-        //            message = "An error occurred while fetching Skin Insight Products: " + ex.Message,
+        //            message = "An error occurred while fetching Similar Products: " + ex.Message,
         //            data = null
         //        };
         //    }
         //}
-
-        public async Task<ResponseViewModel> getAllSimilarProductByProductId(Guid productId)
-        {
-            var procedureName = Constant.spGetAllSimilarProductByProductId;
-            var procedureImage = Constant.spGetAllSimilarProductByProductIdImage;
-
-            try
-            {
-                using (var connection = _dapperContext.createConnection())
-                {
-                    DynamicParameters param = new DynamicParameters();
-                    param.Add("@productId", productId);
-
-                    var productList = (await connection.QueryAsync<SimilarProduct>(procedureName, param, null, commandType: CommandType.StoredProcedure)).ToList();
-                    var imageList = (await connection.QueryAsync<SimilarProductImage>(procedureImage, param, null, commandType: CommandType.StoredProcedure)).ToList();
-
-                    // ✅ Assign same image list to all products (assuming all images belong to same productId)
-                    var images = imageList
-                        .Where(x => !string.IsNullOrEmpty(x.image))
-                        .Select(x => x.image!)
-                        .ToList();
-
-                    foreach (var product in productList)
-                    {
-                        product.image = images;
-                    }
-
-                    return new ResponseViewModel
-                    {
-                        statusCode = productList.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
-                        message = productList.Any() ? "Data Found" : "Data Not Found",
-                        data = productList
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                return new ResponseViewModel
-                {
-                    statusCode = (int)HttpStatusCode.InternalServerError,
-                    message = "An error occurred while fetching Similar Products: " + ex.Message,
-                    data = null
-                };
-            }
-        }
 
 
 
@@ -492,35 +597,7 @@ namespace Repository
             }
         }
 
-        //public async Task<ResponseViewModel> addSimilarProduct(AddSimilarProductViewModel addSimilarProduct)
-        //{
-        //    var procedureName = Constant.spAddSimilarProduct;
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("@productId", addSimilarProduct.ProductId, DbType.Guid);
-        //    parameters.Add("@subProductId", addSimilarProduct.subProductId, DbType.Guid);          
-        //    parameters.Add("@createdBy", addSimilarProduct.createdBy, DbType.Guid);
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-        //        if (result.statusCode == 1)
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.OK;
-        //            result.message = result.message;
-        //        }
-        //        else if (result.statusCode == 0)
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //            result.message = result.message;
-        //        }
-        //        else
-        //        {
-        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //            result.message = result.message;
-        //        }
-        //        return result;
-        //    }
-        //}
-
+    
         public async Task<ResponseViewModel> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct)
         {
             var procedureName = Constant.spUpdateSimilarProduct;

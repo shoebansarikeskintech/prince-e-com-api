@@ -59,6 +59,7 @@ namespace ViewModel
         public string? concernname { get; set; }
         public string? ingredientName { get; set; }
         public string? productname { get; set; }      
+        public string? MRP { get; set; }      
 
     }
     public class UpdateProductViewModel
@@ -117,6 +118,7 @@ namespace ViewModel
         public string? concernname { get; set; }
         public string? ingredientName { get; set; }
         public string? productname { get; set; }
+        public string? MRP { get; set; }
     }
     public class DeleteProductViewModel
     {

@@ -22,23 +22,56 @@ namespace Repository
             _dapperContext = dapperContext;
 
 
+        //public async Task<ResponseViewModel> getAllRatingReview(Guid productId)
+        //{
+        //    var procedureName = Constant.spGetRatingReview;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@productId", productId, DbType.Guid);
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryAsync<RatingRiview>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        var getAllOrder = new ResponseViewModel
+        //        {
+        //            statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
+        //            message = result.Count() == 0 ? "Data Not Found" : "Data Found",
+        //            data = result
+        //        };
+        //        return getAllOrder;
+        //    }
+        //}
         public async Task<ResponseViewModel> getAllRatingReview(Guid productId)
         {
             var procedureName = Constant.spGetRatingReview;
             var parameters = new DynamicParameters();
             parameters.Add("@productId", productId, DbType.Guid);
-            using (var connection = _dapperContext.createConnection())
+
+            try
             {
-                var result = await connection.QueryAsync<RatingRiview>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                var getAllOrder = new ResponseViewModel
+                using (var connection = _dapperContext.createConnection())
                 {
-                    statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK,
-                    message = result.Count() == 0 ? "Data Not Found" : "Data Found",
-                    data = result
+                    var result = await connection.QueryAsync<RatingRiview>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    var getAllOrder = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "No Reviews Found",
+                        data = result
+                    };
+
+                    return getAllOrder;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = "An error occurred: " + ex.Message,
+                    data = null
                 };
-                return getAllOrder;
             }
         }
+
         public async Task<ResponseViewModel> getAllRatingReviewbyId(Guid productId)
         {
             var response = new ResponseViewModel();
@@ -67,7 +100,43 @@ namespace Repository
 
             return response;
         }
-   
+
+        //public async Task<ResponseViewModel> addRatingReview(RatingReviewViewModel RatingReviewModelViewModel)
+        //{
+        //    var procedureName = Constant.spAddRatingReview;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@productId", RatingReviewModelViewModel.productId, DbType.Guid);
+        //    parameters.Add("@userId", RatingReviewModelViewModel.userId, DbType.Guid);
+        //    parameters.Add("@rating", RatingReviewModelViewModel.rating, DbType.Int64);
+        //    parameters.Add("@title", RatingReviewModelViewModel.title, DbType.String);
+        //    parameters.Add("@description", RatingReviewModelViewModel.description, DbType.String);
+        //    parameters.Add("@like", RatingReviewModelViewModel.like, DbType.Int64);
+        //    parameters.Add("@dislike", RatingReviewModelViewModel.dislike, DbType.Int64);
+        //    parameters.Add("@createdBy", RatingReviewModelViewModel.createdBy, DbType.Guid);
+
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        if (result.statusCode == 1)
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.OK;
+        //            result.message = result.message;
+        //            result.data = result;
+        //        }
+        //        else if (result.statusCode == 0)
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //            result.message = result.message;
+        //        }
+        //        else
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //            result.message = result.message;
+        //        }
+        //        return result;
+        //    }
+        //}
+
         public async Task<ResponseViewModel> addRatingReview(RatingReviewViewModel RatingReviewModelViewModel)
         {
             var procedureName = Constant.spAddRatingReview;
@@ -83,26 +152,32 @@ namespace Repository
 
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                if (result.statusCode == 1)
+                var result = await connection.QueryFirstOrDefaultAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                if (result != null)
                 {
-                    result.statusCode = (int)HttpStatusCode.OK;
-                    result.message = result.message;
-                    result.data = result;
-                }
-                else if (result.statusCode == 0)
-                {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
+                    int statusCode = result.statusCode;
+                    string message = result.message;
+
+                    return new ResponseViewModel
+                    {
+                        statusCode = statusCode == 1 ? (int)HttpStatusCode.OK : (int)HttpStatusCode.ExpectationFailed,
+                        message = message,
+                        data = null
+                    };
                 }
                 else
                 {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
+                    return new ResponseViewModel
+                    {
+                        statusCode = (int)HttpStatusCode.ExpectationFailed,
+                        message = "No response from stored procedure.",
+                        data = null
+                    };
                 }
-                return result;
             }
         }
+
 
         public async Task<ResponseViewModel> updateRatinReview(UpdateReviewRatingViewModel updateRatingReview)
         {

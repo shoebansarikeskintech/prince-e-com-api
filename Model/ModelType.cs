@@ -87,14 +87,14 @@ namespace Model
                         Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid stepsId, string stepsName,
                         Guid typeOfProductId, string typeOfProductIdName, Guid sizeId, string sizeName, string sizeCode, string productName,
                         string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-                        DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId);
+                        DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId,string MRP);
 
         public record AllProduct(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
                         Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid sizeId, string sizeName, string sizeCode,
                         string productName, string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
                         DateTime createdDate, DateTime updatedDate, string status, bool active, string imageUrl, string concernName, string ingredientName,
                         Guid concernId, Guid ingredientId, bool isNewArrial, bool isBestSeller, bool isRecommended, Guid stepsId, string stepsName,
-                        Guid typeOfProductId, string typeOfProductName);
+                        Guid typeOfProductId, string typeOfProductName,string MRP);
 
         public record AllSteps(
             Int64 id, Guid StepsId, string name, string description, DateTime createdDate, string status, bool active);
@@ -105,7 +105,7 @@ namespace Model
         public record searchProductNew(
       Guid commonId, string typeName, string commonProduct, int Ids, string createdDate, Guid createdBy, string status, bool active);
 
-        public class Productdetaisl
+        public class Productdetails
         {
             public Int64 Id { get; set; }
             public Guid ProductId { get; set; }
@@ -138,7 +138,7 @@ namespace Model
             public Guid IngredientId { get; set; }
             public string? ImageUrl { get; set; }
             public List<string> ImageUrls { get; set; }
-
+            public string? MRP { get; set; }
 
         }
 
@@ -153,7 +153,7 @@ namespace Model
         public record ProductDetails(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
             Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid sizeId, string sizeName, string sizeCode, string productName,
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-            DateTime createdDate, DateTime updatedDate, String status, bool active, string image, string concernName, string ingredientName, Guid stepsId, string stepsName, Guid typeOfProductId, string typeOfProductName);
+            DateTime createdDate, DateTime updatedDate, String status, bool active, string image, string concernName, string ingredientName, Guid stepsId, string stepsName, Guid typeOfProductId, string typeOfProductName,string MRP);
         public record ProductImage(Int64 id, Guid productImageId, Guid productId, string title, string imageUrl, DateTime createdDate);
         public record Discount(Int64 id, Guid discountId, Guid productId, string code, string discountType, Decimal discount,
             Decimal productAmount, DateTime validDate, DateTime expireDate, DateTime createdDate, string Status);
@@ -377,7 +377,34 @@ namespace Model
         public record AllSkinInsightProduct(long id, Guid skininsightproductId, Guid productId, string Age, string Gender, string Skintype,
             string SkinSensitive, DateTime createdDate, Guid createdBy, string Status, bool active
         );
+
+
+        // DTO without image property
+        public class SimilarProductDTO
+        {
+            public int id { get; set; }
+            public Guid SimilarProductId { get; set; }
+            public Guid productId { get; set; }
+            public Guid subProductId { get; set; }
+            public string? createdDate { get; set; }
+            public Guid createdBy { get; set; }
+            public string? Status { get; set; }
+            public bool active { get; set; }
+            public string? productName { get; set; }
+            public string? description { get; set; }
+            public decimal discountPrice { get; set; }
+            public decimal price { get; set; }
+            public int rating { get; set; }
+            public List<string>? images { get; set; } = new List<string>();
+
+        }
+
         public class SimilarProduct
+        {
+            public string? image { get; set; }
+        }
+
+        public class SimilarProductNew
         {
             public int id { get; set; }
             public Guid SimilarProductId { get; set; }
@@ -402,11 +429,12 @@ namespace Model
         {
             public string? image { get; set; }
         }
+       
+
+        public record SimilarProducts(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active,
+            string productName, string description, decimal discountPrice, decimal price, int rating, string image);
 
 
-
-        //public record SimilarProduct(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active,
-        //    string productName, string description, decimal discountPrice, decimal price, int rating, string image);
         //public class SimilarProductImage
         //{
         //    public string? imgae { get; set; }
@@ -484,6 +512,38 @@ namespace Model
             public int ingredientId { get; set; }
         }
 
+        //public class PrdoctSearchByFilter
+        //{
+        //    public int categoryId { get; set; }
+        //    public int subcategoryId { get; set; }
+        //    public int subcategoryTypeId { get; set; }
+        //    public int productId { get; set; }
+        //    public Guid GproductId { get; set; }
+        //    public int sellerId { get; set; }
+        //    public int stepsId { get; set; }
+        //    public int typeofProductId { get; set; }
+        //    public int SizeId { get; set; }
+        //    public int concernId { get; set; }
+        //    public int ingredientId { get; set; }
+        //    public string? categoryName { get; set; }
+        //    public string? subCategoryName { get; set; }
+        //    public string? subcategoryTypeName { get; set; }
+        //    public string? productName { get; set; }
+        //    public long stock { get; set; }
+        //    public string? productDescription { get; set; }
+        //    public decimal productPrice { get; set; }
+        //    public decimal discountPrice { get; set; }
+        //    public string? productImage { get; set; }
+        //    public int rating { get; set; }
+        //    public int noOfRating { get; set; }
+        //    public string? sellerName { get; set; }
+        //    public string? stepsName { get; set; }
+        //    public string? typeofProductName { get; set; }
+        //    public string? sizeName { get; set; }
+        //    public string? concernName { get; set; }
+        //    public string? ingredientName { get; set; }
+        //}
+
         public class PrdoctSearchByFilter
         {
             public int categoryId { get; set; }
@@ -514,7 +574,16 @@ namespace Model
             public string? sizeName { get; set; }
             public string? concernName { get; set; }
             public string? ingredientName { get; set; }
+
+            // ✅ List of image URLs
+            public List<string>? images { get; set; } = new List<string>();
         }
+
+        public class SimilarProductImagesimilor
+        {
+            public string? image { get; set; }
+        }
+
 
         public class PinCodeshippingMethod
         {
@@ -613,7 +682,21 @@ namespace Model
             int Fk_StateId, string CityName, int Pk_CityId);
         public record ConcernMethod(Int64 Id, Guid ConcernId, string name, string description, DateTime createdDate, string Status, bool active);
 
-        public record RatingRiview(long id, string username, string description, int like, int dislike, DateTime createdDate, DateTime updatedDate, bool active, string title);
+        public class RatingRiview
+        {
+            public int Id { get; set; }
+            public string? Username { get; set; }  
+            public string? Description { get; set; }
+            public int Like { get; set; }
+            public int Dislike { get; set; }
+            public DateTime CreatedDate { get; set; }
+            public DateTime? UpdatedDate { get; set; }
+            public bool Active { get; set; }
+            public string? Title { get; set; }
+  
+        }
+
+        //public record RatingRiview(long id, string username, string description, int like, int dislike, DateTime createdDate, DateTime updatedDate, bool active, string title);
 
         public record RatingRiviewByProductId(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active, string faqType);
         public record Faq(long id, Guid ProductFaqid, Guid productId, string Title, string Description, Guid CreatedBy, string createdDate, string Status, bool active, string faqType);
