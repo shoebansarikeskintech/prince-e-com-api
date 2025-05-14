@@ -154,7 +154,7 @@ namespace Repository
             public string? image { get; set; }
             public string? description { get; set; }
             public decimal Price { get; set; }
-
+            public List<string>? images { get; set; } = new List<string>();
             // Agar aur bhi columns aa rahe ho stored procedure se, to unko bhi yahan define karo:
             // public string ImageUrl { get; set; }
             // public string CategoryName { get; set; }
@@ -192,6 +192,8 @@ namespace Repository
             var Ingredient = Constant.spGetAllProductFAQIngredientbyProductId;
             var FaqWithProduct = Constant.spGetAllProductFAQWithProductbyProductId;
             var AllSimilarProduct = Constant.spGetAllSimilarProductByProductId;
+            var procedureImage = Constant.spGetAllSimilarProductByProductIdImage;
+
 
             var parameters = new DynamicParameters();
             parameters.Add("@productId", productId, DbType.Guid);
@@ -223,17 +225,30 @@ namespace Repository
                     .QueryAsync<SimilarProducts>(AllSimilarProduct, parameters, commandType: CommandType.StoredProcedure))
                     .ToList();
 
+
+
                 var SimilarPs = SimilarPsRaw
                     .Where(x =>
                         x.SimilarProductId != Guid.Empty &&
                         x.ProductId != Guid.Empty &&
                         x.SubProductId != Guid.Empty &&
-                        x.image != string.Empty &&
                         x.description != string.Empty &&
                         !string.IsNullOrWhiteSpace(x.ProductName) &&
                         x.Price > 0
                     )
                     .ToList();
+                foreach (var item in SimilarPs)
+                {
+                    DynamicParameters imgParam = new DynamicParameters();
+                    imgParam.Add("@productid", item.SubProductId);
+
+                    var images = await connection.QueryAsync<string>(
+                        procedureImage, imgParam, commandType: CommandType.StoredProcedure);
+
+                    item.images = images.ToList();
+                }
+
+
 
                 // 6) Prepare product data
                 var product = result
@@ -270,6 +285,7 @@ namespace Repository
                         ingredientName = p.ingredientName,
                         ConcernId = p.ConcernId,
                         IngredientId = p.IngredientId,
+                        MRP = p.MRP,
                         imageUrls = result.Select(x => x.ImageUrl).ToList()
                     })
                     .FirstOrDefault();
@@ -527,8 +543,8 @@ namespace Repository
             parameters.Add("@TypeofProductId", updateProduct.TypeofProductId, DbType.Guid);
             parameters.Add("@StepsId", updateProduct.StepsId, DbType.Guid);
             parameters.Add("@isNewArrial", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
-            parameters.Add("@isBestSeller", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
-            parameters.Add("@isRecommended", updateProduct.isNewArrial ? 1 : 0, DbType.Boolean);
+            parameters.Add("@isBestSeller", updateProduct.isBestSeller ? 1 : 0, DbType.Boolean);
+            parameters.Add("@isRecommended", updateProduct.isRecommended ? 1 : 0, DbType.Boolean);
 
 
             parameters.Add("@categoryName", updateProduct.categoryName ?? string.Empty, DbType.String);
@@ -1110,7 +1126,7 @@ namespace Repository
                 return getAllProduct;
             }
         }
-     
+
     }
 }
 

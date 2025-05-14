@@ -154,57 +154,14 @@ namespace Repository
 
 
 
-        //public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
-        //{
-        //    var procedureImage = Constant.spGetProductSearchByFilterImages;
-        //    var procedureName = Constant.spGetProductSearchByFilter;
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        try
-        //        {
-        //            DynamicParameters param = new DynamicParameters();
-        //            param.Add("@categoryId", model.categoryId);
-        //            param.Add("@subCategoryId", model.subCategoryId);
-        //            param.Add("@subcategoryTypeId", model.subcategoryTypeId);
-
-        //            var result = (await connection.QueryAsync<PrdoctSearchByFilter>(
-        //                procedureName, param, commandType: CommandType.StoredProcedure)).ToList();
-
-        //            // Get list of images for that product
-        //            var imageList = (await connection.QueryAsync<SimilarProductImagesimilor>(
-        //                procedureImage, param, null, commandType: CommandType.StoredProcedure)).ToList();
-
-        //            return new ResponseViewModel
-        //            {
-        //                statusCode = result.Any() ? 200 : 404,
-        //                message = result.Any() ? "Data Found" : "Data Not Found",
-        //                data = new
-        //                {
-        //                    productList = result,
-        //                    Productsimages = imageList
-        //                        .Where(x => !string.IsNullOrEmpty(x.image))
-        //                        .Select(x => x.image!)
-        //                        .ToList()
-        //                }
-        //            };
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return new ResponseViewModel
-        //            {
-        //                statusCode = 500,
-        //                message = "Error: " + ex.Message,
-        //                data = null
-        //            };
-        //        }
-        //    }
-        //}
+        
 
 
         public async Task<ResponseViewModel> getProductSearchByFilterNew(FilterViewModelNew model)
         {
             var procedureName = Constant.spGetProductSearchByFilterNew;
+            var procedureImage = Constant.spGetProductSearchByFilterImages;
+
 
             using (var connection = _dapperContext.createConnection())
             {
@@ -224,6 +181,17 @@ namespace Repository
 
                     var result = await connection.QueryAsync<PrdoctSearchByFilter>(
                         procedureName, param, commandType: CommandType.StoredProcedure);
+
+                    foreach (var product in result)
+                    {
+                        DynamicParameters imgParam = new DynamicParameters();
+                        imgParam.Add("@productid", product.GproductId);  // <-- Use correct product ID
+
+                        var images = await connection.QueryAsync<string>(
+                            procedureImage, imgParam, commandType: CommandType.StoredProcedure);
+
+                        product.images = images.ToList();
+                    }
 
                     return new ResponseViewModel
                     {
@@ -597,38 +565,128 @@ namespace Repository
             }
         }
 
-    
+
+        //public async Task<ResponseViewModel> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct)
+        //{
+        //    var procedureName = Constant.spUpdateSimilarProduct;
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@productId", updateSimilarProduct.productId, DbType.Guid);
+        //    parameters.Add("@subProductId", updateSimilarProduct.subProductId, DbType.Guid);
+        //    parameters.Add("@active", updateSimilarProduct.active ? 1 : 0, DbType.Boolean);
+
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+        //        if (result.statusCode == 1)
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.OK;
+        //            result.message = result.message;
+        //        }
+        //        else if (result.statusCode == 0)
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //            result.message = result.message;
+        //        }
+        //        else
+        //        {
+        //            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //            result.message = result.message;
+        //        }
+        //        return result;
+        //    }
+        //}
+        //public async Task<ResponseViewModel> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct)
+        //{
+        //    var procedureName = Constant.spAddSimilarProduct;
+        //    var procedureNameDelete = Constant.spDeleteSPByProducId;
+        //    ResponseViewModel finalResult = new ResponseViewModel();
+
+        //    using (var connection = _dapperContext.createConnection())
+        //    {
+        //        // Step 1: First delete old entries once
+        //        var deleteParams = new DynamicParameters();
+        //        deleteParams.Add("@productId", updateSimilarProduct.productId, DbType.Guid);
+
+        //        await connection.ExecuteAsync(procedureNameDelete, deleteParams, commandType: CommandType.StoredProcedure);
+
+        //        // Step 2: Insert each subProductId one by one
+        //        foreach (var subId in updateSimilarProduct.subProductId)
+        //        {
+        //            var insertParams = new DynamicParameters();
+        //            insertParams.Add("@productId", updateSimilarProduct.productId, DbType.Guid);
+        //            insertParams.Add("@subProductId", subId, DbType.Guid);
+        //            insertParams.Add("@active", updateSimilarProduct.active ? 1 : 0, DbType.Boolean);
+
+        //            var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+        //                procedureName, insertParams, commandType: CommandType.StoredProcedure);
+
+        //            if (result.statusCode != 1)
+        //            {
+        //                // If any insert fails, return the failure response
+        //                result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+        //                return result;
+        //            }
+
+        //            finalResult = result; // Update last success
+        //        }
+
+        //        finalResult.statusCode = (int)HttpStatusCode.OK;
+        //        return finalResult;
+        //    }
+        //}
+
         public async Task<ResponseViewModel> updateSimilarProduct(UpdateSimilarProductViewModel updateSimilarProduct)
         {
-            var procedureName = Constant.spUpdateSimilarProduct;
-            var parameters = new DynamicParameters();
-            parameters.Add("@SimilarProductId", updateSimilarProduct.SimilarProductId, DbType.Guid);
-            parameters.Add("@productId", updateSimilarProduct.productId, DbType.Guid);
-            parameters.Add("@subProductId", updateSimilarProduct.subProductId, DbType.Guid);
-            parameters.Add("@updatedBy", updateSimilarProduct.updatedBy, DbType.Guid);
-            parameters.Add("@active", updateSimilarProduct.active ? 1 : 0, DbType.Boolean);
+            var procedureName = Constant.spAddSimilarProduct;
+            var procedureNameDelete = Constant.spDeleteSPByProducId;
+            ResponseViewModel finalResult = new ResponseViewModel();
 
-            using (var connection = _dapperContext.createConnection())
+            try
             {
-                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                if (result.statusCode == 1)
+                using (var connection = _dapperContext.createConnection())
                 {
-                    result.statusCode = (int)HttpStatusCode.OK;
-                    result.message = result.message;
+                    // Step 1: First delete old entries once
+                    var deleteParams = new DynamicParameters();
+                    deleteParams.Add("@productId", updateSimilarProduct.productId, DbType.Guid);
+
+                    await connection.ExecuteAsync(procedureNameDelete, deleteParams, commandType: CommandType.StoredProcedure);
+
+                    // Step 2: Insert each subProductId one by one
+                    foreach (var subId in updateSimilarProduct.subProductId)
+                    {
+                        var insertParams = new DynamicParameters();
+                        insertParams.Add("@productId", updateSimilarProduct.productId, DbType.Guid);
+                        insertParams.Add("@subProductId", subId, DbType.Guid);
+                        insertParams.Add("@createdBy", updateSimilarProduct.createdBy, DbType.Guid);
+
+                        var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                            procedureName, insertParams, commandType: CommandType.StoredProcedure);
+
+                        if (result.statusCode != 1)
+                        {
+                            // If any insert fails, return the failure response
+                            result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                            return result;
+                        }
+
+                        finalResult = result; // Update last success
+                    }
+
+                    finalResult.statusCode = (int)HttpStatusCode.OK;
+                    return finalResult;
                 }
-                else if (result.statusCode == 0)
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel
                 {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
-                }
-                else
-                {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
-                }
-                return result;
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Something went wrong: {ex.Message}"
+                };
             }
         }
+
+
         public async Task<ResponseViewModel> deleteSimilarProduct(DeleteSimilarProductViewModel deleteSimilarProduct)
         {
             var response = new ResponseViewModel();

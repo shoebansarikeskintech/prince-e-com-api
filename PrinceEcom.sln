@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrinceEcom", "PrinceEcom\PrinceEcom.csproj", "{EBB805DF-C3EA-43D5-A07D-B2AFA48A2EF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaddyAPI", "PrinceEcom\ZaddyAPI.csproj", "{EBB805DF-C3EA-43D5-A07D-B2AFA48A2EF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{78DF6D8C-432B-492D-B07D-DC114A9BA9E6}"
 EndProject

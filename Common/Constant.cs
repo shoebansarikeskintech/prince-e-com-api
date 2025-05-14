@@ -222,7 +222,7 @@ namespace Common
         public static string spGetProductSearchByFilterImages = "SpGetProductSearchByFilterImages";
         public static string spGetAllSkinInsightProductProductId = "SpGetAllSkinInsightProductProductId";
         public static string spAddSimilarProduct = "SpAddSimilarProduct";
-        public static string spUpdateSimilarProduct = "SpUpdateSimilarProduct";
+        public static string spDeleteSPByProducId = "SpDeleteSPByProducId";
         public static string spDeleteSimilarProduct = "SpDeleteSimilarProduct";
 
         public static string spGetAllAppUser = "SpGetAllAppUser";

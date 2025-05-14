@@ -68,13 +68,20 @@ namespace ViewModel
     //}
     public class UpdateSimilarProductViewModel
     {
-        public Guid SimilarProductId { get; set; }
         public Guid productId { get; set; }
-        public Guid subProductId { get; set; }
-        public Guid updatedBy { get; set; }
-        public bool active { get; set; }
-
+        public Guid createdBy { get; set; }
+        public List<Guid> subProductId { get; set; } // array ki form me
     }
+
+    //public class UpdateSimilarProductViewModel
+    //{
+    //    //public Guid SimilarProductId { get; set; }
+    //    public Guid productId { get; set; }
+    //    public Guid subProductId { get; set; }
+    //    public Guid updatedBy { get; set; }
+    //    public bool active { get; set; }
+
+    //}
     public class DeleteSimilarProductViewModel
     {
 
