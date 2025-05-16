@@ -178,5 +178,18 @@ namespace Service
             return searchProductNew;
         }
 
+        public async Task<ResponseViewModel> getAllcontactus()
+        {
+            var getAllcontactus = await _repositoryManager.productRepository.getAllcontactus();
+            return getAllcontactus;
+        }
+
+        public async Task<ResponseViewModel> addAllcontactus(AddContactusViewModel addContactusViewModel)
+        {
+            var add = await _repositoryManager.productRepository.addAllcontactus(addContactusViewModel);
+            return add;
+        }
+
+      
     }
 }

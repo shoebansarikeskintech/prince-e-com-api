@@ -43,5 +43,8 @@ namespace ServiceContract
 
         public Task<ResponseViewModel> searchProductNew(string commonTypeSearch);
 
+        public Task<ResponseViewModel> getAllcontactus();
+        public Task<ResponseViewModel> addAllcontactus(AddContactusViewModel addContactusViewModel);
+
     }
 }

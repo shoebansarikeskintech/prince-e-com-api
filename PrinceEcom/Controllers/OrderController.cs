@@ -12,7 +12,7 @@ namespace PrinceEcom.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -48,7 +48,7 @@ namespace PrinceEcom.Controllers
 
 
         [HttpPost("addOrderWithDetails")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderWithDetails)
         {
             _logger.logInfo($" {LoggingEvents.addItem} addShippingMethod");

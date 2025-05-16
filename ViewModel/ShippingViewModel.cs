@@ -123,13 +123,6 @@ namespace ViewModel
         public int noOfDays { get; set; }
 
     }
-    public class DeletePinCodeShippingViewModel
-    {
-        [Required]
-        public Guid pinCodeShippingId { get; set; }
-        [Required]
-        public Guid updatedBy { get; set; }
-    }
-   
+    
 }
 

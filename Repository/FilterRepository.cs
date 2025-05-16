@@ -5,6 +5,7 @@ using System.Net;
 using static Model.ModelType;
 using ViewModel;
 using Common;
+using static Repository.OrderRepository;
 
 namespace Repository
 {
@@ -67,40 +68,6 @@ namespace Repository
                 return response;
             }
         }
-        //public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
-        //{
-        //    var procedureName = Constant.spGetProductSearchByFilter;
-
-        //    using (var connection = _dapperContext.createConnection())
-        //    {
-        //        try
-        //        {
-        //            DynamicParameters param = new DynamicParameters();
-        //            param.Add("@categoryId", model.categoryId);
-        //            param.Add("@subCategoryId", model.subCategoryId);
-        //            param.Add("@subcategoryTypeId", model.subcategoryTypeId);
-
-        //            var result = await connection.QueryAsync<PrdoctSearchByFilter>(
-        //                procedureName, param, commandType: CommandType.StoredProcedure);
-
-        //            return new ResponseViewModel
-        //            {
-        //                statusCode = result.Any() ? 200 : 404,
-        //                message = result.Any() ? "Data Found" : "Data Not Found",
-        //                data = result
-        //            };
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return new ResponseViewModel
-        //            {
-        //                statusCode = 500,
-        //                message = "Error: " + ex.Message,
-        //                data = null
-        //            };
-        //        }
-        //    }
-        //}
 
 
         public async Task<ResponseViewModel> getProductSearchByFilter(FilterViewModel model)
@@ -161,6 +128,7 @@ namespace Repository
         {
             var procedureName = Constant.spGetProductSearchByFilterNew;
             var procedureImage = Constant.spGetProductSearchByFilterImages;
+            var ProductMRP = Constant.spGetMRPByProductId;
 
 
             using (var connection = _dapperContext.createConnection())
@@ -182,16 +150,46 @@ namespace Repository
                     var result = await connection.QueryAsync<PrdoctSearchByFilter>(
                         procedureName, param, commandType: CommandType.StoredProcedure);
 
+                    var productDetails = new List<ProductImageModel>();
+
                     foreach (var product in result)
                     {
+                        // MRP fetch karna
+                        DynamicParameters MRPParam = new DynamicParameters();
+                        MRPParam.Add("@productid", product.GproductId);
+
+                        var productMRP = await connection.QueryFirstOrDefaultAsync<string>(
+                            ProductMRP, MRPParam, commandType: CommandType.StoredProcedure);
+
+                        // Images fetch karna
                         DynamicParameters imgParam = new DynamicParameters();
-                        imgParam.Add("@productid", product.GproductId);  // <-- Use correct product ID
+                        imgParam.Add("@productid", product.GproductId);
 
                         var images = await connection.QueryAsync<string>(
                             procedureImage, imgParam, commandType: CommandType.StoredProcedure);
 
-                        product.images = images.ToList();
+                        // Add to list
+                        productDetails.Add(new ProductImageModel
+                        {
+                            ProductId = product.GproductId,                          
+                            MRP = productMRP,
+                            Images = images.ToList()
+                        });
                     }
+
+
+                    //foreach (var product in result)
+                    //{
+
+
+                    //    DynamicParameters imgParam = new DynamicParameters();
+                    //    imgParam.Add("@productid", product.GproductId);  // <-- Use correct product ID
+
+                    //    var images = await connection.QueryAsync<string>(
+                    //        procedureImage, imgParam, commandType: CommandType.StoredProcedure);
+
+                    //    product.images = images.ToList();
+                    //}
 
                     return new ResponseViewModel
                     {

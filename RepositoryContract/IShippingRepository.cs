@@ -10,5 +10,7 @@ namespace RepositoryContract
         public Task<ResponseViewModel> addShipping(AddShippingViewModel addShipping);
         public Task<ResponseViewModel> updateShipping(UpdateShippingViewModel updateShipping);
         public Task<ResponseViewModel> deleteShipping(DeleteShippingViewModel deleteShipping);
+
+       
     }
 }

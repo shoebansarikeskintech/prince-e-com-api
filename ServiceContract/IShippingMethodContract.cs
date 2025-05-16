@@ -14,6 +14,8 @@ namespace ServiceContract
         public Task<ResponseViewModel> updatePinCodeShippingMethod(UpdatePinCodeShippingViewModel updateShippingMethod);
         public Task<ResponseViewModel> deletePinCodeShippingMethod(DeletePinCodeShippingViewModel DeletePinCodeshippingMethod);
         public Task<ResponseViewModel> getAllPinCode(int pinCode);
+        
+  
 
     }
 }

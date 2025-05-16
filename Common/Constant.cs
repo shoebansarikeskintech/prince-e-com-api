@@ -193,7 +193,9 @@ namespace Common
         public static string spGetByIdShipping = "SpGetByIdShipping";
         public static string spgetAllPinCodeActive = "SpgetAllPinCodeActive";
         public static string spGetAllShipping = "SpGetAllShipping";
+        public static string spGetContactus = "SpGetContactus";
         public static string spAddShipping = "SpAddShipping";
+        public static string spInsertContactus = "SpInsertContactus";
         public static string spUpdateShipping = "SpUpdateShipping";
         public static string spDeleteShipping = "SpDeleteShipping";
 
@@ -220,6 +222,8 @@ namespace Common
         //public static string spGetAllSimilarProductByProductId = "SpGetAllSimilarProductByProductId";
         public static string spGetAllSimilarProductByProductIdImage = "SpGetAllProductImageByProductId";
         public static string spGetProductSearchByFilterImages = "SpGetProductSearchByFilterImages";
+        public static string spgetProductNamebyProductId = "SpgetProductNamebyProductId";
+        public static string spGetMRPByProductId = "SpGetMRPByProductId";
         public static string spGetAllSkinInsightProductProductId = "SpGetAllSkinInsightProductProductId";
         public static string spAddSimilarProduct = "SpAddSimilarProduct";
         public static string spDeleteSPByProducId = "SpDeleteSPByProducId";

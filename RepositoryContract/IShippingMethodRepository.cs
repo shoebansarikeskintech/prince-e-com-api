@@ -21,5 +21,7 @@ namespace RepositoryContract
         public Task<ResponseViewModel> getAllPinCode(int pinCode);
 
 
+
+
     }
 }

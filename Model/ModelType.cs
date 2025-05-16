@@ -87,14 +87,14 @@ namespace Model
                         Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid stepsId, string stepsName,
                         Guid typeOfProductId, string typeOfProductIdName, Guid sizeId, string sizeName, string sizeCode, string productName,
                         string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-                        DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId,string MRP);
+                        DateTime createdDate, DateTime updatedDate, String status, bool active, string imageUrl, string concernName, string ingredientName, Guid ConcernId, Guid IngredientId, string MRP);
 
         public record AllProduct(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
                         Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid sizeId, string sizeName, string sizeCode,
                         string productName, string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
                         DateTime createdDate, DateTime updatedDate, string status, bool active, string imageUrl, string concernName, string ingredientName,
                         Guid concernId, Guid ingredientId, bool isNewArrial, bool isBestSeller, bool isRecommended, Guid stepsId, string stepsName,
-                        Guid typeOfProductId, string typeOfProductName,string MRP);
+                        Guid typeOfProductId, string typeOfProductName, string MRP);
 
         public record AllSteps(
             Int64 id, Guid StepsId, string name, string description, DateTime createdDate, string status, bool active);
@@ -153,7 +153,7 @@ namespace Model
         public record ProductDetails(Int64 id, Guid productId, Guid categoryId, string categoryName, Guid subCategoryId, string subCategoryName,
             Guid subCategoryTypeId, string subCategoryTypeName, Guid sellerId, string sellerName, Guid sizeId, string sizeName, string sizeCode, string productName,
             string subName, string description, Int32 rating, Int32 noOfRating, Int32 stock, Decimal price, Decimal discountPrice,
-            DateTime createdDate, DateTime updatedDate, String status, bool active, string image, string concernName, string ingredientName, Guid stepsId, string stepsName, Guid typeOfProductId, string typeOfProductName,string MRP);
+            DateTime createdDate, DateTime updatedDate, String status, bool active, string image, string concernName, string ingredientName, Guid stepsId, string stepsName, Guid typeOfProductId, string typeOfProductName, string MRP);
         public record ProductImage(Int64 id, Guid productImageId, Guid productId, string title, string imageUrl, DateTime createdDate);
         public record Discount(Int64 id, Guid discountId, Guid productId, string code, string discountType, Decimal discount,
             Decimal productAmount, DateTime validDate, DateTime expireDate, DateTime createdDate, string Status);
@@ -344,6 +344,14 @@ namespace Model
             string refundMethod, Decimal refundAmount, string refundStatus, string refundTrackingNo, DateTime refundDate, string adminRemark, DateTime createdDate, bool active);
 
         public record PinCodeActive(int pinCode, int noOfDays);
+
+        public class Contactus
+        {
+            public string? name { get; set; }
+            public string? Email { get; set; }
+            public string? Subject { get; set; }
+            public string? message { get; set; }
+        }
         public class Shipping
         {
             public long Id { get; set; }
@@ -429,7 +437,7 @@ namespace Model
         {
             public string? image { get; set; }
         }
-       
+
 
         public record SimilarProducts(int id, Guid SimilarProductId, Guid productId, Guid subProductId, string createdDate, Guid createdBy, string Status, bool active,
             string productName, string description, decimal discountPrice, decimal price, int rating, string image);
@@ -685,7 +693,7 @@ namespace Model
         public class RatingRiview
         {
             public int Id { get; set; }
-            public string? Username { get; set; }  
+            public string? Username { get; set; }
             public string? Description { get; set; }
             public int Like { get; set; }
             public int Dislike { get; set; }
@@ -693,7 +701,7 @@ namespace Model
             public DateTime? UpdatedDate { get; set; }
             public bool Active { get; set; }
             public string? Title { get; set; }
-  
+
         }
 
         //public record RatingRiview(long id, string username, string description, int like, int dislike, DateTime createdDate, DateTime updatedDate, bool active, string title);

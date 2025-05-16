@@ -329,6 +329,27 @@ namespace PrinceEcom.Controllers
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
             }
             return Ok(searchProductNew);
-        }     
+        }
+
+        [HttpGet("getAllcontactus")]
+        public async Task<IActionResult> getAllcontactus()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllcontactus");
+            var getAllShippingMethod = await _serviceManager.productContract.getAllcontactus();
+            if (getAllShippingMethod.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Shipping Method List");
+            }
+            return Ok(getAllShippingMethod);
+        }
+
+        [HttpPost("addAllcontactus")]
+        [Authorize]
+        public async Task<IActionResult> addAllcontactus(AddContactusViewModel addContactusViewModel)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} addShippingMethod");
+            var add = await _serviceManager.productContract.addAllcontactus(addContactusViewModel);
+            return Ok(add);
+        }
     }
 }

@@ -69,6 +69,8 @@ namespace PrinceEcom.Controllers
             var delete = await _serviceManager.shippingContract.deleteShipping(deleteShipping);
             return Ok(delete);
         }
+
+
     }
 }
 

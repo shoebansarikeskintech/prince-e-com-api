@@ -228,4 +228,21 @@ namespace ViewModel
         public string? id { get; set; }
     }
 
+    public class DeletePinCodeShippingViewModel
+    {
+        [Required]
+        public Guid pinCodeShippingId { get; set; }
+        [Required]
+        public Guid updatedBy { get; set; }
+    }
+    public class AddContactusViewModel
+    {
+        public string? Name { get; set; }
+        public string? Subject { get; set; }
+        [Required]
+        public string? Email { get; set; }
+        public string? message { get; set; }
+
+    }
+
 }
