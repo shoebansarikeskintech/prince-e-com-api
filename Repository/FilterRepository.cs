@@ -147,11 +147,12 @@ namespace Repository
                     param.Add("@concernIds", model.concernIds ?? "");
                     param.Add("@ingredientIds", model.ingredientIds ?? "");
 
-                    var result = await connection.QueryAsync<PrdoctSearchByFilter>(
+                    var result = await connection.QueryAsync<PrdoctSearchByFilterNewModel>(
                         procedureName, param, commandType: CommandType.StoredProcedure);
 
                     var productDetails = new List<ProductImageModel>();
 
+                    
                     foreach (var product in result)
                     {
                         // MRP fetch karna
@@ -168,28 +169,12 @@ namespace Repository
                         var images = await connection.QueryAsync<string>(
                             procedureImage, imgParam, commandType: CommandType.StoredProcedure);
 
-                        // Add to list
-                        productDetails.Add(new ProductImageModel
-                        {
-                            ProductId = product.GproductId,                          
-                            MRP = productMRP,
-                            Images = images.ToList()
-                        });
+                        // 👇 Yahi par assign karo:
+                        product.MRP = productMRP;
+                        product.Images = images.ToList();
                     }
 
 
-                    //foreach (var product in result)
-                    //{
-
-
-                    //    DynamicParameters imgParam = new DynamicParameters();
-                    //    imgParam.Add("@productid", product.GproductId);  // <-- Use correct product ID
-
-                    //    var images = await connection.QueryAsync<string>(
-                    //        procedureImage, imgParam, commandType: CommandType.StoredProcedure);
-
-                    //    product.images = images.ToList();
-                    //}
 
                     return new ResponseViewModel
                     {
@@ -209,6 +194,8 @@ namespace Repository
                 }
             }
         }
+
+      
 
         public async Task<ResponseViewModel> getAllSkinInsightProduct()
         {

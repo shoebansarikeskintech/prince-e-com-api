@@ -25,7 +25,9 @@ namespace RepositoryContract
         public Task<ResponseViewModel> getAllCancelOrderAcceptedCompleted();
 
 
+        public Task<ResponseViewModel> getAllArrivedToOrderlist();
 
+        public Task<ResponseViewModel> getTrackOrder(string OrderNo);
 
     }
 }

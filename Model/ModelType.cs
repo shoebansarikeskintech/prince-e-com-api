@@ -243,6 +243,8 @@ namespace Model
             public string? CouponCode { get; set; }
             public decimal Amount { get; set; }
             public string? FullAddress { get; set; }
+            public string? arrivedTo { get; set; }
+            public string? shippedFrom { get; set; }
         }
 
         public class AllOrder
@@ -276,9 +278,14 @@ namespace Model
             public string? CouponCode { get; set; }
             public decimal? CouponAmount { get; set; }
             public string? FullAddress { get; set; }
+            public string? arrivedTo { get; set; }
+            public string? arrivedDate { get; set; }
         }
-
-        public class AllSearchOrder
+        public class TrackOrder
+        {
+            public string? status { get; set; }
+        }
+            public class AllSearchOrder
         {
             public int id { get; set; }
             public string shippedDate { get; set; }
@@ -347,6 +354,7 @@ namespace Model
 
         public class Contactus
         {
+            public int id { get; set; }
             public string? name { get; set; }
             public string? Email { get; set; }
             public string? Subject { get; set; }
@@ -364,6 +372,8 @@ namespace Model
             public string? Status { get; set; }
             public string? CreatedDate { get; set; }
             public string? username { get; set; }
+            public string? shippedFrom { get; set; }
+            public string? shippedDate { get; set; }
         }
 
         public record Banner(
@@ -587,6 +597,40 @@ namespace Model
             public List<string>? images { get; set; } = new List<string>();
         }
 
+        public class PrdoctSearchByFilterNewModel
+        {
+            public int categoryId { get; set; }
+            public int subcategoryId { get; set; }
+            public int subcategoryTypeId { get; set; }
+            public int productId { get; set; }
+            public Guid GproductId { get; set; }
+            public int sellerId { get; set; }
+            public int stepsId { get; set; }
+            public int typeofProductId { get; set; }
+            public int SizeId { get; set; }
+            public int concernId { get; set; }
+            public int ingredientId { get; set; }
+            public string? categoryName { get; set; }
+            public string? subCategoryName { get; set; }
+            public string? subcategoryTypeName { get; set; }
+            public string? productName { get; set; }
+            public long stock { get; set; }
+            public string? productDescription { get; set; }
+            public decimal productPrice { get; set; }
+            public decimal discountPrice { get; set; }
+            public string? productImage { get; set; }
+            public int rating { get; set; }
+            public int noOfRating { get; set; }
+            public string? sellerName { get; set; }
+            public string? stepsName { get; set; }
+            public string? typeofProductName { get; set; }
+            public string? sizeName { get; set; }
+            public string? concernName { get; set; }
+            public string? ingredientName { get; set; }
+
+            public List<string> Images { get; set; }
+            public string? MRP { get; set; }
+        }
         public class SimilarProductImagesimilor
         {
             public string? image { get; set; }

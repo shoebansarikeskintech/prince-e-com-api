@@ -223,5 +223,30 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllCancelOrder);
         }
+
+        //order return ho gaya hai 
+        [HttpGet("getAllArrivedToOrderlistAdmin")]
+        public async Task<IActionResult> getAllArrivedToOrderlistAdmin()
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getAllArrivedToOrderlist");
+            var getAllArrivedToOrderlist = await _serviceManager.orderContract.getAllArrivedToOrderlist();
+            if (getAllArrivedToOrderlist.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Arrived To Order Found");
+            }
+            return Ok(getAllArrivedToOrderlist);
+        }
+
+        [HttpGet("getTrackOrder")]
+        public async Task<IActionResult> getTrackOrder(string OrderNo)
+        {
+            _logger.logInfo($" {LoggingEvents.getAllItem} getTrackOrder");
+            var getTrackOrder = await _serviceManager.orderContract.getTrackOrder(OrderNo);
+            if (getTrackOrder.statusCode == (int)HttpStatusCode.NotFound)
+            {
+                _logger.logWarn($"{LoggingEvents.getItemNotFound},No Get All Order Found");
+            }
+            return Ok(getTrackOrder);
+        }
     }
 }

@@ -30,18 +30,7 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllBannerForUser);
         }
-
-        //[HttpGet("getAllCategories")]
-        //public async Task<IActionResult> getAllCategories()
-        //{
-        //    _logger.logInfo($" {LoggingEvents.getAllItem} getAllCategories");
-        //    var getAllCategories = await _serviceManager.dashboardContract.getAllCategories();
-        //    if (getAllCategories.statusCode == (int)HttpStatusCode.NotFound)
-        //    {
-        //        _logger.logWarn($"{LoggingEvents.getItemNotFound},No All Categories Found");
-        //    }
-        //    return Ok(getAllCategories);
-        //}
+       
 
         [HttpGet("getShopByCategory")]
         public async Task<IActionResult> getShopByCategory()

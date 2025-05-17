@@ -26,5 +26,10 @@ namespace ServiceContract
         public Task<ResponseViewModel> getAllReturnOrderAccepted();
         public Task<ResponseViewModel> getAllCancelOrderAccepted();
         public Task<ResponseViewModel> getAllCancelOrderAcceptedCompleted();
+
+        public Task<ResponseViewModel> getAllArrivedToOrderlist();
+
+        public Task<ResponseViewModel> getTrackOrder(string OrderNo);
+
     }
 }

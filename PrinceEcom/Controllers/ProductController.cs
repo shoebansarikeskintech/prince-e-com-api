@@ -343,8 +343,7 @@ namespace PrinceEcom.Controllers
             return Ok(getAllShippingMethod);
         }
 
-        [HttpPost("addAllcontactus")]
-        [Authorize]
+        [HttpPost("addAllcontactus")]      
         public async Task<IActionResult> addAllcontactus(AddContactusViewModel addContactusViewModel)
         {
             _logger.logInfo($" {LoggingEvents.addItem} addShippingMethod");

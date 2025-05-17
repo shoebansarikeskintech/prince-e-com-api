@@ -29,6 +29,8 @@ namespace ViewModel
     {
         public List<Guid> orderIds { get; set; }   // Multiple order IDs
         public string? status { get; set; }
+        public string? arrivedTo { get; set; }
+        public string? shippedFrom { get; set; }
     }
 
     //public class UpdateStausViewModel
@@ -42,10 +44,5 @@ namespace ViewModel
         public List<Guid> orderIds { get; set; }
 
     }
-
-    public class updateDelCanRetCompViewModel
-    {
-        public Guid orderId { get; set; }    
-    }
-
+   
 }

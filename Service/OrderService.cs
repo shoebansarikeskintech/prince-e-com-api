@@ -99,5 +99,16 @@ namespace Service
             var getAllCancelOrderAcceptedCompleted = await _repositoryManager.orderRepository.getAllCancelOrderAcceptedCompleted();
             return getAllCancelOrderAcceptedCompleted;
         }
+
+        public async Task<ResponseViewModel> getAllArrivedToOrderlist()
+        {
+            var getAllArrivedToOrderlist = await _repositoryManager.orderRepository.getAllArrivedToOrderlist();
+            return getAllArrivedToOrderlist;
+        }
+        public async Task<ResponseViewModel> getTrackOrder(string OrderNo)
+        {
+            var getTrackOrder = await _repositoryManager.orderRepository.getTrackOrder(OrderNo);
+            return getTrackOrder;
+        }
     }
 }

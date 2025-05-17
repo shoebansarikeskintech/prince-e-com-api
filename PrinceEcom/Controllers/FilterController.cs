@@ -49,12 +49,12 @@ namespace PrinceEcom.Controllers
         public async Task<IActionResult> getProductSearchByFilterNew([FromBody] FilterViewModel model)
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getPrductSearchByFilter");
-            var getProductSearchByFilter = await _serviceManager.filterContract.getProductSearchByFilter(model);
-            if (getProductSearchByFilter.statusCode == (int)HttpStatusCode.NotFound)
+            var getProductSearchByFilterNew = await _serviceManager.filterContract.getProductSearchByFilter(model);
+            if (getProductSearchByFilterNew.statusCode == (int)HttpStatusCode.NotFound)
             {
                 _logger.logWarn($"{LoggingEvents.getItemNotFound},No Sort By Found");
             }
-            return Ok(getProductSearchByFilter);
+            return Ok(getProductSearchByFilterNew);
         }
 
         [HttpPost("getProductSearchByFilter")]

@@ -556,6 +556,8 @@ namespace Repository
                     var parameters = new DynamicParameters();
                     parameters.Add("@orderId", orderId, DbType.Guid);
                     parameters.Add("@status", updateStausViewModel.status, DbType.String);
+                    parameters.Add("@shippedFrom", updateStausViewModel.shippedFrom, DbType.String);
+                    parameters.Add("@arrivedTo", updateStausViewModel.arrivedTo, DbType.String);
 
                     var result = await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
 
@@ -768,6 +770,66 @@ namespace Repository
                     data = null
                 };
             }
+        }
+
+        public async Task<ResponseViewModel> getAllArrivedToOrderlist()
+        {
+            var procedureName = Constant.spGetOrderArrivedTo;
+            var parameters = new DynamicParameters();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<AllOrder>(procedureName, commandType: CommandType.StoredProcedure);
+
+                    var getAllOrder = new ResponseViewModel
+                    {
+                        statusCode = result.Any() ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound,
+                        message = result.Any() ? "Data Found" : "Data Not Found",
+                        data = result
+                    };
+
+                    return getAllOrder;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error if needed
+                return new ResponseViewModel
+                {
+                    statusCode = (int)HttpStatusCode.InternalServerError,
+                    message = $"Error occurred: {ex.Message}",
+                    data = null
+                };
+            }
+        }
+
+        public async Task<ResponseViewModel> getTrackOrder(string OrderNo)
+        {
+            var procedureName = Constant.spGetTrackOrder;
+            var parameters = new DynamicParameters();
+            parameters.Add("@orderNo", OrderNo, DbType.String);
+            var response = new ResponseViewModel();
+
+            try
+            {
+                using (var connection = _dapperContext.createConnection())
+                {
+                    var result = await connection.QueryAsync<TrackOrder>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    response.statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK;
+                    response.message = result.Count() == 0 ? "Data Not Found" : "Data Found";
+                    response.data = result;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.statusCode = (int)HttpStatusCode.InternalServerError;
+                response.message = "An error occurred while fetching the order details.";
+            }
+
+            return response;
         }
     }
 }

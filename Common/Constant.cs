@@ -168,6 +168,7 @@ namespace Common
         public static string spGetAllcancelAccepted = "SpGetAllcancelAccepted";
         public static string spGetAllcancelAcceptedCompleted = "SpGetAllcancelAcceptedCompleted";
         public static string spGetAllReturnOrder = "SpGetAllReturnOrder";
+        public static string spGetOrderArrivedTo = "SpGetOrderArrivedTo";
         public static string spGetAllPendingOrder = "SpGetAllPeningOrder";
         public static string spGetAllProcessingOrder = "SpGetAllProcessingOrder";
         public static string spGetAllCompletedOrder = "SpGetAllCompletedOrder";
@@ -176,6 +177,7 @@ namespace Common
         public static string getOrderWithItems = "GetOrderWithItems";
 
         public static string spGetAllOrderDetailSearch = "SpGetAllOrderDetails";
+        public static string spGetTrackOrder = "SpGetTrackOrder";
 
 
         public static string spGetAllOrderDetails = "SpGetAllOrderListDetails";

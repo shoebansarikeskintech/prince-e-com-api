@@ -19,6 +19,7 @@ namespace Repository
        
         public class SimilarProducts
         {
+            public int id { get; set; }
             public Guid SimilarProductId { get; set; }
             public Guid ProductId { get; set; }
             public Guid SubProductId { get; set; }
@@ -1024,22 +1025,22 @@ namespace Repository
 
             using (var connection = _dapperContext.createConnection())
             {
-                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                if (result.statusCode == 1)
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                    procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                if (result != null && result.statusCode == 1)
                 {
                     result.statusCode = (int)HttpStatusCode.OK;
-                    result.message = result.message;
-                }
-                else if (result.statusCode == 0)
-                {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
                 }
                 else
                 {
-                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-                    result.message = result.message;
+                    result = new ResponseViewModel
+                    {
+                        statusCode = (int)HttpStatusCode.ExpectationFailed,
+                        message = "Failed to insert contact"
+                    };
                 }
+
                 return result;
             }
         }
