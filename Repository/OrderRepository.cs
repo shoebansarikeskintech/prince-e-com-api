@@ -205,94 +205,6 @@ namespace Repository
                 return getAllPendngOrder;
             }
         }
-        //public async Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderDetails)
-        //{
-        //    var procedureName = Constant.spAddOrderWithDetails;
-        //    var procedureImage = Constant.spGetProductSearchByFilterImages;
-        //    var parameters = new DynamicParameters();
-
-        //    // Adding parameters
-        //    parameters.Add("@userId", addOrderDetails.userId, DbType.Guid);
-        //    parameters.Add("@addressId", addOrderDetails.addressId, DbType.Guid);
-        //    parameters.Add("@paymentId", addOrderDetails.paymentId, DbType.Guid);
-        //    parameters.Add("@price", addOrderDetails.price, DbType.Decimal);
-        //    parameters.Add("@discountPrice", addOrderDetails.discountPrice, DbType.Decimal);
-        //    parameters.Add("@deliveryCharge", addOrderDetails.deliveryCharge, DbType.Decimal);
-        //    parameters.Add("@gstCharge", addOrderDetails.gstCharge, DbType.Decimal);
-        //    parameters.Add("@extraCharge", addOrderDetails.extraCharge, DbType.Decimal);
-        //    parameters.Add("@totalAmount", addOrderDetails.totalAmount, DbType.Decimal);
-        //    parameters.Add("@paymentMethod", addOrderDetails.paymentMethod, DbType.String);
-        //    parameters.Add("@transactionId", addOrderDetails.transactionId, DbType.String);
-        //    parameters.Add("@trackingNo", addOrderDetails.trackingNo, DbType.String);
-        //    parameters.Add("@note", addOrderDetails.note, DbType.String);
-        //    parameters.Add("@createdBy", addOrderDetails.createdBy, DbType.Guid);
-
-        //    string orderNo = "ORD" + Guid.NewGuid().ToString("N").Substring(0, 8); // Example: ORD9fcac100
-        //    parameters.Add("@orderNo", orderNo, DbType.String);
-        //    parameters.Add("@couponId", addOrderDetails.couponId, DbType.Guid);
-
-        //    parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String); // Assuming it's a string, not Guid
-
-        //    try
-        //    {
-        //        using (var connection = _dapperContext.createConnection())
-        //        {
-        //            var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
-        //                procedureName, parameters, commandType: CommandType.StoredProcedure);
-
-        //            if (result != null)
-        //            {
-        //                if (result.statusCode == 1)
-        //                {
-        //                    result.statusCode = (int)HttpStatusCode.OK;
-        //                    result.message = "Order placed successfully.";
-        //                    result.data = new OrderResponseData
-        //                    {
-        //                        orderNo = orderNo,
-        //                        price = addOrderDetails.price,
-        //                        discountPrice = addOrderDetails.discountPrice,
-        //                        mrp = addOrderDetails.MRP, // If MRP is the same as price or you have a separate MRP value, use that
-        //                        totalAmount = addOrderDetails.totalAmount,
-        //                        status = "Order Successfull"
-        //                    };
-        //                }
-        //                else if (result.statusCode == -1)
-        //                {
-        //                    result.statusCode = (int)HttpStatusCode.BadRequest;
-        //                    result.message = "This product is not available in sufficient stock.";
-        //                }
-        //                else if (result.statusCode == 0)
-        //                {
-        //                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //                    result.message = "Failed to place the order.";
-        //                }
-        //                else
-        //                {
-        //                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //                    result.message = "An unexpected error occurred while placing the order.";
-        //                }
-
-        //                return result;
-        //            }j
-        //            else
-        //            {
-        //                throw new Exception("No response from the server while placing the order.");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception details
-        //        Console.Error.WriteLine($"Error in addOrderWithDetails: {ex.Message}");
-
-        //        // Return a failed response with the exception message
-        //        return new ResponseViewModel
-        //        {
-        //            statusCode = (int)HttpStatusCode.InternalServerError,
-        //            message = "No response from the server while placing the order."
-        //        };
-        //    }
-        //}
 
         public async Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderDetails)
         {
@@ -321,10 +233,16 @@ namespace Repository
             string orderNo = "ORD" + Guid.NewGuid().ToString("N").Substring(0, 8);
             parameters.Add("@orderNo", orderNo, DbType.String);
             parameters.Add("@couponId", addOrderDetails.couponId, DbType.Guid);
-            parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String); // XML data
+            parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String); 
 
             try
             {
+                //using(var connection = _dapperContext.createConnection())
+                //{
+                //    var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
+                //     procedureName, parameters, commandType: CommandType.StoredProcedure);
+                //}
+
                 using (var connection = _dapperContext.createConnection())
                 {
                     var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
@@ -376,7 +294,7 @@ namespace Repository
                                 productDetails.Add(new ProductImageModel
                                 {
                                     ProductId = productId,
-                                    ProductName = productName, // ✅ Corrected spelling
+                                    ProductName = productName, 
                                     MRP = productMRP,
                                     Images = images.ToList()
                                 });
@@ -430,90 +348,6 @@ namespace Repository
         }
 
 
-        //public async Task<ResponseViewModel> addOrderWithDetails(AddOrderWithDetailsViewModel addOrderDetails)
-        //{
-        //    var procedureName = Constant.spAddOrderWithDetails;
-        //    var parameters = new DynamicParameters();
-
-        //    // Adding parameters
-        //    parameters.Add("@userId", addOrderDetails.userId, DbType.Guid);
-        //    parameters.Add("@addressId", addOrderDetails.addressId, DbType.Guid);
-        //    parameters.Add("@paymentId", addOrderDetails.paymentId, DbType.Guid);
-        //    parameters.Add("@price", addOrderDetails.price, DbType.Decimal);
-        //    parameters.Add("@discountPrice", addOrderDetails.discountPrice, DbType.Decimal);
-        //    parameters.Add("@deliveryCharge", addOrderDetails.deliveryCharge, DbType.Decimal);
-        //    parameters.Add("@gstCharge", addOrderDetails.gstCharge, DbType.Decimal);
-        //    parameters.Add("@extraCharge", addOrderDetails.extraCharge, DbType.Decimal);
-        //    parameters.Add("@totalAmount", addOrderDetails.totalAmount, DbType.Decimal);
-        //    parameters.Add("@paymentMethod", addOrderDetails.paymentMethod, DbType.String);
-        //    parameters.Add("@transactionId", addOrderDetails.transactionId, DbType.String);
-        //    parameters.Add("@trackingNo", addOrderDetails.trackingNo, DbType.String);
-        //    parameters.Add("@note", addOrderDetails.note, DbType.String);
-        //    parameters.Add("@createdBy", addOrderDetails.createdBy, DbType.Guid);
-
-        //    string orderNo = "ORD" + Guid.NewGuid().ToString("N").Substring(0, 8); // Example: ORD9fcac100
-        //    //addOrderDetails.orderNo = orderNo;
-        //    //parameters.Add("@orderNo", addOrderDetails.orderNo, DbType.String);
-        //    parameters.Add("@orderNo", orderNo, DbType.String);
-        //    parameters.Add("@couponId", addOrderDetails.couponId, DbType.Guid);
-
-        //    parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String); // Assuming it's a string, not Guid
-        //    try
-        //    {
-        //        using (var connection = _dapperContext.createConnection())
-        //        {
-        //            var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(
-        //                procedureName, parameters, commandType: CommandType.StoredProcedure);
-
-        //            if (result != null)
-        //            {
-        //                if (result.statusCode == 1)
-        //                {
-        //                    result.statusCode = (int)HttpStatusCode.OK;
-        //                    result.message = "Order placed successfully.";
-        //                    result.data = new OrderResponseData
-        //                    {
-        //                        //orderNo = addOrderDetails.orderNo
-        //                        orderNo = orderNo
-        //                    };
-        //                }
-        //                else if (result.statusCode == -1)
-        //                {
-        //                    result.statusCode = (int)HttpStatusCode.BadRequest;
-        //                    result.message = "This product is not available in sufficient stock.";
-        //                }
-        //                else if (result.statusCode == 0)
-        //                {
-        //                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //                    result.message = "Failed to place the order.";
-        //                }
-        //                else
-        //                {
-        //                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
-        //                    result.message = "An unexpected error occurred while placing the order.";
-        //                }
-
-        //                return result;
-        //            }
-        //            else
-        //            {
-        //                throw new Exception("No response from the server while placing the order.");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception details
-        //        Console.Error.WriteLine($"Error in addOrderWithDetails: {ex.Message}");
-
-        //        // Return a failed response with the exception message
-        //        return new ResponseViewModel
-        //        {
-        //            statusCode = (int)HttpStatusCode.InternalServerError,
-        //            message = "No response from the server while placing the order."
-        //        };
-        //    }            
-        //}
         public class OrderResponseData
         {
             public string? orderNo { get; set; }
@@ -531,17 +365,7 @@ namespace Repository
             public List<string> Images { get; set; }
         }
 
-        //public class OrderResponseData
-        //{
-        //    public string? orderNo { get; set; }
-        //    public decimal price { get; set; }
-        //    public decimal discountPrice { get; set; }
-        //    public string mrp { get; set; }
-        //    public decimal totalAmount { get; set; }
-        //    public string? status { get; set; }
-        //}
-
-
+     
 
         public async Task<ResponseViewModel> updateOrderStatus(UpdateStausViewModel updateStausViewModel)
         {
