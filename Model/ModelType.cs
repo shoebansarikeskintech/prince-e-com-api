@@ -47,9 +47,9 @@ namespace Model
         public record Category(
             Int64 Id, Guid categoryId, string name, string image, DateTime createdDate, string status, bool active);
         public record SubCategory(
-            Int64 id, Guid categoryId, string categoryName, Guid subCategoryId, string name, DateTime createdDate, string status, bool active);
+            Int64 subcategoryId, Guid categoryId, string categoryName, Guid subCategoryGUID, string name, DateTime createdDate, string status, bool active);
         public record SubCategoryType(
-            Int64 id, Guid categoryId, string categorName, Guid subCategoryId, string subCategoryName, Guid subCategoryTypeId, string name, DateTime createdDate, string status, bool active);
+            Int64 subcategoryTypeId, Guid categoryId, string categorName, Guid subcategoryGUID, string subCategoryName, Int64 subcategoryId, Guid subCategoryTypeGUID, string name, DateTime createdDate, string status, bool active);
 
         public class AdminDashboardToday
         {
@@ -289,6 +289,11 @@ namespace Model
         {
             public int id { get; set; }
             public string shippedDate { get; set; }
+            public string arrivedDate { get; set; }
+            public string estimateDeliveryDate { get; set; }
+            public string deliveryDate { get; set; }
+            public string shippedFrom { get; set; }
+            public string arrivedTo { get; set; }
             public string transactionId { get; set; }
             public string status { get; set; }
             public string orderNo { get; set; }

@@ -3,6 +3,8 @@ using Dapper;
 using RepositoryContract;
 using System.Data;
 using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Xml;
 using ViewModel;
 using static Model.ModelType;
@@ -211,7 +213,9 @@ namespace Repository
             var procedureName = Constant.spAddOrderWithDetails;
             var procedureImage = Constant.spGetProductSearchByFilterImages;
             var procedureNames = Constant.spgetProductNamebyProductId;
+            var GetAdressbyAddressId = Constant.spGetAdressbyAddressId;
             var ProductMRP = Constant.spGetMRPByProductId;
+            var pincodeActive = Constant.spgetAllPinCodeActive;
             var parameters = new DynamicParameters();
 
             // Adding parameters
@@ -255,52 +259,75 @@ namespace Repository
                             result.statusCode = (int)HttpStatusCode.OK;
                             result.message = "Order placed successfully.";
 
-                            // Step: Parse XML to get Product IDs
-                            List<Guid> productIds = new List<Guid>();
+                            // Step: Parse XML to get Order Detail Info
                             var xmlDoc = new XmlDocument();
                             xmlDoc.LoadXml(addOrderDetails.OrderDetailsXML);
-                            var productIdNodes = xmlDoc.SelectNodes("//Detail/productId");
+                            var detailNodes = xmlDoc.SelectNodes("//Detail");
 
-                            foreach (XmlNode node in productIdNodes)
+                            List<ProductImageModel> productDetails = new List<ProductImageModel>();
+
+                            foreach (XmlNode detailNode in detailNodes)
                             {
-                                if (Guid.TryParse(node.InnerText, out Guid productId))
+                                var productIdText = detailNode["productId"]?.InnerText;
+                                var quantityText = detailNode["quantity"]?.InnerText;
+                                var priceText = detailNode["price"]?.InnerText;
+                                var discountPriceText = detailNode["discountPrice"]?.InnerText;
+                                var mrpText = detailNode["MRP"]?.InnerText;
+
+                                if (Guid.TryParse(productIdText, out Guid productId))
                                 {
-                                    productIds.Add(productId);
+                                    int.TryParse(quantityText, out int quantity);
+                                    decimal.TryParse(priceText, out decimal price);
+                                    decimal.TryParse(discountPriceText, out decimal discountPrice);
+                                    decimal.TryParse(mrpText, out decimal mrp);
+
+                                    // Get product images
+                                    DynamicParameters imgParam = new DynamicParameters();
+                                    imgParam.Add("@productid", productId);
+
+                                    var images = await connection.QueryAsync<string>(
+                                        procedureImage, imgParam, commandType: CommandType.StoredProcedure);
+
+                                    // Get product name
+                                    DynamicParameters nameParam = new DynamicParameters();
+                                    nameParam.Add("@productid", productId);
+
+                                    var productName = await connection.QueryFirstOrDefaultAsync<string>(
+                                        procedureNames, nameParam, commandType: CommandType.StoredProcedure);
+
+                                    productDetails.Add(new ProductImageModel
+                                    {
+                                        ProductId = productId,
+                                        ProductName = productName,
+                                        Quantity = quantity,
+                                        Price = price,
+                                        DiscountPrice = discountPrice,
+                                        MRP = mrp.ToString("F2"),
+                                        Images = images.ToList()
+                                    });
                                 }
                             }
-                            List<ProductImageModel> productDetails = new List<ProductImageModel>();
-                            foreach (var productId in productIds)
-                            {
-                                DynamicParameters imgParam = new DynamicParameters();
-                                imgParam.Add("@productid", productId);
-
-                                var images = await connection.QueryAsync<string>(
-                                    procedureImage, imgParam, commandType: CommandType.StoredProcedure);
-
-                                
-                                DynamicParameters nameParam = new DynamicParameters();
-                                nameParam.Add("@productid", productId);
-
-                                var productName = await connection.QueryFirstOrDefaultAsync<string>(
-    procedureNames, nameParam, commandType: CommandType.StoredProcedure);
-
-                                DynamicParameters MRPParam = new DynamicParameters();
-                                nameParam.Add("@productid", productId);
-
-                                var productMRP = await connection.QueryFirstOrDefaultAsync<string>(
-    ProductMRP, nameParam, commandType: CommandType.StoredProcedure);
 
 
-                                productDetails.Add(new ProductImageModel
-                                {
-                                    ProductId = productId,
-                                    ProductName = productName, 
-                                    MRP = productMRP,
-                                    Images = images.ToList()
-                                });
+                            // Get address, phoneNumber, Pincode
+                            DynamicParameters addressIdParam = new DynamicParameters();
+                            addressIdParam.Add("@addressId", addOrderDetails.addressId);
 
-                            }
+                            var addressData = await connection.QueryFirstOrDefaultAsync<DeliveryAddressModel>(
+                                GetAdressbyAddressId, addressIdParam, commandType: CommandType.StoredProcedure);
 
+                            DynamicParameters pincode = new DynamicParameters();
+                            pincode.Add("@pinCode", addressData.pincode);
+
+
+                            var pincodeDetail = await connection.QueryFirstOrDefaultAsync<PincodeDetail>(
+                                                 pincodeActive, pincode, commandType: CommandType.StoredProcedure);
+
+                            var expectedDate = DateTime.UtcNow
+                                .AddDays(pincodeDetail?.noOfDays ?? 3)
+                                .ToString("yyyy-MM-dd");
+
+                            
                             result.data = new OrderResponseData
                             {
                                 orderNo = orderNo,
@@ -308,8 +335,16 @@ namespace Repository
                                 discountPrice = addOrderDetails.discountPrice,
                                 totalAmount = addOrderDetails.totalAmount,
                                 status = "Order Successful",
-                                productDetails = productDetails
+                                productDetails = productDetails,
+                                deliveryAddress= addressData.fullAddress,
+                                phone = addressData.mobile,
+                                userName = addressData.userName,
+                                email = addressData.email,
+                               expectedDelivery=expectedDate
+                                
                             };
+                            //To send Email after Order Placed Uncomment this line.
+                            //await SendOrderConfirmationEmail((OrderResponseData)result.data);
                         }
                         else if (result.statusCode == -1)
                         {
@@ -355,18 +390,37 @@ namespace Repository
             public decimal discountPrice { get; set; }
             public decimal totalAmount { get; set; }
             public string? status { get; set; }
+            public string? phone { get; set; }
+            public string? userName { get; set; }
             public List<ProductImageModel> productDetails { get; set; }
+            public string? deliveryAddress { get; set; }
+            public string? email { get; set; }
+            public string? expectedDelivery { get; set; }
         }
         public class ProductImageModel
         {
             public Guid ProductId { get; set; }
             public string? ProductName { get; set; }
             public string? MRP { get; set; }
+            public int? Quantity { get; set; }
+            public decimal? Price { get; set; }
+            public decimal? DiscountPrice { get; set; }
             public List<string> Images { get; set; }
         }
 
-     
-
+        public class DeliveryAddressModel
+        {
+            public string userName { get; set; }
+            public string mobile { get; set; }
+            public string pincode { get; set; }
+            public string fullAddress { get; set; }
+            public string email { get; set; }
+        }
+        public class PincodeDetail
+        {
+            public string pinCode { get; set; }
+            public int noOfDays { get; set; }
+        }
         public async Task<ResponseViewModel> updateOrderStatus(UpdateStausViewModel updateStausViewModel)
         {
             var procedureName = Constant.spUpdateOrderStatus;
@@ -531,7 +585,6 @@ namespace Repository
                 };
             }
         }
-
         public async Task<ResponseViewModel> getAllCancelOrderAccepted()
         {
             var procedureName = Constant.spGetAllcancelAccepted;
@@ -563,7 +616,6 @@ namespace Repository
                 };
             }
         }
-
         public async Task<ResponseViewModel> getAllCancelOrderAcceptedCompleted()
         {
             var procedureName = Constant.spGetAllcancelAcceptedCompleted;
@@ -595,7 +647,6 @@ namespace Repository
                 };
             }
         }
-
         public async Task<ResponseViewModel> getAllArrivedToOrderlist()
         {
             var procedureName = Constant.spGetOrderArrivedTo;
@@ -628,7 +679,6 @@ namespace Repository
                 };
             }
         }
-
         public async Task<ResponseViewModel> getTrackOrder(string OrderNo)
         {
             var procedureName = Constant.spGetTrackOrder;
@@ -654,6 +704,78 @@ namespace Repository
             }
 
             return response;
+        }
+        public async Task SendOrderConfirmationEmail(OrderResponseData data)
+        {
+            var fromAddress = new MailAddress("shoebansari2013@gmail.com", "Zaddy");
+            var toAddress = new MailAddress(data.email, data.userName);
+            const string fromPassword = "nzvr memm dyak xxmb"; // Use secure storage
+            string subject = $"Order Confirmation - {data.orderNo}";
+
+            // Logo image path
+            string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logo", "Zaddy_Logo.png");
+
+            // HTML body with inline logo and product details
+            var bodyBuilder = new StringBuilder();
+            bodyBuilder.Append($@"
+        <html>
+        <body>
+            <img src='cid:zaddyLogo' alt='Zaddy Logo' style='height:60px;' />
+            <p>Hi {data.userName},</p>
+            <p>Your order <b>{data.orderNo}</b> has been placed successfully on {DateTime.UtcNow:yyyy-MM-dd}.</p>
+            <h3>Order Details:</h3>
+            <table border='1' cellpadding='5' cellspacing='0'>
+                <tr><th>Product</th><th>Image</th><th>MRP</th><th>Price</th><th>Discount</th><th>Qty</th></tr>");
+
+            foreach (var item in data.productDetails)
+            {
+                bodyBuilder.Append($@"
+            <tr>
+                <td>{item.ProductName}</td>
+                <td><img src='{item.Images[0]}' alt='product' style='height:50px;' /></td>
+                <td>{item.MRP}</td>
+                <td>{item.Price}</td>
+                <td>{item.DiscountPrice}</td>
+                <td>{item.Quantity}</td>
+            </tr>");
+            }
+
+            bodyBuilder.Append($@"
+            </table>
+            <p><b>Total Amount:</b> {data.totalAmount}</p>
+            <p><b>Delivery Address:</b> {data.deliveryAddress}</p>
+            <p><b>Expected Delivery Date:</b> {data.expectedDelivery}</p>
+            <p>Thank you for shopping with Zaddy!</p>
+        </body>
+        </html>");
+
+            var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = bodyBuilder.ToString(),
+                IsBodyHtml = true
+            };
+
+            // Add inline logo image
+            var logo = new LinkedResource(logoPath)
+            {
+                ContentId = "zaddyLogo",
+                TransferEncoding = System.Net.Mime.TransferEncoding.Base64
+            };
+
+            var view = AlternateView.CreateAlternateViewFromString(bodyBuilder.ToString(), null, "text/html");
+            view.LinkedResources.Add(logo);
+            message.AlternateViews.Add(view);
+
+            using var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+
+            await smtp.SendMailAsync(message);
         }
     }
 }

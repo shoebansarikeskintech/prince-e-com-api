@@ -47,7 +47,7 @@ namespace Repository
                 var resultSubCategoryType = await connection.QueryAsync<SubCategoryType>(procedureSubCategoryType, commandType: CommandType.StoredProcedure);
 
                 var subCategoryLookup = resultSubCategory.ToLookup(subCat => subCat.categoryId);
-                var subCategoryTypeLookup = resultSubCategoryType.ToLookup(subCatType => subCatType.subCategoryId);
+                var subCategoryTypeLookup = resultSubCategoryType.ToLookup(subCatType => subCatType.subcategoryGUID);
 
                 var list = resultCategory.Select(category => new
                 {
@@ -56,15 +56,18 @@ namespace Repository
                     image = category.image,
                     subCategory = subCategoryLookup[category.categoryId].Select(subCat => new
                     {
+                        subcategoryId = subCat.subcategoryId,
                         categoryId = subCat.categoryId,
                         categoryName = subCat.categoryName,
-                        subCategoryId = subCat.subCategoryId,
+                        subCategoryGUId = subCat.subCategoryGUID,
                         name = subCat.name,
-                        subCategoryType = subCategoryTypeLookup[subCat.subCategoryId].Select(subCatType => new
+                        subCategoryType = subCategoryTypeLookup[subCat.subCategoryGUID].Select(subCatType => new
                         {
+                            subcategoryTypeId = subCatType.subcategoryTypeId,
                             categoryId = subCatType.categoryId,
-                            subCategoryId = subCatType.subCategoryId,
-                            subCategoryTypeId = subCatType.subCategoryTypeId,
+                            subCategoryGUID = subCatType.subcategoryGUID,
+                            subcategoryId = subCatType.subcategoryId,
+                            subCategoryTypeGUID = subCatType.subCategoryTypeGUID,
                             name = subCatType.name
                         }).ToList()
                     }).ToList()
@@ -113,7 +116,7 @@ namespace Repository
                 var resultSubCategory = await connection.QueryAsync<SubCategory>(procedureSubCategory, commandType: CommandType.StoredProcedure);
                 var resultSubCategoryType = await connection.QueryAsync<SubCategoryType>(procedureSubCategoryType, commandType: CommandType.StoredProcedure);
                 var subCategoryLookup = resultSubCategory.ToLookup(subCat => subCat.categoryId);
-                var subCategoryTypeLookup = resultSubCategoryType.ToLookup(subCatType => subCatType.subCategoryId);
+                var subCategoryTypeLookup = resultSubCategoryType.ToLookup(subCatType => subCatType.subcategoryGUID);
 
                 // Fetch full data for bestSeller, bestRecommended, and bestArrial
                 var bestSeller = await connection.QueryAsync<Product>(procedureBestSeller, commandType: CommandType.StoredProcedure);
@@ -138,14 +141,17 @@ namespace Repository
                                 id = category.Id,
                                 categoryId = subCat.categoryId,
                                 categoryName = subCat.categoryName,
-                                subCategoryId = subCat.subCategoryId,
+                                subCategoryId = subCat.subcategoryId,
+                                subcategoryGUID = subCat.subCategoryGUID,
                                 name = subCat.name,
-                                subCategoryType = subCategoryTypeLookup[subCat.subCategoryId].Select(subCatType => new
+                                subCategoryType = subCategoryTypeLookup[subCat.subCategoryGUID].Select(subCatType => new
                                 {
                                     id = category.Id,
                                     categoryId = subCatType.categoryId,
-                                    subCategoryId = subCatType.subCategoryId,
-                                    subCategoryTypeId = subCatType.subCategoryTypeId,
+                                    subcategoryGUID = subCatType.subcategoryGUID,
+                                    subcategoryId = subCatType.subcategoryId,
+                                    subCategoryTypeId = subCatType.subcategoryTypeId,
+                                    subCategoryTypeGUID = subCatType.subCategoryTypeGUID,
                                     name = subCatType.name
                                 }).ToList()
                             }).ToList()

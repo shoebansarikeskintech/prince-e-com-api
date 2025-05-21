@@ -225,6 +225,7 @@ namespace Common
         public static string spGetAllSimilarProductByProductIdImage = "SpGetAllProductImageByProductId";
         public static string spGetProductSearchByFilterImages = "SpGetProductSearchByFilterImages";
         public static string spgetProductNamebyProductId = "SpgetProductNamebyProductId";
+        public static string spGetAdressbyAddressId = "spGetAdressbyAddressId";
         public static string spGetMRPByProductId = "SpGetMRPByProductId";
         public static string spGetAllSkinInsightProductProductId = "SpGetAllSkinInsightProductProductId";
         public static string spAddSimilarProduct = "SpAddSimilarProduct";
