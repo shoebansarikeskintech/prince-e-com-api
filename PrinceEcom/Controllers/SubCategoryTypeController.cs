@@ -11,7 +11,7 @@ namespace PrinceEcom.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class SubCategoryTypeController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;

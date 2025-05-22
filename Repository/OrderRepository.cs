@@ -1,5 +1,7 @@
 ﻿using Common;
 using Dapper;
+using Microsoft.AspNetCore.SignalR.Protocol;
+using Newtonsoft.Json;
 using RepositoryContract;
 using System.Data;
 using System.Net;
@@ -344,7 +346,7 @@ namespace Repository
                                 
                             };
                             //To send Email after Order Placed Uncomment this line.
-                            //await SendOrderConfirmationEmail((OrderResponseData)result.data);
+                            await SendOrderConfirmationEmail((OrderResponseData)result.data);
                         }
                         else if (result.statusCode == -1)
                         {
@@ -507,10 +509,25 @@ namespace Repository
             {
                 using (var connection = _dapperContext.createConnection())
                 {
-                    var result = await connection.QueryAsync<AllSearchOrder>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                    var rawResult = await connection.QueryAsync<AllSearchOrder>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                    var result = rawResult.ToList();
+                    foreach (var order in result)
+                    {
+                        if (!string.IsNullOrEmpty(order.productsJson))
+                        {
+                            try
+                            {
+                                order.products = JsonConvert.DeserializeObject<List<OrderProduct>>(order.productsJson);
+                            }
+                            catch
+                            {
+                                order.products = new List<OrderProduct>(); // Fallback if invalid JSON
+                            }
+                        }
+                    }
 
-                    response.statusCode = result.Count() == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK;
-                    response.message = result.Count() == 0 ? "Data Not Found" : "Data Found";
+                    response.statusCode = result.Count == 0 ? (int)HttpStatusCode.NotFound : (int)HttpStatusCode.OK;
+                    response.message = result.Count == 0 ? "Data Not Found" : "Data Found";
                     response.data = result;
                 }
             }

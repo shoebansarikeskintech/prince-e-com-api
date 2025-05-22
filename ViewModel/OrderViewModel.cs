@@ -8,7 +8,6 @@ namespace ViewModel
         public Guid userId { get; set; }
         public Guid addressId { get; set; }
         public Guid paymentId { get; set; }
-        public DateTime shippedDate { get; set; }
         public decimal price { get; set; }
         public decimal discountPrice { get; set; }
         public decimal deliveryCharge { get; set; }

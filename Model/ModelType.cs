@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using static Model.ModelType;
 
@@ -68,8 +69,8 @@ namespace Model
         }
 
         public record SubCategoryTypeForUser(
-            Int64 id, Guid categoryId, string categorName, Guid subCategoryId, string subCategoryName,
-            Guid subCategoryTypeId, string name, DateTime createdDate, string status, bool active);
+            Int64 subcategoryTypeId, Guid categoryId, string categorName, Guid subcategoryGUID, string subCategoryName,
+            Int64 subcategoryId, Guid subCategoryTypeGUID, string name, DateTime createdDate, string status, bool active);
 
         public record Seller(
             Int64 id, Guid sellerId, string name, string mobile, string email, string streetAddress, string state, string city, string pincode,
@@ -297,22 +298,34 @@ namespace Model
             public string transactionId { get; set; }
             public string status { get; set; }
             public string orderNo { get; set; }
-            public int quantity { get; set; }
-            public decimal price { get; set; }
-            public decimal discountPrice { get; set; }
-            public decimal totalAmount { get; set; }
-            public Guid orderId { get; set; }
             public string username { get; set; }
             public string name { get; set; }
-            public string Image { get; set; }
-            public string productName { get; set; }
             public Guid couponId { get; set; }
             public string BillingAddress { get; set; }
             public string sellerName { get; set; }
             public string sellerAddress { get; set; }
+            [JsonIgnore]
+            public string productsJson { get; set; }
+            public List<OrderProduct> products { get; set; }
 
             // Parameterless constructor required by Dapper
             public AllSearchOrder() { }
+        }
+
+        public class OrderProduct
+        {
+            public int quantity { get; set; }
+            public decimal price { get; set; }
+            public decimal discountPrice { get; set; }
+            public decimal totalAmount { get; set; }
+            public Guid productId { get; set; }
+            public string productName { get; set; }
+            public List<OrderProductImage> images { get; set; }
+        }
+
+        public class OrderProductImage
+        {
+            public string image { get; set; }
         }
 
         public class OrderDetailsById
