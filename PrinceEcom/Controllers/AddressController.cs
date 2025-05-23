@@ -10,7 +10,7 @@ namespace PrinceEcom.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class AddressController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;

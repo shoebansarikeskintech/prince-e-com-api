@@ -718,7 +718,7 @@ namespace Model
             Guid userId, string username, string firstName, string middleName, string lastName, string email, string phoneNumber, DateTime createdDate);
 
         public record Address(
-            long id, Guid addressId, bool isDefualt, string name, string mobile, string email, string streetAddress, string state, string city, string pincode, string country, DateTime createdDate, string Status, bool active, string city_Name, string state_Name, string country_Name);
+            long id,string addressType, Guid addressId, bool isDefualt, string name, string mobile, string email, string streetAddress, string state, string city, string pincode, string country, DateTime createdDate, string Status, bool active, string city_Name, string state_Name, string country_Name);
 
         public record CartItemCount
         {

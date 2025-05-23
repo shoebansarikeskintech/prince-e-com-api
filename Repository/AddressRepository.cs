@@ -65,6 +65,7 @@ namespace Repository
             var procedureName = Constant.spAddAddress;
             var parameters = new DynamicParameters();
             parameters.Add("@userId", addAddress.userId, DbType.Guid);
+            parameters.Add("@addressType", addAddress.addressType, DbType.String);
             parameters.Add("@isDefualt", addAddress.isDefualt ? 1 : 0, DbType.Boolean);
             parameters.Add("@name", addAddress.name, DbType.String);
             parameters.Add("@mobile", addAddress.mobile, DbType.String);
@@ -103,6 +104,7 @@ namespace Repository
             var parameters = new DynamicParameters();
             parameters.Add("@userId", updateAddress.userId, DbType.Guid);
             parameters.Add("@addressId", updateAddress.addressId, DbType.Guid);
+            parameters.Add("@addressType", updateAddress.addressType, DbType.String);
             parameters.Add("@isDefualt", updateAddress.isDefualt ? 1 : 0, DbType.Boolean);
             parameters.Add("@name", updateAddress.name, DbType.String);
             parameters.Add("@mobile", updateAddress.mobile, DbType.String);

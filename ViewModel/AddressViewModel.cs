@@ -6,6 +6,7 @@ namespace ViewModel
     {
         [Required]
         public Guid userId { get; set; }
+        public string? addressType { get; set; }
         [Required]
         public bool isDefualt { get; set; }
         [Required]
@@ -32,6 +33,7 @@ namespace ViewModel
     {
         [Required]
         public Guid userId { get; set; }
+        public string? addressType { get; set; }
         [Required]
         public Guid addressId { get; set; }
         [Required]
