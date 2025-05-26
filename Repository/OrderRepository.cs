@@ -5,10 +5,14 @@ using Newtonsoft.Json;
 using RepositoryContract;
 using System.Data;
 using System.Net;
-using System.Net.Mail;
 using System.Text;
 using System.Xml;
 using ViewModel;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using MimeKit.Utils;
+
 using static Model.ModelType;
 
 namespace Repository
@@ -239,7 +243,7 @@ namespace Repository
             string orderNo = "ORD" + Guid.NewGuid().ToString("N").Substring(0, 8);
             parameters.Add("@orderNo", orderNo, DbType.String);
             parameters.Add("@couponId", addOrderDetails.couponId, DbType.Guid);
-            parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String); 
+            parameters.Add("@OrderDetailsXML", addOrderDetails.OrderDetailsXML, DbType.String);
 
             try
             {
@@ -329,7 +333,7 @@ namespace Repository
                                 .AddDays(pincodeDetail?.noOfDays ?? 3)
                                 .ToString("yyyy-MM-dd");
 
-                            
+
                             result.data = new OrderResponseData
                             {
                                 orderNo = orderNo,
@@ -338,12 +342,12 @@ namespace Repository
                                 totalAmount = addOrderDetails.totalAmount,
                                 status = "Order Successful",
                                 productDetails = productDetails,
-                                deliveryAddress= addressData.fullAddress,
+                                deliveryAddress = addressData.fullAddress,
                                 phone = addressData.mobile,
                                 userName = addressData.userName,
                                 email = addressData.email,
-                               expectedDelivery=expectedDate
-                                
+                                expectedDelivery = expectedDate
+
                             };
                             //To send Email after Order Placed Uncomment this line.
                             await SendOrderConfirmationEmail((OrderResponseData)result.data);
@@ -724,75 +728,70 @@ namespace Repository
         }
         public async Task SendOrderConfirmationEmail(OrderResponseData data)
         {
-            var fromAddress = new MailAddress("shoebansari2013@gmail.com", "Zaddy");
-            var toAddress = new MailAddress(data.email, data.userName);
-            const string fromPassword = "nzvr memm dyak xxmb"; // Use secure storage
-            string subject = $"Order Confirmation - {data.orderNo}";
-
-            // Logo image path
-            string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logo", "Zaddy_Logo.png");
-
-            // HTML body with inline logo and product details
-            var bodyBuilder = new StringBuilder();
-            bodyBuilder.Append($@"
-        <html>
-        <body>
-            <img src='cid:zaddyLogo' alt='Zaddy Logo' style='height:60px;' />
-            <p>Hi {data.userName},</p>
-            <p>Your order <b>{data.orderNo}</b> has been placed successfully on {DateTime.UtcNow:yyyy-MM-dd}.</p>
-            <h3>Order Details:</h3>
-            <table border='1' cellpadding='5' cellspacing='0'>
-                <tr><th>Product</th><th>Image</th><th>MRP</th><th>Price</th><th>Discount</th><th>Qty</th></tr>");
-
-            foreach (var item in data.productDetails)
+            try
             {
-                bodyBuilder.Append($@"
-            <tr>
-                <td>{item.ProductName}</td>
-                <td><img src='{item.Images[0]}' alt='product' style='height:50px;' /></td>
-                <td>{item.MRP}</td>
-                <td>{item.Price}</td>
-                <td>{item.DiscountPrice}</td>
-                <td>{item.Quantity}</td>
-            </tr>");
+                var email = new MimeMessage();
+                email.From.Add(new MailboxAddress("Zaddy Updates", "updates@zaddycare.com"));
+                email.To.Add(new MailboxAddress(data.userName, data.email));
+                email.Subject = "Order Placed";
+
+                // Logo image path
+                string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logo", "Zaddy_Logo.png");
+
+                // Create body with inline image
+                var builder = new BodyBuilder();
+
+                var logo = builder.LinkedResources.Add(logoPath);
+                logo.ContentId = MimeUtils.GenerateMessageId();
+
+                var htmlBody = new StringBuilder();
+                htmlBody.Append($@"
+<html>
+<body>
+    <img src=""cid:{logo.ContentId}"" alt='Zaddy Logo' style='height:60px;' />
+    <p>Hi {data.userName},</p>
+    <p>Your order <b>{data.orderNo}</b> has been placed successfully on {DateTime.UtcNow:yyyy-MM-dd}.</p>
+    <h3>Order Details:</h3>
+    <table border='1' cellpadding='5' cellspacing='0'>
+        <tr><th>Product</th><th>Image</th><th>MRP</th><th>Price</th><th>Discount</th><th>Qty</th></tr>");
+
+                foreach (var item in data.productDetails)
+                {
+                    htmlBody.Append($@"
+        <tr>
+            <td>{item.ProductName}</td>
+            <td><img src='{item.Images[0]}' alt='product' style='height:50px;' /></td>
+            <td>{item.MRP}</td>
+            <td>{item.Price}</td>
+            <td>{item.DiscountPrice}</td>
+            <td>{item.Quantity}</td>
+        </tr>");
+                }
+
+                htmlBody.Append($@"
+    </table>
+    <p><b>Total Amount:</b> {data.totalAmount}</p>
+    <p><b>Delivery Address:</b> {data.deliveryAddress}</p>
+    <p><b>Expected Delivery Date:</b> {data.expectedDelivery}</p>
+    <p>Thank you for shopping with Zaddy!</p>
+</body>
+</html>");
+
+                builder.HtmlBody = htmlBody.ToString();
+
+                email.Body = builder.ToMessageBody();
+
+                using var smtp = new SmtpClient();
+                smtp.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                await smtp.ConnectAsync("zaddycare.com", 465, SecureSocketOptions.SslOnConnect);
+                await smtp.AuthenticateAsync("updates@zaddycare.com", "Zaddy@2025#");
+                await smtp.SendAsync(email);
+                await smtp.DisconnectAsync(true);
             }
-
-            bodyBuilder.Append($@"
-            </table>
-            <p><b>Total Amount:</b> {data.totalAmount}</p>
-            <p><b>Delivery Address:</b> {data.deliveryAddress}</p>
-            <p><b>Expected Delivery Date:</b> {data.expectedDelivery}</p>
-            <p>Thank you for shopping with Zaddy!</p>
-        </body>
-        </html>");
-
-            var message = new MailMessage(fromAddress, toAddress)
+            catch (Exception ex)
             {
-                Subject = subject,
-                Body = bodyBuilder.ToString(),
-                IsBodyHtml = true
-            };
-
-            // Add inline logo image
-            var logo = new LinkedResource(logoPath)
-            {
-                ContentId = "zaddyLogo",
-                TransferEncoding = System.Net.Mime.TransferEncoding.Base64
-            };
-
-            var view = AlternateView.CreateAlternateViewFromString(bodyBuilder.ToString(), null, "text/html");
-            view.LinkedResources.Add(logo);
-            message.AlternateViews.Add(view);
-
-            using var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-
-            await smtp.SendMailAsync(message);
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 }
