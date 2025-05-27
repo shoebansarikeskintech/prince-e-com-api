@@ -289,6 +289,8 @@ namespace Model
             public class AllSearchOrder
         {
             public int id { get; set; }
+
+            public string orderDate { get; set; }
             public string shippedDate { get; set; }
             public string arrivedDate { get; set; }
             public string estimateDeliveryDate { get; set; }
