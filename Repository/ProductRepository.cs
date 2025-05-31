@@ -159,6 +159,9 @@ namespace Repository
                         ConcernId = p.ConcernId,
                         IngredientId = p.IngredientId,
                         MRP = p.MRP,
+                        metaTitle = p.metaTitle,
+                        metaDescription = p.metaDescription,
+                        metakeyword = p.metakeyword,
                         imageUrls = result.Select(x => x.ImageUrl).ToList()
                     })
                     .FirstOrDefault();
@@ -1041,6 +1044,37 @@ namespace Repository
                     };
                 }
 
+                return result;
+            }
+        }
+
+        public async Task<ResponseViewModel> updateMetaTagsByProductId(UpdateMetaTagViewModel updateMetaTagViewModel)
+        {
+            var procedureName = Constant.spUpdateMetaTagByProductId;
+            var parameters = new DynamicParameters();
+            parameters.Add("@productId", updateMetaTagViewModel.productId, DbType.Guid);
+            parameters.Add("@metaTitle", updateMetaTagViewModel.metaTitle, DbType.String);
+            parameters.Add("@metaDescription", updateMetaTagViewModel.metaDescription, DbType.String);
+            parameters.Add("@metakeyword", updateMetaTagViewModel.metaKeyword, DbType.String);
+
+            using (var connection = _dapperContext.createConnection())
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<ResponseViewModel>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result.statusCode == 1)
+                {
+                    result.statusCode = (int)HttpStatusCode.OK;
+                    result.message = result.message;
+                }
+                else if (result.statusCode == 0)
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
+                else
+                {
+                    result.statusCode = (int)HttpStatusCode.ExpectationFailed;
+                    result.message = result.message;
+                }
                 return result;
             }
         }

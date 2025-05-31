@@ -104,6 +104,7 @@ namespace Common
         public static string spGetAllSkinInsightByProductId = "SpGetAllSkinInsightByProductId";
         public static string spGetAllProductFAQIngredientbyProductId = "SpGetAllProductFAQIngredientbyProductId";
         public static string spGetAllProductFAQWithProductbyProductId = "SpGetAllProductFAQWithProductbyProductId";
+        public static string spUpdateMetaTagByProductId = "SpUpdateMetaTagByProductId";
 
         public static string spGetAllProductById = "SpGetAllProductById";
         public static string spGetByIdProduct = "SpGetByIdProduct";

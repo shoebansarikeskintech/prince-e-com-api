@@ -34,7 +34,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpGet("getAllProduct")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> getAllProduct()
         {
             _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
@@ -45,47 +45,6 @@ namespace PrinceEcom.Controllers
             }
             return Ok(getAllProduct);
         }
-
-        //[HttpGet("getIsBestSellerProduct")]
-        //[Authorize]
-        //public async Task<IActionResult> getIsBestSellerProduct()
-        //{
-        //    _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
-        //    var getAllProduct = await _serviceManager.productContract.getBestSeller();
-        //    if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
-        //    {
-        //        _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
-        //    }
-        //    return Ok(getAllProduct);
-        //}
-
-
-        //[HttpGet("getAllIsRecommendedProduct")]
-        //[Authorize]
-        //public async Task<IActionResult> getAllIsRecommendedProduct()
-        //{
-        //    _logger.logInfo($" {LoggingEvents.getAllItem} getAllProduct");
-        //    var getAllProduct = await _serviceManager.productContract.getIsRecommended();
-        //    if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
-        //    {
-        //        _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
-        //    }
-        //    return Ok(getAllProduct);
-        //}
-
-        //[HttpGet("getAllIsNewArrialProduct")]
-        //[Authorize]
-        //public async Task<IActionResult> getAllIsNewArrialProduct()
-        //{
-        //    _logger.logInfo($" {LoggingEvents.getAllItem} getAllIsNewArrialProduct");
-        //    var getAllProduct = await _serviceManager.productContract.getIsNewArrial();
-        //    if (getAllProduct.statusCode == (int)HttpStatusCode.NotFound)
-        //    {
-        //        _logger.logWarn($"{LoggingEvents.getItemNotFound},No Product Found");
-        //    }
-        //    return Ok(getAllProduct);
-        //}
-
 
         [HttpGet("getAllProductForUser")]
         public async Task<IActionResult> getAllProductForUser()
@@ -112,7 +71,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("addProduct")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> addProduct(AddProductViewModel addProduct)
         {
             _logger.logInfo($" {LoggingEvents.addItem} addProduct");
@@ -121,7 +80,7 @@ namespace PrinceEcom.Controllers
         }
 
         [HttpPost("updateProduct")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> updateProduct(UpdateProductViewModel updateProduct)
         {
             _logger.logInfo($" {LoggingEvents.updateItem} updateProductImage");
@@ -349,6 +308,14 @@ namespace PrinceEcom.Controllers
             _logger.logInfo($" {LoggingEvents.addItem} addShippingMethod");
             var add = await _serviceManager.productContract.addAllcontactus(addContactusViewModel);
             return Ok(add);
+        }
+
+        [HttpPost("updateMetaTagsByProductId")]
+        public async Task<IActionResult> updateMetaTagsByProductId(UpdateMetaTagViewModel updateMetaTagViewModel)
+        {
+            _logger.logInfo($" {LoggingEvents.addItem} addShippingMethod");
+            var updateMetaTag = await _serviceManager.productContract.updateMetaTagsByProductId(updateMetaTagViewModel);
+            return Ok(updateMetaTag);
         }
     }
 }

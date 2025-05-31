@@ -45,8 +45,7 @@ namespace RepositoryContract
 
         public Task<ResponseViewModel> getAllcontactus();
         public Task<ResponseViewModel> addAllcontactus(AddContactusViewModel addContactusViewModel);
-
-
+        public Task<ResponseViewModel> updateMetaTagsByProductId(UpdateMetaTagViewModel updateMetaTagViewModel);
 
     }
 }

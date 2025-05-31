@@ -245,4 +245,14 @@ namespace ViewModel
 
     }
 
+    public class UpdateMetaTagViewModel
+    {
+        [Required]
+        public Guid productId { get; set; }
+        public string? metaTitle { get; set; }
+        public string? metaDescription { get; set; }
+        public string? metaKeyword { get; set; }
+
+    }
+
 }

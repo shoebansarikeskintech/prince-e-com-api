@@ -153,14 +153,6 @@ namespace PrinceEcom.Controllers
             return Ok(returnData);
         }
 
-
-        //[HttpPost("addSkinInsightUser")]
-        //public async Task<IActionResult> addSkinInsightUser(AddSkinInsightUserViewModel addSkinInsightUser)
-        //{
-        //    _logger.logInfo($" {LoggingEvents.updateItem} addSkinInsightUser");
-        //    var returnData = await _serviceManager.authenticationContract.addSkinInsightUser(addSkinInsightUser);
-        //    return Ok(returnData);
-        //}
         [HttpPost("updateSkinInsightUser")]
         public async Task<IActionResult> updateSkinInsightUser(updateSkinInsightUserViewModel updateSkinInsightUser)
         {

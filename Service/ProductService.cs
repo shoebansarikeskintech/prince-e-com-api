@@ -190,6 +190,11 @@ namespace Service
             return add;
         }
 
-      
+        public async Task<ResponseViewModel> updateMetaTagsByProductId(UpdateMetaTagViewModel updateMetaTagViewModel)
+        {
+            return await _repositoryManager.productRepository.updateMetaTagsByProductId(updateMetaTagViewModel);
+        }
+
+
     }
 }
