@@ -30,6 +30,20 @@ namespace Common
         public static string spUpdateAppRole = "SpUpdateAppRole";
         public static string spDeleteAppRole = "SpDeleteAppRole";
 
+        //new ticket
+        public static string spGetAllTicket = "SpGetAllTicket";
+        public static string spAddTicket = "SpAddTicket";
+        public static string spUpdateTicket = "SpUpdateTicket";
+        public static string spDeleteTicket = "SpDeleteTicket";
+
+        //Reply ticket
+
+        public static string spGetAllTicketReply = "SpGetAllTicketReply";
+        public static string spAddTicketReply = "SpAddTicketReply";
+        public static string spUpdateTicketReply = "SpUpdateTicketReply";
+        public static string spDeleteTicketReply = "SpDeleteTicketReply";
+
+
         public static string spGetByIdMenu = "SpGetByIdMenu";
         public static string spGetAllMenu = "SpGetAllMenu";
         public static string spAddMenu = "SpAddMenu";

@@ -25,6 +25,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\CategoryImage\" />
     <Folder Include="wwwroot\BannerImage\" />
+    <Folder Include="wwwroot\TicketImage\" />
     <Folder Include="wwwroot\ProductImage\" />
   </ItemGroup>
 

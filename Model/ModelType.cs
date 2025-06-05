@@ -22,6 +22,32 @@ namespace Model
             public bool active { get; set; }
         }
 
+        public class Ticket
+        {
+            public Guid ticketId { get; set; }
+            public string? ticketType { get; set; }
+            public string? subject { get; set; }
+            public string? message { get; set; }
+            public string? appUserId { get; set; }
+            public string? image { get; set; }
+            public string? createdDate { get; set; }
+            public Guid? createdBy { get; set; }
+            public bool active { get; set; }
+        }
+
+        public class TicketReply
+        {
+            public Guid ticketReplyId { get; set; }
+            public Guid ticketId { get; set; }
+            public string? ticketType { get; set; }
+            public string? message { get; set; }
+            public string? appUserId { get; set; }
+            public string? createdDate { get; set; }
+            public Guid? createdBy { get; set; }
+            public string? image { get; set; }
+            public bool active { get; set; }
+        }
+
         public record MenuByUserRole(int id, string menuName, string actionName, string controllerName, string pageName,
             int displayOrder, string roleName);
 
@@ -289,7 +315,7 @@ namespace Model
         {
             public string? status { get; set; }
         }
-            public class AllSearchOrder
+        public class AllSearchOrder
         {
             public int id { get; set; }
 
